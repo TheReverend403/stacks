@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ee:latest
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    environment:
+      - "TZ=Europe/London"
+      - VIRTUAL_HOST=contain.lwatson.dev
+      - VIRTUAL_PORT=9000
+    ports:
+      - 127.0.0.1:9000:9000
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /srv/portainer/data:/data
+    labels:
+      - "diun.enable=true"
