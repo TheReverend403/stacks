@@ -51,6 +51,7 @@ services:
       UID: ${PUID}
       GID: ${PGID}
       EULA: "TRUE"
+      VERSION: ${VERSION:-LATEST}
       TYPE: PAPER
       MEMORY: ${SERVER_MEMORY:-8G}
       USE_AIKAR_FLAGS: "true"
