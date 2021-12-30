@@ -38,6 +38,7 @@ services:
           memory: 2G
     labels:
       - "diun.enable=true"
+      - "telegram-notifier.monitor=true"
 
   survival:
     image: itzg/minecraft-server:latest
@@ -76,4 +77,5 @@ services:
           memory: 10G
     labels:
       - "diun.enable=true"
+      - "telegram-notifier.monitor=true"
 
