@@ -31,6 +31,8 @@ services:
       - ${BASE_DIR}/waterfall/logs:/server/logs
     ports:
       - 25565:25577
+    extra_hosts:
+      - host.docker.internal:host-gateway
     deploy:
       resources:
         limits:
@@ -72,6 +74,8 @@ services:
       - ${BASE_DIR}/survival/plugins:/plugins
       - ${BASE_DIR}/survival/worlds:/data/worlds
       - ${MAP_DIR}:/data/plugins/squaremap/web
+    extra_hosts:
+      - host.docker.internal:host-gateway
     deploy:
       resources:
         limits:
