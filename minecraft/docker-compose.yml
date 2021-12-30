@@ -52,7 +52,7 @@ services:
       TZ: ${TZ:-UTC}
       UID: ${PUID}
       GID: ${PGID}
-      EULA: "TRUE"
+      EULA: "true"
       VERSION: ${VERSION:-LATEST}
       TYPE: PAPER
       MEMORY: ${SERVER_MEMORY:-8G}
