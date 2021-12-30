@@ -57,6 +57,7 @@ services:
       USE_AIKAR_FLAGS: "true"
       COPY_CONFIG_DEST: /data
       REPLACE_ENV_VARIABLES: "true"
+      ENABLE_ROLLING_LOGS: "true"
       CFG_DB_USER: ${DB_USER}
       CFG_DB_PASSWORD: ${DB_PASSWORD}
       CFG_POSTGRES_HOST: ${POSTGRES_HOST}
