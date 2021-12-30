@@ -15,8 +15,8 @@ services:
       TYPE: WATERFALL
       MEMORY: ${PROXY_MEMORY:-1G}
       JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
-      REPLACE_ENV_VARIABLES: "TRUE"
-      ENABLE_RCON: "TRUE"
+      REPLACE_ENV_VARIABLES: "true"
+      ENABLE_RCON: "true"
       CFG_DB_USER: ${DB_USER}
       CFG_DB_PASSWORD: ${DB_PASSWORD}
       CFG_POSTGRES_HOST: ${POSTGRES_HOST}
@@ -53,9 +53,9 @@ services:
       EULA: "TRUE"
       TYPE: PAPER
       MEMORY: ${SERVER_MEMORY:-8G}
-      USE_AIKAR_FLAGS: "TRUE"
+      USE_AIKAR_FLAGS: "true"
       COPY_CONFIG_DEST: /data
-      REPLACE_ENV_VARIABLES: "TRUE"
+      REPLACE_ENV_VARIABLES: "true"
       CFG_DB_USER: ${DB_USER}
       CFG_DB_PASSWORD: ${DB_PASSWORD}
       CFG_POSTGRES_HOST: ${POSTGRES_HOST}

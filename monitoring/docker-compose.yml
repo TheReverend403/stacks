@@ -16,10 +16,10 @@ services:
     environment:
       TZ: ${TZ:-UTC}
       LOG_LEVEL: info
-      LOG_JSON: false
+      LOG_JSON: "false"
       DIUN_WATCH_WORKERS: 4
       DIUN_WATCH_SCHEDULE: "0 */1 * * *"
-      DIUN_PROVIDERS_DOCKER: true
+      DIUN_PROVIDERS_DOCKER: "true"
       DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY}
       DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID}
     labels:
@@ -36,7 +36,7 @@ services:
       TZ: ${TZ:-UTC}
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID}
-      ONLY_WHITELIST: true
+      ONLY_WHITELIST: "true"
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
