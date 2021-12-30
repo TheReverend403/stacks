@@ -76,3 +76,4 @@ services:
           memory: 10G
     labels:
       - "diun.enable=true"
+
