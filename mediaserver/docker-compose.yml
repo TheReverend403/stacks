@@ -1,0 +1,161 @@
+version: "3.9"
+
+services:
+  sonarr:
+    image: hotio/sonarr:latest
+    container_name: sonarr
+    restart: unless-stopped
+    depends_on:
+      - prowlarr
+      - deluge
+    environment:
+      - PUID=997
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/sonarr:/config
+      - /srv/mediaserver/data:/data
+    ports:
+      - 127.0.0.1:8989:8989
+    labels:
+      - "diun.enable=true"
+
+  radarr:
+    image: hotio/radarr:latest
+    container_name: radarr
+    restart: unless-stopped
+    depends_on:
+      - prowlarr
+      - deluge
+    environment:
+      - PUID=996
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/radarr:/config
+      - /srv/mediaserver/data:/data
+    ports:
+      - 127.0.0.1:7878:7878
+    labels:
+      - "diun.enable=true"
+      
+  prowlarr:
+    image: hotio/prowlarr:nightly
+    container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      - PUID=993
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/prowlarr:/config
+    ports:
+      - 127.0.0.1:9696:9696
+    # labels:
+    #   - "diun.enable=true"
+
+  deluge:
+    image: linuxserver/deluge:latest
+    container_name: deluge
+    restart: unless-stopped
+    environment:
+      - PUID=454
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/deluge:/config
+      - /srv/mediaserver/data/torrents:/data/torrents
+      - /srv/mediaserver/data/torrents/incomplete:/downloads
+    ports:
+      - 127.0.0.1:8112:8112
+      - 6882:6882
+      - 6882:6882/udp
+    labels:
+      - "diun.enable=true"
+
+  plex:
+    image: hotio/plex:release
+    container_name: plex
+    restart: unless-stopped
+    environment:
+      - PUID=998
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+      - VERSION=docker
+      - PLEX_PASS=no
+      # - PLEX_CLAIM=
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/plex:/config
+      - /srv/mediaserver/data/media/tv:/tv
+      - /srv/mediaserver/data/media/movies:/movies
+      - /srv/mediaserver/data/media/transcode:/transcode
+    ports:
+      - 32400:32400
+    deploy:
+      resources:
+        limits:
+          cpus: 16
+          memory: 16G
+    labels:
+      - "diun.enable=true"
+
+  overseerr:
+    image: hotio/overseerr:release
+    container_name: overseerr
+    restart: unless-stopped
+    depends_on:
+      - sonarr
+      - plex
+      - radarr
+      - mongo
+    environment:
+      - PUID=989
+      - PGID=998
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/overseerr:/config
+    ports:
+      - 127.0.0.1:5055:5055
+    labels:
+      - "diun.enable=true"
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    restart: unless-stopped
+    user: 989:998
+    environment:
+      - UMASK=007
+      - TZ=Europe/London
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/mediaserver/config/overseerr/mongo/configdb:/data/configdb
+      - /srv/mediaserver/config/overseerr/mongo/db:/data/db
+    labels:
+      - "diun.enable=true"
+
+  # flaresolverr:
+  #   image: flaresolverr/flaresolverr:latest
+  #   container_name: flaresolverr
+  #   restart: unless-stopped
+  #   environment:
+  #     - TZ=Europe/London
+  #     - LOG_LEVEL=info
+  #     - LOG_HTML=false
+  #     - CAPTCHA_SOLVER=none
+  #   volumes:
+  #     - /etc/localtime:/etc/localtime:ro
+  #   labels:
+  #     - "diun.enable=true"

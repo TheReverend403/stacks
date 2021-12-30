@@ -1,0 +1,80 @@
+version: "3.9"
+
+services:
+  proxy:
+    image: itzg/bungeecord:latest
+    container_name: proxy
+    restart: unless-stopped
+    tty: true
+    stdin_open: true
+    user: 490:490
+    environment:
+      - "TZ=UTC"
+      - "UID=490"
+      - "GID=490"
+      - "TYPE=WATERFALL"
+      - "MEMORY=1G"
+      - "JVM_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
+      - "REPLACE_ENV_VARIABLES=TRUE"
+      - "ENABLE_RCON=TRUE"
+      - "CFG_DB_USER=${CFG_DB_USER}"
+      - "CFG_DB_PASSWORD=${CFG_DB_PASSWORD}"
+      - "CFG_POSTGRES_HOST=${CFG_POSTGRES_HOST}"
+      - "CFG_POSTGRES_PORT=${CFG_POSTGRES_PORT}"
+      - "CFG_MYSQL_HOST=${CFG_MYSQL_HOST}"
+      - "CFG_MYSQL_PORT=${CFG_MYSQL_PORT}"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/minecraft/waterfall/data:/server
+      - /srv/minecraft/waterfall/plugins:/plugins
+      - /srv/minecraft/waterfall/config:/config
+      - /srv/minecraft/waterfall/logs:/server/logs
+    ports:
+      - 25565:25577
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 2G
+    labels:
+      - "diun.enable=true"
+
+  survival:
+    image: itzg/minecraft-server:latest
+    container_name: survival
+    restart: unless-stopped
+
+    tty: true
+    stdin_open: true
+    environment:
+      - "TZ=UTC"
+      - "UID=490"
+      - "GID=490"
+      - "EULA=TRUE"
+      - "TYPE=PAPER"
+      - "MEMORY=8G"
+      - "USE_AIKAR_FLAGS=true"
+      - "COPY_CONFIG_DEST=/data"
+      - "REPLACE_ENV_VARIABLES=TRUE"
+      - "CFG_DB_USER=${CFG_DB_USER}"
+      - "CFG_DB_PASSWORD=${CFG_DB_PASSWORD}"
+      - "CFG_POSTGRES_HOST=${CFG_POSTGRES_HOST}"
+      - "CFG_POSTGRES_PORT=${CFG_POSTGRES_PORT}"
+      - "CFG_MYSQL_HOST=${CFG_MYSQL_HOST}"
+      - "CFG_MYSQL_PORT=${CFG_MYSQL_PORT}"
+      - "CFG_DISCORD_TOKEN=${CFG_DISCORD_TOKEN}"
+
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /srv/minecraft/survival/data:/data
+      - /srv/minecraft/survival/config:/config
+      - /srv/minecraft/survival/plugins:/plugins
+      - /srv/www/mc.foxdev.co:/data/plugins/squaremap/web
+      - /srv/minecraft/survival/worlds:/data/worlds
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 10G
+    labels:
+      - "diun.enable=true"
