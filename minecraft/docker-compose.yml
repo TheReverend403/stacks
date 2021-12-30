@@ -7,22 +7,22 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
-    user: 490:490
+    user: "${PUID}:${PGID}"
     environment:
       - "TZ=UTC"
-      - "UID=490"
-      - "GID=490"
+      - "UID=${PUID}"
+      - "GID=${PGID}"
       - "TYPE=WATERFALL"
       - "MEMORY=1G"
       - "JVM_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
       - "REPLACE_ENV_VARIABLES=TRUE"
       - "ENABLE_RCON=TRUE"
-      - "CFG_DB_USER=${CFG_DB_USER}"
-      - "CFG_DB_PASSWORD=${CFG_DB_PASSWORD}"
-      - "CFG_POSTGRES_HOST=${CFG_POSTGRES_HOST}"
-      - "CFG_POSTGRES_PORT=${CFG_POSTGRES_PORT}"
-      - "CFG_MYSQL_HOST=${CFG_MYSQL_HOST}"
-      - "CFG_MYSQL_PORT=${CFG_MYSQL_PORT}"
+      - "CFG_DB_USER=${DB_USER}"
+      - "CFG_DB_PASSWORD=${DB_PASSWORD}"
+      - "CFG_POSTGRES_HOST=${POSTGRES_HOST}"
+      - "CFG_POSTGRES_PORT=${POSTGRES_PORT}"
+      - "CFG_MYSQL_HOST=${MYSQL_HOST}"
+      - "CFG_MYSQL_PORT=${MYSQL_PORT}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /srv/minecraft/waterfall/data:/server
@@ -43,27 +43,25 @@ services:
     image: itzg/minecraft-server:latest
     container_name: survival
     restart: unless-stopped
-
     tty: true
     stdin_open: true
     environment:
       - "TZ=UTC"
-      - "UID=490"
-      - "GID=490"
+      - "UID=${PUID}"
+      - "GID=${PGID}"
       - "EULA=TRUE"
       - "TYPE=PAPER"
       - "MEMORY=8G"
       - "USE_AIKAR_FLAGS=true"
       - "COPY_CONFIG_DEST=/data"
       - "REPLACE_ENV_VARIABLES=TRUE"
-      - "CFG_DB_USER=${CFG_DB_USER}"
-      - "CFG_DB_PASSWORD=${CFG_DB_PASSWORD}"
-      - "CFG_POSTGRES_HOST=${CFG_POSTGRES_HOST}"
-      - "CFG_POSTGRES_PORT=${CFG_POSTGRES_PORT}"
-      - "CFG_MYSQL_HOST=${CFG_MYSQL_HOST}"
-      - "CFG_MYSQL_PORT=${CFG_MYSQL_PORT}"
-      - "CFG_DISCORD_TOKEN=${CFG_DISCORD_TOKEN}"
-
+      - "CFG_DB_USER=${DB_USER}"
+      - "CFG_DB_PASSWORD=${DB_PASSWORD}"
+      - "CFG_POSTGRES_HOST=${POSTGRES_HOST}"
+      - "CFG_POSTGRES_PORT=${POSTGRES_PORT}"
+      - "CFG_MYSQL_HOST=${MYSQL_HOST}"
+      - "CFG_MYSQL_PORT=${MYSQL_PORT}"
+      - "CFG_DISCORD_TOKEN=${DISCORD_TOKEN}"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /srv/minecraft/survival/data:/data
