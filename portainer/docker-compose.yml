@@ -1,19 +1,19 @@
-version: "3.9"
+version: '3.9'
 services:
   portainer:
-    container_name: portainer
     image: portainer/portainer-ee:latest
     command: -H unix:///var/run/docker.sock
-    restart: always
+    container_name: portainer
+    volumes:
+      - ${BASE_DIR}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 127.0.0.1:9000:${PORT:-9000}
+    labels:
+      - diun.enable=true
     environment:
       TZ: ${TZ:-UTC}
       VIRTUAL_HOST: ${HOST}
       VIRTUAL_PORT: ${PORT:-9000}
-    ports:
-      - 127.0.0.1:9000:${PORT:-9000}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${BASE_DIR}/data:/data
-    labels:
-      - diun.enable=true
+    restart: always

@@ -1,38 +1,17 @@
-version: "3.9"
+version: '3.9'
 
 services:
   proxy:
     image: itzg/bungeecord:latest
     container_name: proxy
-    restart: unless-stopped
-    tty: true
-    stdin_open: true
-    user: ${PUID}:${PGID}
-    environment:
-      TZ: ${TZ:-UTC}
-      UID: ${PUID}
-      GID: ${PGID}
-      TYPE: WATERFALL
-      MEMORY: ${PROXY_MEMORY:-1G}
-      JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
-      REPLACE_ENV_VARIABLES: "true"
-      ENABLE_RCON: "true"
-      CFG_DB_USER: ${DB_USER}
-      CFG_DB_PASSWORD: ${DB_PASSWORD}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
-      CFG_MYSQL_HOST: ${MYSQL_HOST}
-      CFG_MYSQL_PORT: ${MYSQL_PORT}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/waterfall/data:/server
-      - ${BASE_DIR}/waterfall/plugins:/plugins
       - ${BASE_DIR}/waterfall/config:/config
+      - ${BASE_DIR}/waterfall/data:/server
       - ${BASE_DIR}/waterfall/logs:/server/logs
+      - ${BASE_DIR}/waterfall/plugins:/plugins
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 25565:25577
-    extra_hosts:
-      - host.docker.internal:host-gateway
     deploy:
       resources:
         limits:
@@ -41,41 +20,39 @@ services:
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
+    environment:
+      CFG_DB_PASSWORD: ${DB_PASSWORD}
+      CFG_DB_USER: ${DB_USER}
+      CFG_MYSQL_HOST: ${MYSQL_HOST}
+      CFG_MYSQL_PORT: ${MYSQL_PORT}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      ENABLE_RCON: 'true'
+      GID: ${PGID}
+      JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC
+        -XX:+AlwaysPreTouch
+      MEMORY: ${PROXY_MEMORY:-1G}
+      REPLACE_ENV_VARIABLES: 'true'
+      TYPE: WATERFALL
+      TZ: ${TZ:-UTC}
+      UID: ${PUID}
+    stdin_open: true
+    user: ${PUID}:${PGID}
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    tty: true
 
   survival:
     image: itzg/minecraft-server:latest
     container_name: survival
-    restart: unless-stopped
-    tty: true
-    stdin_open: true
-    environment:
-      TZ: ${TZ:-UTC}
-      UID: ${PUID}
-      GID: ${PGID}
-      EULA: "true"
-      VERSION: ${VERSION:-LATEST}
-      TYPE: PAPER
-      MEMORY: ${SERVER_MEMORY:-8G}
-      USE_AIKAR_FLAGS: "true"
-      COPY_CONFIG_DEST: /data
-      REPLACE_ENV_VARIABLES: "true"
-      ENABLE_ROLLING_LOGS: "true"
-      CFG_DB_USER: ${DB_USER}
-      CFG_DB_PASSWORD: ${DB_PASSWORD}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
-      CFG_MYSQL_HOST: ${MYSQL_HOST}
-      CFG_MYSQL_PORT: ${MYSQL_PORT}
-      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/survival/data:/data
       - ${BASE_DIR}/survival/config:/config
+      - ${BASE_DIR}/survival/data:/data
       - ${BASE_DIR}/survival/plugins:/plugins
       - ${BASE_DIR}/survival/worlds:/data/worlds
       - ${MAP_DIR}:/data/plugins/squaremap/web
-    extra_hosts:
-      - host.docker.internal:host-gateway
+      - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
         limits:
@@ -84,3 +61,27 @@ services:
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
+    environment:
+      CFG_DB_PASSWORD: ${DB_PASSWORD}
+      CFG_DB_USER: ${DB_USER}
+      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN}
+      CFG_MYSQL_HOST: ${MYSQL_HOST}
+      CFG_MYSQL_PORT: ${MYSQL_PORT}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      COPY_CONFIG_DEST: /data
+      ENABLE_ROLLING_LOGS: 'true'
+      EULA: 'true'
+      GID: ${PGID}
+      MEMORY: ${SERVER_MEMORY:-8G}
+      REPLACE_ENV_VARIABLES: 'true'
+      TYPE: PAPER
+      TZ: ${TZ:-UTC}
+      UID: ${PUID}
+      USE_AIKAR_FLAGS: 'true'
+      VERSION: ${VERSION:-LATEST}
+    stdin_open: true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+    tty: true

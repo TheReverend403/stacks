@@ -1,42 +1,42 @@
-version: "3.9"
-
-volumes:
-  data:
+version: '3.9'
 
 services:
   diun:
     image: crazymax/diun:latest
-    container_name: diun
     command: serve
-    restart: always
+    container_name: diun
     volumes:
-      - data:/data
-      - /var/run/docker.sock:/var/run/docker.sock
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      TZ: ${TZ:-UTC}
-      LOG_LEVEL: info
-      LOG_JSON: "false"
-      DIUN_WATCH_WORKERS: 4
-      DIUN_WATCH_SCHEDULE: "0 */1 * * *"
-      DIUN_PROVIDERS_DOCKER: "true"
-      DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY}
-      DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID}
+      - /var/run/docker.sock:/var/run/docker.sock
+      - data:/data
     labels:
       - diun.enable=true
-      
+    environment:
+      DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID}
+      DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY}
+      DIUN_PROVIDERS_DOCKER: 'true'
+      DIUN_WATCH_SCHEDULE: 0 */1 * * *
+      DIUN_WATCH_WORKERS: 4
+      LOG_JSON: 'false'
+      LOG_LEVEL: info
+      TZ: ${TZ:-UTC}
+    restart: always
+
   telegram-notifier:
     image: poma/docker-telegram-notifier:latest
     container_name: telegram-notifier
-    restart: always
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
-    environment:
-      TZ: ${TZ:-UTC}
-      TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY}
-      TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID}
-      ONLY_WHITELIST: "true"
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
+    environment:
+      ONLY_WHITELIST: 'true'
+      TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY}
+      TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      TZ: ${TZ:-UTC}
+    restart: always
+
+volumes:
+  data:

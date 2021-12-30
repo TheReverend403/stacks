@@ -1,102 +1,73 @@
-version: "3.9"
+version: '3.9'
 
 services:
-  sonarr:
-    image: hotio/sonarr:latest
-    container_name: sonarr
-    restart: unless-stopped
-    depends_on:
-      - prowlarr
-      - deluge
-    environment:
-      PUID: ${PUID_SONARR}
-      PGID: ${PGID}
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/config/sonarr:/config
-      - ${BASE_DIR}/data:/data
-    ports:
-      - 127.0.0.1:8989:8989
-    labels:
-      - diun.enable=true
-
-  radarr:
-    image: hotio/radarr:latest
-    container_name: radarr
-    restart: unless-stopped
-    depends_on:
-      - prowlarr
-      - deluge
-    environment:
-      PUID: ${PUID_RADARR}
-      PGID: ${PGID}
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/config/radarr:/config
-      - ${BASE_DIR}/data:/data
-    ports:
-      - 127.0.0.1:7878:7878
-    labels:
-      - diun.enable=true
-      
-  prowlarr:
-    image: hotio/prowlarr:nightly
-    container_name: prowlarr
-    restart: unless-stopped
-    environment:
-      PUID: ${PUID_PROWLARR}
-      PGID: ${PGID}
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/config/prowlarr:/config
-    ports:
-      - 127.0.0.1:9696:9696
-
   deluge:
     image: linuxserver/deluge:latest
     container_name: deluge
-    restart: unless-stopped
-    environment:
-      PUID: ${PUID_DELUGE}
-      PGID: ${PGID}
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR}/config/deluge:/config
-      - ${BASE_DIR}/data/torrents:/data/torrents
       - ${BASE_DIR}/data/torrents/incomplete:/downloads
+      - ${BASE_DIR}/data/torrents:/data/torrents
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:8112:8112
       - 6882:6882
       - 6882:6882/udp
     labels:
       - diun.enable=true
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID_DELUGE}
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    volumes:
+      - ${BASE_DIR}/config/overseerr/mongo/configdb:/data/configdb
+      - ${BASE_DIR}/config/overseerr/mongo/db:/data/db
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      - diun.enable=true
+    environment:
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    user: ${PUID_OVERSEERR}:${PGID}
+    restart: unless-stopped
+
+  overseerr:
+    image: hotio/overseerr:release
+    container_name: overseerr
+    volumes:
+      - ${BASE_DIR}/config/overseerr:/config
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:5055:5055
+    labels:
+      - diun.enable=true
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID_OVERSEERR}
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    depends_on:
+      - mongo
+      - plex
+      - radarr
+      - sonarr
+    restart: unless-stopped
 
   plex:
     image: hotio/plex:release
     container_name: plex
-    restart: unless-stopped
-    environment:
-      PUID: ${PUID_PLEX}
-      PGID: ${PGID}
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
-      VERSION: docker
-      PLEX_PASS: ${PLEX_PASS:-no}
-      PLEX_CLAIM: ${PLEX_CLAIM:-}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR}/config/plex:/config
-      - ${BASE_DIR}/data/media/tv:/tv
       - ${BASE_DIR}/data/media/movies:/movies
       - ${BASE_DIR}/data/media/transcode:/transcode
+      - ${BASE_DIR}/data/media/tv:/tv
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - 32400:32400
     deploy:
@@ -107,39 +78,69 @@ services:
     labels:
       - diun.enable=true
 
-  overseerr:
-    image: hotio/overseerr:release
-    container_name: overseerr
-    restart: unless-stopped
-    depends_on:
-      - sonarr
-      - plex
-      - radarr
-      - mongo
     environment:
-      PUID: ${PUID_OVERSEERR}
       PGID: ${PGID}
-      UMASK: ${UMASK:-007}
+      PLEX_CLAIM: ${PLEX_CLAIM:-}
+      PLEX_PASS: ${PLEX_PASS:-no}
+      PUID: ${PUID_PLEX}
       TZ: ${TZ:-UTC}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/config/overseerr:/config
-    ports:
-      - 127.0.0.1:5055:5055
-    labels:
-      - diun.enable=true
-
-  mongo:
-    image: mongo
-    container_name: mongo
+      UMASK: ${UMASK:-007}
+      VERSION: docker
     restart: unless-stopped
-    user: ${PUID_OVERSEERR}:${PGID}
-    environment:
-      UMASK: ${UMASK:-007}
-      TZ: ${TZ:-UTC}
+
+  prowlarr:
+    image: hotio/prowlarr:nightly
+    container_name: prowlarr
     volumes:
+      - ${BASE_DIR}/config/prowlarr:/config
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR}/config/overseerr/mongo/configdb:/data/configdb
-      - ${BASE_DIR}/config/overseerr/mongo/db:/data/db
+    ports:
+      - 127.0.0.1:9696:9696
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID_PROWLARR}
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    restart: unless-stopped
+
+  radarr:
+    image: hotio/radarr:latest
+    container_name: radarr
+    volumes:
+      - ${BASE_DIR}/config/radarr:/config
+      - ${BASE_DIR}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:7878:7878
     labels:
       - diun.enable=true
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID_RADARR}
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    depends_on:
+      - deluge
+      - prowlarr
+    restart: unless-stopped
+
+  sonarr:
+    image: hotio/sonarr:latest
+    container_name: sonarr
+    volumes:
+      - ${BASE_DIR}/config/sonarr:/config
+      - ${BASE_DIR}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:8989:8989
+    labels:
+      - diun.enable=true
+    environment:
+      PGID: ${PGID}
+      PUID: ${PUID_SONARR}
+      TZ: ${TZ:-UTC}
+      UMASK: ${UMASK:-007}
+    depends_on:
+      - deluge
+      - prowlarr
+    restart: unless-stopped
