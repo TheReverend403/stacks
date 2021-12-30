@@ -7,28 +7,28 @@ services:
     restart: unless-stopped
     tty: true
     stdin_open: true
-    user: "${PUID}:${PGID}"
+    user: ${PUID}:${PGID}
     environment:
-      - "TZ=UTC"
-      - "UID=${PUID}"
-      - "GID=${PGID}"
-      - "TYPE=WATERFALL"
-      - "MEMORY=1G"
-      - "JVM_OPTS=-XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
-      - "REPLACE_ENV_VARIABLES=TRUE"
-      - "ENABLE_RCON=TRUE"
-      - "CFG_DB_USER=${DB_USER}"
-      - "CFG_DB_PASSWORD=${DB_PASSWORD}"
-      - "CFG_POSTGRES_HOST=${POSTGRES_HOST}"
-      - "CFG_POSTGRES_PORT=${POSTGRES_PORT}"
-      - "CFG_MYSQL_HOST=${MYSQL_HOST}"
-      - "CFG_MYSQL_PORT=${MYSQL_PORT}"
+      TZ: ${TZ:-UTC}
+      UID: ${PUID}
+      GID: ${PGID}
+      TYPE: WATERFALL
+      MEMORY: ${PROXY_MEMORY:-1G}
+      JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
+      REPLACE_ENV_VARIABLES: "TRUE"
+      ENABLE_RCON: "TRUE"
+      CFG_DB_USER: ${DB_USER}
+      CFG_DB_PASSWORD: ${DB_PASSWORD}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      CFG_MYSQL_HOST: ${MYSQL_HOST}
+      CFG_MYSQL_PORT: ${MYSQL_PORT}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /srv/minecraft/waterfall/data:/server
-      - /srv/minecraft/waterfall/plugins:/plugins
-      - /srv/minecraft/waterfall/config:/config
-      - /srv/minecraft/waterfall/logs:/server/logs
+      - ${BASE_DIR}/waterfall/data:/server
+      - ${BASE_DIR}/waterfall/plugins:/plugins
+      - ${BASE_DIR}/waterfall/config:/config
+      - ${BASE_DIR}/waterfall/logs:/server/logs
     ports:
       - 25565:25577
     deploy:
@@ -37,8 +37,8 @@ services:
           cpus: 4
           memory: 2G
     labels:
-      - "diun.enable=true"
-      - "telegram-notifier.monitor=true"
+      - diun.enable=true
+      - telegram-notifier.monitor=true
 
   survival:
     image: itzg/minecraft-server:latest
@@ -47,35 +47,35 @@ services:
     tty: true
     stdin_open: true
     environment:
-      - "TZ=UTC"
-      - "UID=${PUID}"
-      - "GID=${PGID}"
-      - "EULA=TRUE"
-      - "TYPE=PAPER"
-      - "MEMORY=8G"
-      - "USE_AIKAR_FLAGS=true"
-      - "COPY_CONFIG_DEST=/data"
-      - "REPLACE_ENV_VARIABLES=TRUE"
-      - "CFG_DB_USER=${DB_USER}"
-      - "CFG_DB_PASSWORD=${DB_PASSWORD}"
-      - "CFG_POSTGRES_HOST=${POSTGRES_HOST}"
-      - "CFG_POSTGRES_PORT=${POSTGRES_PORT}"
-      - "CFG_MYSQL_HOST=${MYSQL_HOST}"
-      - "CFG_MYSQL_PORT=${MYSQL_PORT}"
-      - "CFG_DISCORD_TOKEN=${DISCORD_TOKEN}"
+      TZ: ${TZ:-UTC}
+      UID: ${PUID}
+      GID: ${PGID}
+      EULA: "TRUE"
+      TYPE: PAPER
+      MEMORY: ${SERVER_MEMORY:-8G}
+      USE_AIKAR_FLAGS: "TRUE"
+      COPY_CONFIG_DEST: /data
+      REPLACE_ENV_VARIABLES: "TRUE"
+      CFG_DB_USER: ${DB_USER}
+      CFG_DB_PASSWORD: ${DB_PASSWORD}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      CFG_MYSQL_HOST: ${MYSQL_HOST}
+      CFG_MYSQL_PORT: ${MYSQL_PORT}
+      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /srv/minecraft/survival/data:/data
-      - /srv/minecraft/survival/config:/config
-      - /srv/minecraft/survival/plugins:/plugins
-      - /srv/www/mc.foxdev.co:/data/plugins/squaremap/web
-      - /srv/minecraft/survival/worlds:/data/worlds
+      - ${BASE_DIR}/survival/data:/data
+      - ${BASE_DIR}/survival/config:/config
+      - ${BASE_DIR}/survival/plugins:/plugins
+      - ${BASE_DIR}/survival/worlds:/data/worlds
+      - ${MAP_DIR}:/data/plugins/squaremap/web
     deploy:
       resources:
         limits:
           cpus: 4
           memory: 10G
     labels:
-      - "diun.enable=true"
-      - "telegram-notifier.monitor=true"
+      - diun.enable=true
+      - telegram-notifier.monitor=true
 
