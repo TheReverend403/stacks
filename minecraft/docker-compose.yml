@@ -29,7 +29,7 @@ services:
       CFG_POSTGRES_PORT: ${POSTGRES_PORT}
       ENABLE_RCON: 'true'
       GID: ${PGID}
-      JVM_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
+      JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       MEMORY: ${PROXY_MEMORY:-1G}
       REPLACE_ENV_VARIABLES: 'true'
       TYPE: WATERFALL
