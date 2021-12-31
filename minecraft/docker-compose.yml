@@ -15,8 +15,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 4
-          memory: 2G
+          cpus: ${PROXY_LIMIT_CPUS}
+          memory: ${PROXY_LIMIT_MEM}
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
@@ -55,8 +55,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 4
-          memory: 10G
+          cpus: ${SERVER_LIMIT_CPUS}
+          memory: ${SERVER_LIMIT_MEM}
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true

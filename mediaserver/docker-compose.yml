@@ -73,11 +73,10 @@ services:
     deploy:
       resources:
         limits:
-          cpus: 16
-          memory: 16G
+          cpus: ${PLEX_LIMIT_CPUS}
+          memory: ${PLEX_LIMIT_MEM}
     labels:
       - diun.enable=true
-
     environment:
       PGID: ${PGID}
       PLEX_CLAIM: ${PLEX_CLAIM:-}
