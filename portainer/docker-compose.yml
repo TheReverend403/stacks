@@ -13,7 +13,6 @@ services:
     labels:
       - diun.enable=true
     environment:
-      TZ: ${TZ:-UTC}
       VIRTUAL_HOST: ${HOST}
       VIRTUAL_PORT: ${PORT:-9000}
     restart: always
