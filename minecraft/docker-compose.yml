@@ -49,8 +49,8 @@ services:
       - ${BASE_DIR}/survival/config:/config
       - ${BASE_DIR}/survival/data:/data
       - ${BASE_DIR}/survival/plugins:/plugins
-      - ${BASE_DIR}/survival/worlds:/data/worlds
-      - ${MAP_DIR}:/data/plugins/squaremap/web
+      - ${BASE_DIR}/survival/worlds:/worlds
+      - ${MAP_DIR}:/map
       - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
