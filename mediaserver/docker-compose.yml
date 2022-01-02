@@ -16,6 +16,7 @@ services:
     labels:
       - diun.enable=true
     environment:
+      PGID: ${PGID:?}
       PUID: ${PUID_DELUGE:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
@@ -48,6 +49,7 @@ services:
       - diun.enable=true
     environment:
       PUID: ${PUID_OVERSEERR:?}
+      PGID: ${PGID:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
@@ -76,6 +78,7 @@ services:
     labels:
       - diun.enable=true
     environment:
+      PGID: ${PGID:?}
       PUID: ${PUID_PLEX:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
@@ -91,6 +94,7 @@ services:
     ports:
       - 127.0.0.1:9696:9696
     environment:
+      PGID: ${PGID:?}
       PUID: ${PUID_PROWLARR:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
@@ -108,6 +112,7 @@ services:
     labels:
       - diun.enable=true
     environment:
+      PGID: ${PGID:?}
       PUID: ${PUID_RADARR:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
@@ -128,6 +133,7 @@ services:
     labels:
       - diun.enable=true
     environment:
+      PGID: ${PGID:?}
       PUID: ${PUID_SONARR:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
