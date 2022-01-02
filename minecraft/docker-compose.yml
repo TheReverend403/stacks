@@ -15,28 +15,28 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${PROXY_LIMIT_CPUS}
-          memory: ${PROXY_LIMIT_MEM}
+          cpus: ${PROXY_LIMIT_CPUS:?}
+          memory: ${PROXY_LIMIT_MEM:?}
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
     environment:
-      CFG_DB_PASSWORD: ${DB_PASSWORD}
-      CFG_DB_USER: ${DB_USER}
-      CFG_MYSQL_HOST: ${MYSQL_HOST}
-      CFG_MYSQL_PORT: ${MYSQL_PORT}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      CFG_DB_PASSWORD: ${DB_PASSWORD:?}
+      CFG_DB_USER: ${DB_USER:?}
+      CFG_MYSQL_HOST: ${MYSQL_HOST:?}
+      CFG_MYSQL_PORT: ${MYSQL_PORT:?}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT:?}
       ENABLE_RCON: 'true'
-      GID: ${PGID}
+      GID: ${PGID:?}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
-      MEMORY: ${PROXY_MEMORY:-1G}
+      MEMORY: ${PROXY_MEMORY:?}
       REPLACE_ENV_VARIABLES: 'true'
       TYPE: WATERFALL
-      TZ: ${TZ:-UTC}
-      UID: ${PUID}
+      TZ: ${TIMEZONE:-UTC}
+      UID: ${PUID:?}
     stdin_open: true
-    user: ${PUID}:${PGID}
+    user: ${PUID:?}:${PGID:?}
     extra_hosts:
       - host.docker.internal:host-gateway
     restart: unless-stopped
@@ -46,37 +46,37 @@ services:
     image: itzg/minecraft-server:latest
     container_name: survival
     volumes:
-      - ${BASE_DIR}/survival/config:/config
-      - ${BASE_DIR}/survival/data:/data
-      - ${BASE_DIR}/survival/plugins:/plugins
-      - ${BASE_DIR}/survival/worlds:/worlds
-      - ${MAP_DIR}:/map
+      - ${BASE_DIR:?}/survival/config:/config
+      - ${BASE_DIR:?}/survival/data:/data
+      - ${BASE_DIR:?}/survival/plugins:/plugins
+      - ${BASE_DIR:?}/survival/worlds:/worlds
+      - ${MAP_DIR:?}:/map
       - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
         limits:
-          cpus: ${SERVER_LIMIT_CPUS}
-          memory: ${SERVER_LIMIT_MEM}
+          cpus: ${SERVER_LIMIT_CPUS:?}
+          memory: ${SERVER_LIMIT_MEM:?}
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
     environment:
-      CFG_DB_PASSWORD: ${DB_PASSWORD}
-      CFG_DB_USER: ${DB_USER}
-      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN}
-      CFG_MYSQL_HOST: ${MYSQL_HOST}
-      CFG_MYSQL_PORT: ${MYSQL_PORT}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT}
+      CFG_DB_PASSWORD: ${DB_PASSWORD:?}
+      CFG_DB_USER: ${DB_USER:?}
+      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN:?}
+      CFG_MYSQL_HOST: ${MYSQL_HOST:?}
+      CFG_MYSQL_PORT: ${MYSQL_PORT:?}
+      CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
+      CFG_POSTGRES_PORT: ${POSTGRES_PORT:?}
       COPY_CONFIG_DEST: /data
       ENABLE_ROLLING_LOGS: 'true'
       EULA: 'true'
-      GID: ${PGID}
-      MEMORY: ${SERVER_MEMORY:-8G}
+      GID: ${PGID:?}
+      MEMORY: ${SERVER_MEMORY:?}
       REPLACE_ENV_VARIABLES: 'true'
       TYPE: PAPER
-      TZ: ${TZ:-UTC}
-      UID: ${PUID}
+      TZ: ${TIMEZONE:-UTC}
+      UID: ${PUID:?}
       USE_AIKAR_FLAGS: 'true'
       VERSION: ${VERSION:-LATEST}
     stdin_open: true
