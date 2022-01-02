@@ -35,7 +35,7 @@ services:
       ONLY_WHITELIST: 'true'
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
-      TZ: ${TZ:-UTC}
+      TZ: ${TIMEZONE:-UTC}
     restart: always
 
 volumes:
