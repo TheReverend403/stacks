@@ -26,8 +26,8 @@ services:
     image: mongo
     container_name: mongo
     volumes:
-      - ${BASE_DIR:?err}/config/overseerr/mongo/configdb:/data/configdb
-      - ${BASE_DIR:?err}/config/overseerr/mongo/db:/data/db
+      - ${BASE_DIR:?}/config/overseerr/mongo/configdb:/data/configdb
+      - ${BASE_DIR:?}/config/overseerr/mongo/db:/data/db
       - /etc/localtime:/etc/localtime:ro
     labels:
       - diun.enable=true
