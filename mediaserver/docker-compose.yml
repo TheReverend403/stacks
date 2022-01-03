@@ -64,9 +64,7 @@ services:
     container_name: plex
     volumes:
       - ${BASE_DIR:?}/config/plex:/config
-      - ${BASE_DIR:?}/data/media/movies:/movies
-      - ${BASE_DIR:?}/data/media/transcode:/transcode
-      - ${BASE_DIR:?}/data/media/tv:/tv
+      - ${BASE_DIR:?}/data/media:/media
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 32400:32400
