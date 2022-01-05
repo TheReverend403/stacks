@@ -72,8 +72,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${PLEX_LIMIT_CPUS:?}
-          memory: ${PLEX_LIMIT_MEM:?}
+          cpus: ${PLEX_LIMIT_CPUS:-0}
+          memory: ${PLEX_LIMIT_MEM:-0}
     labels:
       - diun.enable=true
     environment:
