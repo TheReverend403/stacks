@@ -83,7 +83,7 @@ services:
       UMASK: ${UMASK:-007}
       VERSION: docker
       PLEX_CLAIM:
-      PLEX_PASS: ${PLEX_PASS:-no}
+      PLEX_PASS:
     restart: unless-stopped
 
   prowlarr:
