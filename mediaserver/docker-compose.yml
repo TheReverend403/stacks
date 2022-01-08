@@ -38,7 +38,6 @@ services:
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
-      - mongo
       - plex
       - radarr
       - sonarr
