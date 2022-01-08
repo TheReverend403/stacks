@@ -22,21 +22,6 @@ services:
       UMASK: ${UMASK:-007}
     restart: unless-stopped
 
-  mongo:
-    image: mongo
-    container_name: mongo
-    volumes:
-      - ${BASE_DIR:?}/config/overseerr/mongo/configdb:/data/configdb
-      - ${BASE_DIR:?}/config/overseerr/mongo/db:/data/db
-      - /etc/localtime:/etc/localtime:ro
-    labels:
-      - diun.enable=true
-    environment:
-      TZ: ${TIMEZONE:-UTC}
-      UMASK: ${UMASK:-007}
-    user: ${PUID_OVERSEERR:?}:${PGID:?}
-    restart: unless-stopped
-
   overseerr:
     image: hotio/overseerr:release
     container_name: overseerr
