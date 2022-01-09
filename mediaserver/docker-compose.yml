@@ -106,6 +106,27 @@ services:
       - prowlarr
     restart: unless-stopped
 
+  lidarr:
+    image: hotio/lidarr:latest
+    container_name: lidarr
+    volumes:
+      - ${BASE_DIR:?}/config/lidarr:/config
+      - ${BASE_DIR:?}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:8686:8686
+    labels:
+      - diun.enable=true
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_LIDARR:?}
+      TZ: ${TIMEZONE:-UTC}
+      UMASK: ${UMASK:-007}
+    depends_on:
+      - deluge
+      - prowlarr
+    restart: unless-stopped
+
   sonarr:
     image: hotio/sonarr:latest
     container_name: sonarr
