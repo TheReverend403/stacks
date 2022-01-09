@@ -33,7 +33,6 @@ services:
       MEMORY: ${PROXY_MEMORY:?}
       REPLACE_ENV_VARIABLES: 'true'
       TYPE: WATERFALL
-      WATERFALL_VERSION: ${VERSION:-latest}
       TZ: ${TIMEZONE:-UTC}
       UID: ${PUID:?}
     stdin_open: true
