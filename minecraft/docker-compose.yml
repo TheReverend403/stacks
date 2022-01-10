@@ -32,7 +32,7 @@ services:
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       MEMORY: ${PROXY_MEMORY:?}
       REPLACE_ENV_VARIABLES: 'true'
-      TYPE: WATERFALL
+      TYPE: ${PROXY_TYPE:-WATERFALL}
       TZ: ${TIMEZONE:-UTC}
       UID: ${PUID:?}
     stdin_open: true
