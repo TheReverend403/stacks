@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  rehome:
+    image: ghcr.io/thereverend403/rehome:latest
+    container_name: rehome
+    restart: unless-stopped
+    environment:
+      PUID: ${PUID:?}
+      PGID: ${PGID:?}
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
+      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:?}:${DB_PASSWORD:?}@${DB_HOST:?}:${DB_PORT:-5432}/${DB_NAME:?}
+      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+    volumes:
+      - ${BASE_DIR:?}/static:/static
+      - ${BASE_DIR:?}/config:/config
+      - ${BASE_DIR:?}/data:/data
+    ports:
+      - "127.0.0.1:5000:5000"
+    extra_hosts:
+      - host.docker.internal:host-gateway
+
