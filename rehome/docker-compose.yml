@@ -11,7 +11,7 @@ services:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
       FLASK_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:?}:${DB_PASSWORD:?}@${DB_HOST:?}:${DB_PORT:-5432}/${DB_NAME:?}
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
-      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-4}
+      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
       TZ: ${TIMEZONE:-UTC}
     volumes:
       - ${BASE_DIR:?}/static:/static
