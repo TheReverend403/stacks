@@ -5,6 +5,8 @@ services:
     image: ghcr.io/thereverend403/gentoogram-bot:latest
     container_name: gentoogram-bot
     restart: "unless-stopped"
+    labels:
+      - telegram-notifier.monitor=true
     environment:
       PUID: ${PUID:?}
       PGID: ${PGID:?}
