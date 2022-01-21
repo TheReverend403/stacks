@@ -5,10 +5,10 @@ services:
     image: itzg/bungeecord:latest
     container_name: proxy
     volumes:
-      - ${BASE_DIR:?}/waterfall/config:/config
-      - ${BASE_DIR:?}/waterfall/data:/server
-      - ${BASE_DIR:?}/waterfall/logs:/server/logs
-      - ${BASE_DIR:?}/waterfall/plugins:/plugins
+      - ${BASE_DIR:?}/proxy/config:/config
+      - ${BASE_DIR:?}/proxy/data:/server
+      - ${BASE_DIR:?}/proxy/logs:/server/logs
+      - ${BASE_DIR:?}/proxy/plugins:/plugins
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 25565:25577
