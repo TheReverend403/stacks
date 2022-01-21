@@ -5,6 +5,8 @@ services:
     image: ghcr.io/thereverend403/pste:latest
     container_name: pste
     restart: unless-stopped
+    labels:
+      - telegram-notifier.monitor=true
     environment:
       PUID: ${PUID:?}
       PGID: ${PGID:?}
