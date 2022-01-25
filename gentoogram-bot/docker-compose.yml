@@ -5,6 +5,7 @@ services:
     image: ghcr.io/thereverend403/gentoogram-bot:latest
     container_name: gentoogram-bot
     restart: "unless-stopped"
+    tmpfs: /run
     labels:
       - telegram-notifier.monitor=true
     environment:
