@@ -20,6 +20,7 @@ services:
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
       - /etc/localtime:/etc/localtime:ro
+    tmpfs: /run:exec
     ports:
       - "127.0.0.1:5001:5000"
     extra_hosts:

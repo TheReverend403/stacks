@@ -19,6 +19,7 @@ services:
       - ${BASE_DIR:?}/static:/static
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
+    tmpfs: /run:exec
     ports:
       - "127.0.0.1:5000:5000"
     extra_hosts:

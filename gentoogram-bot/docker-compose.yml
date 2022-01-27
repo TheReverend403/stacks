@@ -18,3 +18,4 @@ services:
     volumes:
       - ${BASE_DIR:?}/config:/config
       - /etc/localtime:/etc/localtime:ro
+    tmpfs: /run:exec
