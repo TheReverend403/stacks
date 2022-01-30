@@ -48,9 +48,9 @@ services:
     volumes:
       - ${BASE_DIR:?}/survival/config:/config
       - ${BASE_DIR:?}/survival/data:/data
+      - ${BASE_DIR:?}/survival/logs:/data/logs
       - ${BASE_DIR:?}/survival/plugins:/plugins
       - ${BASE_DIR:?}/survival/worlds:/worlds
-      - ${BASE_DIR:?}/survival/logs:/data/logs
       - ${MAP_DIR:?}:/map
       - /etc/localtime:/etc/localtime:ro
     deploy:

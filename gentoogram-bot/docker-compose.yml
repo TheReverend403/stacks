@@ -1,21 +1,21 @@
-version: "3.9"
+version: '3.9'
 
 services:
   gentoogram-bot:
     image: ghcr.io/thereverend403/gentoogram-bot:latest
     container_name: gentoogram-bot
-    restart: "unless-stopped"
-    labels:
-      - telegram-notifier.monitor=true
-    environment:
-      PUID: ${PUID:?}
-      PGID: ${PGID:?}
-      DYNACONF_TELEGRAM__TOKEN: ${TELEGRAM_API_KEY:?}
-      DYNACONF_TELEGRAM__CHAT_ID: ${TELEGRAM_CHAT_ID:?}
-      DYNACONF_TELEGRAM__ADMIN_ID: ${TELEGRAM_ADMIN_ID:?}
-      DYNACONF_SENTRY__DSN: ${SENTRY_DSN:-}
-      TZ: ${TIMEZONE:-UTC}
     volumes:
       - ${BASE_DIR:?}/config:/config
       - /etc/localtime:/etc/localtime:ro
     tmpfs: /run:exec
+    labels:
+      - telegram-notifier.monitor=true
+    environment:
+      DYNACONF_SENTRY__DSN: ${SENTRY_DSN:-}
+      DYNACONF_TELEGRAM__ADMIN_ID: ${TELEGRAM_ADMIN_ID:?}
+      DYNACONF_TELEGRAM__CHAT_ID: ${TELEGRAM_CHAT_ID:?}
+      DYNACONF_TELEGRAM__TOKEN: ${TELEGRAM_API_KEY:?}
+      PGID: ${PGID:?}
+      PUID: ${PUID:?}
+      TZ: ${TIMEZONE:-UTC}
+    restart: unless-stopped

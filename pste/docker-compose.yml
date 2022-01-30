@@ -1,28 +1,27 @@
-version: "3.9"
+version: '3.9'
 
 services:
   pste:
     image: ghcr.io/thereverend403/pste:latest
     container_name: pste
-    restart: unless-stopped
-    labels:
-      - telegram-notifier.monitor=true
-    environment:
-      PUID: ${PUID:?}
-      PGID: ${PGID:?}
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
-      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:?}:${DB_PASSWORD:?}@${DB_HOST:?}:${DB_PORT:-5432}/${DB_NAME:?}
-      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
-      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
-      TZ: ${TIMEZONE:-UTC}
     volumes:
-      - ${BASE_DIR:?}/static:/static
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:?}/static:/static
       - /etc/localtime:/etc/localtime:ro
     tmpfs: /run:exec
     ports:
-      - "127.0.0.1:5001:5000"
+      - 127.0.0.1:5001:5000
+    labels:
+      - telegram-notifier.monitor=true
+    environment:
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
+      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
+      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:?}:${DB_PASSWORD:?}@${DB_HOST:?}:${DB_PORT:-5432}/${DB_NAME:?}
+      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
+      PGID: ${PGID:?}
+      PUID: ${PUID:?}
+      TZ: ${TIMEZONE:-UTC}
     extra_hosts:
       - host.docker.internal:host-gateway
-
+    restart: unless-stopped

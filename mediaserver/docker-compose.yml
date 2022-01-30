@@ -22,6 +22,27 @@ services:
       UMASK: ${UMASK:-007}
     restart: unless-stopped
 
+  lidarr:
+    image: hotio/lidarr:latest
+    container_name: lidarr
+    volumes:
+      - ${BASE_DIR:?}/config/lidarr:/config
+      - ${BASE_DIR:?}/data:/data
+      - /etc/localtime:/etc/localtime:ro
+    ports:
+      - 127.0.0.1:8686:8686
+    labels:
+      - diun.enable=true
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_LIDARR:?}
+      TZ: ${TIMEZONE:-UTC}
+      UMASK: ${UMASK:-007}
+    depends_on:
+      - deluge
+      - prowlarr
+    restart: unless-stopped
+
   overseerr:
     image: hotio/overseerr:release
     container_name: overseerr
@@ -48,8 +69,8 @@ services:
     container_name: plex
     volumes:
       - ${BASE_DIR:?}/config/plex:/config
-      - ${BASE_DIR:?}/data/media:/media
       - ${BASE_DIR:?}/data/media/transcode:/transcode
+      - ${BASE_DIR:?}/data/media:/media
       - /etc/localtime:/etc/localtime:ro
     ports:
       - 32400:32400
@@ -62,12 +83,12 @@ services:
       - diun.enable=true
     environment:
       PGID: ${PGID:?}
+      PLEX_CLAIM:
+      PLEX_PASS:
       PUID: ${PUID_PLEX:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
       VERSION: docker
-      PLEX_CLAIM:
-      PLEX_PASS:
     restart: unless-stopped
 
   prowlarr:
@@ -99,27 +120,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_RADARR:?}
-      TZ: ${TIMEZONE:-UTC}
-      UMASK: ${UMASK:-007}
-    depends_on:
-      - deluge
-      - prowlarr
-    restart: unless-stopped
-
-  lidarr:
-    image: hotio/lidarr:latest
-    container_name: lidarr
-    volumes:
-      - ${BASE_DIR:?}/config/lidarr:/config
-      - ${BASE_DIR:?}/data:/data
-      - /etc/localtime:/etc/localtime:ro
-    ports:
-      - 127.0.0.1:8686:8686
-    labels:
-      - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_LIDARR:?}
       TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
