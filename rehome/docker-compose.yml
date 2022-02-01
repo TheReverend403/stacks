@@ -8,6 +8,8 @@ services:
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/postgresql:/var/run/postgresql
     tmpfs: /run:exec
     ports:
       - 127.0.0.1:5000:5000
@@ -16,11 +18,9 @@ services:
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
-      FLASK_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:?}:${DB_PASSWORD:?}@${DB_HOST:?}:${DB_PORT:-5432}/${DB_NAME:?}
+      FLASK_SQLALCHEMY_DATABASE_URI: ${FLASK_SQLALCHEMY_DATABASE_URI:?}
       GUNICORN_OPTS: ${GUNICORN_OPTS:-}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
       TZ: ${TIMEZONE:-UTC}
-    extra_hosts:
-      - host.docker.internal:host-gateway
     restart: unless-stopped
