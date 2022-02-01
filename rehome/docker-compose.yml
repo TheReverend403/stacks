@@ -9,7 +9,7 @@ services:
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/postgresql:/var/run/postgresql
+      - /run/postgresql:/run/postgresql
     tmpfs: /run:exec
     ports:
       - 127.0.0.1:5000:5000
