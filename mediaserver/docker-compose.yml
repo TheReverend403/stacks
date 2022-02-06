@@ -73,7 +73,7 @@ services:
       - ${BASE_DIR:?}/data/media:/media
       - /etc/localtime:/etc/localtime:ro
     ports:
-      - 127.0.0.1:32400:32400
+      - 32400:32400
     deploy:
       resources:
         limits:
