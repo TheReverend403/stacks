@@ -51,7 +51,6 @@ services:
       - ${BASE_DIR:?}/survival/logs:/data/logs
       - ${BASE_DIR:?}/survival/plugins:/plugins
       - ${BASE_DIR:?}/survival/worlds:/worlds
-      - ${MAP_DIR:?}:/map
       - /etc/localtime:/etc/localtime:ro
     deploy:
       resources:
