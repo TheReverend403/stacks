@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   portainer:
-    image: portainer/portainer-ee:latest
+    image: portainer/portainer-ee:alpine
     command: -H unix:///var/run/docker.sock
     container_name: portainer
     volumes:
