@@ -6,10 +6,10 @@ services:
     container_name: cappuccino
     volumes:
       - ${BASE_DIR:?}/config:/config
-      - ${BASE_DIR:?}/data:/data
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
     tmpfs: /run:exec
+    read_only: true
     ports:
       - 127.0.0.1:1337:1337
     environment:
