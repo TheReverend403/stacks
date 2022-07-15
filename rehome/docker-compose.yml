@@ -4,6 +4,7 @@ services:
   rehome:
     image: ghcr.io/thereverend403/rehome:latest
     container_name: rehome
+    read_only: true
     volumes:
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
