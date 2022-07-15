@@ -11,7 +11,9 @@ services:
       - ${BASE_DIR:?}/static:/static
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
-    tmpfs: /run:exec
+    tmpfs:
+      - /run:exec
+      - /tmp
     ports:
       - 127.0.0.1:5000:5000
     labels:
