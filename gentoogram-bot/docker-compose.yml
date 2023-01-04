@@ -8,6 +8,7 @@ services:
       - ${BASE_DIR:?}/config:/config
       - /etc/localtime:/etc/localtime:ro
     tmpfs: /run:exec
+    read_only: true
     labels:
       - telegram-notifier.monitor=true
     environment:
