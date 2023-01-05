@@ -14,5 +14,7 @@ services:
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
-    network_mode: host
     restart: unless-stopped
+    ports:
+      - 127.0.0.1:9080:9080
+      - 127.0.0.1:9001:9001
