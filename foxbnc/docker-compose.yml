@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  znc:
+    image: lscr.io/linuxserver/znc:latest
+    container_name: znc
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID:?}
+      TZ: ${TIMEZONE:-UTC}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/data:/config
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
+    network_mode: host
+    restart: unless-stopped
