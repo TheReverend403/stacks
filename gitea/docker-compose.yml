@@ -9,6 +9,7 @@ services:
     environment:
       USER_UID: ${PUID:-1000}
       USER_GID: ${PGID:-1000}
+      GITEA_CUSTOM: /data/gitea/custom
       GITEA__database__DB_TYPE: ${DB_TYPE:-postgres}
       GITEA__database__HOST: ${DB_HOST:?}
       GITEA__database__NAME: ${DB_NAME:?}
@@ -22,6 +23,8 @@ services:
       - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:?}/git:/data/git
+      - ${BASE_DIR:?}/custom:/data/gitea/custom
       - ${BASE_DIR:?}/config:/data/gitea/conf
     labels:
       - diun.enable=true
