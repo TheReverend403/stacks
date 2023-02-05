@@ -5,7 +5,7 @@ services:
     image: gitea/gitea:latest
     container_name: gitea
     env_file:
-      - stack.env
+      - ../stack.env
     environment:
       USER_UID: ${PUID:-1000}
       USER_GID: ${PGID:-1000}
