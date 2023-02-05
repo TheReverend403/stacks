@@ -24,6 +24,7 @@ services:
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/git:/data/git
+      - ${BASE_DIR:?}/logs:/data/gitea/log
       - ${BASE_DIR:?}/custom:/data/gitea/custom
       - ${BASE_DIR:?}/config:/data/gitea/conf
     labels:
