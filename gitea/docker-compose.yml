@@ -42,8 +42,6 @@ services:
       GITEA__queue.issue_indexer__CONN_STR: ${REDIS_URL:-redis://redis:6379/0} 
       GITEA__cache__ADAPTER: redis
       GITEA__cache__HOST: ${REDIS_URL:-redis://redis:6379/0}
-      GITEA__task__QUEUE_TYPE: redis
-      GITEA__task__QUEUE_CONN_STR: ${REDIS_URL:-redis://redis:6379/0}
       GITEA__session__PROVIDER: db
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     ports:
