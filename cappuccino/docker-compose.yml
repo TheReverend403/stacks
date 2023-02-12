@@ -5,9 +5,10 @@ services:
     image: ghcr.io/thereverend403/cappuccino:main
     container_name: cappuccino
     volumes:
-      - ${BASE_DIR:?}/config:/config
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
+      - ${BASE_DIR:?}/config:/config
     tmpfs: /run:exec
     read_only: true
     ports:
@@ -30,5 +31,4 @@ services:
       CFG_INFLUX_ORG: ${CFG_INFLUX_ORG:-}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
-      TZ: ${TIMEZONE:-UTC}
     restart: unless-stopped

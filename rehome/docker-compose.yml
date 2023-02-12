@@ -6,11 +6,12 @@ services:
     container_name: rehome
     read_only: true
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
-      - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
     tmpfs:
       - /run:exec
       - /tmp
@@ -25,5 +26,4 @@ services:
       GUNICORN_OPTS: ${GUNICORN_OPTS:-}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
-      TZ: ${TIMEZONE:-UTC}
     restart: unless-stopped

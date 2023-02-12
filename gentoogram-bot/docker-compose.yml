@@ -5,8 +5,9 @@ services:
     image: ghcr.io/thereverend403/gentoogram-bot:main
     container_name: gentoogram-bot
     volumes:
-      - ${BASE_DIR:?}/config:/config
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ${BASE_DIR:?}/config:/config
     tmpfs: /run:exec
     read_only: true
     labels:
@@ -18,5 +19,4 @@ services:
       DYNACONF_TELEGRAM__TOKEN: ${TELEGRAM_API_KEY:?}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
-      TZ: ${TIMEZONE:-UTC}
     restart: unless-stopped

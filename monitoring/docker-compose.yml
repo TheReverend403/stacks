@@ -7,6 +7,7 @@ services:
     container_name: diun
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - data:/data
     labels:
@@ -19,7 +20,6 @@ services:
       DIUN_WATCH_WORKERS: ${DIUN_WATCH_WORKERS:-4}
       LOG_JSON: 'false'
       LOG_LEVEL: info
-      TZ: ${TIMEZONE:-UTC}
     restart: always
 
   telegram-notifier:
@@ -27,6 +27,7 @@ services:
     container_name: telegram-notifier
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
       - diun.enable=true
@@ -35,7 +36,6 @@ services:
       ONLY_WHITELIST: 'true'
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
-      TZ: ${TIMEZONE:-UTC}
     restart: always
 
 volumes:

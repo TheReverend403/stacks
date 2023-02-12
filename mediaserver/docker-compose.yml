@@ -5,10 +5,11 @@ services:
     image: linuxserver/deluge:latest
     container_name: deluge
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/deluge:/config
       - ${BASE_DIR:?}/data/torrents/incomplete:/downloads
       - ${BASE_DIR:?}/data/torrents:/data/torrents
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:8112:8112
       - 6882:6882
@@ -18,7 +19,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_DELUGE:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     restart: unless-stopped
 
@@ -26,9 +26,10 @@ services:
     image: hotio/lidarr:latest
     container_name: lidarr
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/lidarr:/config
       - ${BASE_DIR:?}/data:/data
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:8686:8686
     labels:
@@ -36,7 +37,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_LIDARR:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
       - deluge
@@ -47,8 +47,9 @@ services:
     image: hotio/overseerr:release
     container_name: overseerr
     volumes:
-      - ${BASE_DIR:?}/config/overseerr:/config
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ${BASE_DIR:?}/config/overseerr:/config
     ports:
       - 127.0.0.1:5055:5055
     labels:
@@ -56,7 +57,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_OVERSEERR:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
       - plex
@@ -68,10 +68,11 @@ services:
     image: hotio/plex:release
     container_name: plex
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/plex:/config
       - ${BASE_DIR:?}/data/media/transcode:/transcode
       - ${BASE_DIR:?}/data/media:/media
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:32400:32400
     deploy:
@@ -87,7 +88,6 @@ services:
       PLEX_PASS:
       ADVERTISE_IP:
       PUID: ${PUID_PLEX:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
       VERSION: docker
     restart: unless-stopped
@@ -96,14 +96,14 @@ services:
     image: hotio/prowlarr:nightly
     container_name: prowlarr
     volumes:
-      - ${BASE_DIR:?}/config/prowlarr:/config
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ${BASE_DIR:?}/config/prowlarr:/config
     ports:
       - 127.0.0.1:9696:9696
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_PROWLARR:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     restart: unless-stopped
 
@@ -111,9 +111,10 @@ services:
     image: hotio/radarr:latest
     container_name: radarr
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/radarr:/config
       - ${BASE_DIR:?}/data:/data
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:7878:7878
     labels:
@@ -121,7 +122,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_RADARR:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
       - deluge
@@ -132,9 +132,10 @@ services:
     image: hotio/sonarr:latest
     container_name: sonarr
     volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/sonarr:/config
       - ${BASE_DIR:?}/data:/data
-      - /etc/localtime:/etc/localtime:ro
     ports:
       - 127.0.0.1:8989:8989
     labels:
@@ -142,7 +143,6 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_SONARR:?}
-      TZ: ${TIMEZONE:-UTC}
       UMASK: ${UMASK:-007}
     depends_on:
       - deluge

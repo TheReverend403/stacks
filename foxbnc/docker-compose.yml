@@ -7,9 +7,9 @@ services:
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
-      TZ: ${TIMEZONE:-UTC}
     volumes:
       - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/data:/config
     labels:
       - diun.enable=true
