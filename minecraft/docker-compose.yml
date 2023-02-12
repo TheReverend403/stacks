@@ -6,7 +6,6 @@ services:
     container_name: proxy
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/proxy/config:/config
       - ${BASE_DIR:?}/proxy/data:/server
       - ${BASE_DIR:?}/proxy/logs:/server/logs
@@ -47,7 +46,6 @@ services:
     container_name: survival
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/survival/config:/config
       - ${BASE_DIR:?}/survival/data:/data
       - ${BASE_DIR:?}/survival/logs:/data/logs

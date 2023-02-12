@@ -7,7 +7,6 @@ services:
     container_name: portainer
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${BASE_DIR:?}/data:/data
     ports:

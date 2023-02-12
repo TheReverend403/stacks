@@ -15,7 +15,6 @@ services:
       timeout: 3s
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/redis:/data
     labels:
       - diun.enable=true

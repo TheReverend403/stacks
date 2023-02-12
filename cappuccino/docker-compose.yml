@@ -6,7 +6,6 @@ services:
     container_name: cappuccino
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
     tmpfs: /run:exec

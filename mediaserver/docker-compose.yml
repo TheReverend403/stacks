@@ -6,7 +6,6 @@ services:
     container_name: deluge
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/deluge:/config
       - ${BASE_DIR:?}/data/torrents/incomplete:/downloads
       - ${BASE_DIR:?}/data/torrents:/data/torrents
@@ -27,7 +26,6 @@ services:
     container_name: lidarr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/lidarr:/config
       - ${BASE_DIR:?}/data:/data
     ports:
@@ -48,7 +46,6 @@ services:
     container_name: overseerr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/overseerr:/config
     ports:
       - 127.0.0.1:5055:5055
@@ -69,7 +66,6 @@ services:
     container_name: plex
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/plex:/config
       - ${BASE_DIR:?}/data/media/transcode:/transcode
       - ${BASE_DIR:?}/data/media:/media
@@ -97,7 +93,6 @@ services:
     container_name: prowlarr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/prowlarr:/config
     ports:
       - 127.0.0.1:9696:9696
@@ -112,7 +107,6 @@ services:
     container_name: radarr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/radarr:/config
       - ${BASE_DIR:?}/data:/data
     ports:
@@ -133,7 +127,6 @@ services:
     container_name: sonarr
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - ${BASE_DIR:?}/config/sonarr:/config
       - ${BASE_DIR:?}/data:/data
     ports:
