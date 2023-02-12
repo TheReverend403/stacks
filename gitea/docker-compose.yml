@@ -22,7 +22,7 @@ services:
       - telegram-notifier.monitor=true
 
   gitea:
-    image: gitea/gitea:dev
+    image: gitea/gitea:latest
     container_name: gitea
     depends_on:
       - redis
