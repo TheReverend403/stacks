@@ -14,10 +14,4 @@ services:
       - diun.enable=true
       - telegram-notifier.monitor=true
     network_mode: host
-    networks:
-      - foxbnc
     restart: unless-stopped
-
-networks:
-  foxbnc:
-    name: foxbnc
