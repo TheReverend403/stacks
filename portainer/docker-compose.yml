@@ -11,6 +11,8 @@ services:
       - ${BASE_DIR:?}/data:/data
     ports:
       - 127.0.0.1:${PORT:-9000}:${PORT:-9000}
+    networks:
+      - portainer
     labels:
       - diun.enable=true
     environment:
@@ -18,3 +20,7 @@ services:
       VIRTUAL_HOST: ${HOST?}
       VIRTUAL_PORT: ${PORT:-9000}
     restart: always
+
+networks:
+  portainer:
+    name: portainer

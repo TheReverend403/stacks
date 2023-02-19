@@ -16,6 +16,8 @@ services:
       - /tmp
     ports:
       - 127.0.0.1:5000:5000
+    networks:
+      - rehome
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -26,3 +28,7 @@ services:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
     restart: unless-stopped
+
+networks:
+  rehome:
+    name: rehome

@@ -9,6 +9,8 @@ services:
       - ${BASE_DIR:?}/config:/config
     tmpfs: /run:exec
     read_only: true
+    networks:
+      - gentoogram-bot
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -19,3 +21,7 @@ services:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
     restart: unless-stopped
+
+networks:
+  gentoogram-bot:
+    name: gentoogram-bot

@@ -13,6 +13,8 @@ services:
     tmpfs: /run:exec
     ports:
       - 127.0.0.1:5001:5000
+    networks:
+      - pste
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -23,3 +25,7 @@ services:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
     restart: unless-stopped
+
+networks:
+  pste:
+    name: pste

@@ -3,7 +3,7 @@ version: '3.9'
 services:
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: gitea_redis
     command: ${REDIS_ARGS:---save 60 1 --loglevel warning}
     user: ${PUID:-1000}
     restart: unless-stopped
@@ -16,6 +16,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/redis:/data
+    networks:
+      - gitea
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
@@ -46,6 +48,8 @@ services:
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     ports:
       - "127.0.0.1:${GITEA_HTTP_PORT:-3000}:${GITEA_HTTP_PORT:-3000}"
+    networks:
+      - gitea
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
@@ -64,3 +68,7 @@ services:
       interval: 5s
       timeout: 10s
       retries: 5
+
+networks:
+  gitea:
+    name: gitea

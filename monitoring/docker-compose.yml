@@ -9,6 +9,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - data:/data
+    networks:
+      - docker-monitoring
     labels:
       - diun.enable=true
     environment:
@@ -27,6 +29,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - docker-monitoring
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
@@ -38,3 +42,7 @@ services:
 
 volumes:
   data:
+
+networks:
+  docker-monitoring:
+    name: docker-monitoring

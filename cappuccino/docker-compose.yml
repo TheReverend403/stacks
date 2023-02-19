@@ -12,6 +12,8 @@ services:
     read_only: true
     ports:
       - 127.0.0.1:1337:1337
+    networks:
+      - cappuccino
     environment:
       CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
@@ -31,3 +33,7 @@ services:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
     restart: unless-stopped
+
+networks:
+  cappuccino:
+    name: cappuccino

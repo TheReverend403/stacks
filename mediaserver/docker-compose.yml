@@ -13,6 +13,8 @@ services:
       - 127.0.0.1:8112:8112
       - 6882:6882
       - 6882:6882/udp
+    networks:
+      - mediaserver
     labels:
       - diun.enable=true
     environment:
@@ -30,6 +32,8 @@ services:
       - ${BASE_DIR:?}/data:/data
     ports:
       - 127.0.0.1:8686:8686
+    networks:
+      - mediaserver
     labels:
       - diun.enable=true
     environment:
@@ -49,6 +53,8 @@ services:
       - ${BASE_DIR:?}/config/overseerr:/config
     ports:
       - 127.0.0.1:5055:5055
+    networks:
+      - mediaserver
     labels:
       - diun.enable=true
     environment:
@@ -71,6 +77,8 @@ services:
       - ${BASE_DIR:?}/data/media:/media
     ports:
       - 127.0.0.1:32400:32400
+    networks:
+      - mediaserver
     deploy:
       resources:
         limits:
@@ -96,6 +104,8 @@ services:
       - ${BASE_DIR:?}/config/prowlarr:/config
     ports:
       - 127.0.0.1:9696:9696
+    networks:
+      - mediaserver
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_PROWLARR:?}
@@ -111,6 +121,8 @@ services:
       - ${BASE_DIR:?}/data:/data
     ports:
       - 127.0.0.1:7878:7878
+    networks:
+      - mediaserver
     labels:
       - diun.enable=true
     environment:
@@ -131,6 +143,8 @@ services:
       - ${BASE_DIR:?}/data:/data
     ports:
       - 127.0.0.1:8989:8989
+    networks:
+      - mediaserver
     labels:
       - diun.enable=true
     environment:
@@ -141,3 +155,7 @@ services:
       - deluge
       - prowlarr
     restart: unless-stopped
+
+networks:
+  mediaserver:
+    name: mediaserver
