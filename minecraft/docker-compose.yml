@@ -12,6 +12,8 @@ services:
       - ${BASE_DIR:?}/proxy/plugins:/plugins
     ports:
       - 25565:25577
+    networks:
+      - minecraft
     deploy:
       resources:
         limits:
@@ -51,6 +53,8 @@ services:
       - ${BASE_DIR:?}/survival/logs:/data/logs
       - ${BASE_DIR:?}/survival/plugins:/plugins
       - ${BASE_DIR:?}/survival/worlds:/worlds
+    networks:
+      - minecraft
     deploy:
       resources:
         limits:
@@ -82,3 +86,7 @@ services:
       - host.docker.internal:host-gateway
     restart: unless-stopped
     tty: true
+
+networks:
+  minecraft:
+    name: minecraft
