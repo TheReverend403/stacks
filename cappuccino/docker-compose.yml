@@ -10,8 +10,6 @@ services:
       - ${BASE_DIR:?}/config:/config
     tmpfs: /run:exec
     read_only: true
-    ports:
-      - 127.0.0.1:1337:1337
     networks:
       - cappuccino
     environment:

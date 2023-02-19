@@ -46,8 +46,6 @@ services:
       GITEA__cache__HOST: ${REDIS_URL:-redis://redis:6379/0}
       GITEA__session__PROVIDER: db
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
-    ports:
-      - "127.0.0.1:${GITEA_HTTP_PORT:-3000}:${GITEA_HTTP_PORT:-3000}"
     networks:
       - gitea
     volumes:

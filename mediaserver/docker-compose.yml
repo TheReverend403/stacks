@@ -10,7 +10,6 @@ services:
       - ${BASE_DIR:?}/data/torrents/incomplete:/downloads
       - ${BASE_DIR:?}/data/torrents:/data/torrents
     ports:
-      - 127.0.0.1:8112:8112
       - 6882:6882
       - 6882:6882/udp
     networks:
@@ -30,8 +29,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/lidarr:/config
       - ${BASE_DIR:?}/data:/data
-    ports:
-      - 127.0.0.1:8686:8686
     networks:
       - mediaserver
     labels:
@@ -51,8 +48,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/overseerr:/config
-    ports:
-      - 127.0.0.1:5055:5055
     networks:
       - mediaserver
     labels:
@@ -75,8 +70,6 @@ services:
       - ${BASE_DIR:?}/config/plex:/config
       - ${BASE_DIR:?}/data/media/transcode:/transcode
       - ${BASE_DIR:?}/data/media:/media
-    ports:
-      - 127.0.0.1:32400:32400
     networks:
       - mediaserver
     deploy:
@@ -102,8 +95,6 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/prowlarr:/config
-    ports:
-      - 127.0.0.1:9696:9696
     networks:
       - mediaserver
     environment:
@@ -119,8 +110,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/radarr:/config
       - ${BASE_DIR:?}/data:/data
-    ports:
-      - 127.0.0.1:7878:7878
     networks:
       - mediaserver
     labels:
@@ -141,8 +130,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/sonarr:/config
       - ${BASE_DIR:?}/data:/data
-    ports:
-      - 127.0.0.1:8989:8989
     networks:
       - mediaserver
     labels:

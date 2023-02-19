@@ -11,8 +11,6 @@ services:
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
     tmpfs: /run:exec
-    ports:
-      - 127.0.0.1:5001:5000
     networks:
       - pste
     labels:
