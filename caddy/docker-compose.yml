@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  caddy:
+    image: caddy:latest
+    container_name: caddy
+    networks:
+      - caddy
+      - monitoring
+      - portainer
+      - gitea
+      - cappuccino
+      - mediaserver
+      - drone
+      - pste
+      - rehome
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:?}/cache:/config
+      - ${BASE_DIR:?}/config:/etc/caddy
+      - /srv/www:/srv/www:ro
+      - /srv/pste/data:/srv/pste/data:ro
+      - /srv/pste/static:/srv/pste/static:ro
+      - /srv/rehome/data:/srv/rehome/data:ro
+      - /srv/rehome/static:/srv/rehome/static:ro
+      - /srv/gitea/public:/srv/gitea/public:ro
+      - /run/php-fpm:/run/php-fpm:ro
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    restart: unless-stopped
+
+networks:
+  caddy:
+    name: caddy
+    enable_ipv6: true
+    ipam:
+      config:
+        - subnet: fd00:cafe:babe:1234::/64
+  monitoring:
+    external: true
+  portainer:
+    external: true
+  gitea:
+    external: true
+  cappuccino:
+    external: true
+  mediaserver:
+    external: true
+  drone:
+    external: true
+  pste:
+    external: true
+  rehome:
+    external: true
