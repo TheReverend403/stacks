@@ -30,6 +30,7 @@ services:
       CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
       CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       ENABLE_RCON: 'true'
+      EXTRA_ARGS: -Dpaper.useLegacyPluginLoading=true ${EXTRA_ARGS:-}
       GID: ${PGID:?}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       MEMORY: ${PROXY_MEMORY:?}
