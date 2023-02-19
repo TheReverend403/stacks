@@ -74,7 +74,7 @@ services:
       COPY_CONFIG_DEST: /data
       ENABLE_ROLLING_LOGS: 'true'
       EULA: 'true'
-      EXTRA_ARGS: -Dpaper.useLegacyPluginLoading=true ${EXTRA_ARGS:-}
+      JVM_DD_OPTS: -Dpaper.useLegacyPluginLoading=true ${JVM_DD_OPTS:-}
       GID: ${PGID:?}
       MEMORY: ${SERVER_MEMORY:?}
       REPLACE_ENV_VARIABLES: 'true'
