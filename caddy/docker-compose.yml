@@ -13,8 +13,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/data
-      - ${BASE_DIR:?}/cache:/config
       - ${BASE_DIR:?}/config:/etc/caddy
+      - caddy_config:/config
       - /srv/www:/srv/www:ro
       - /srv/pste/data:/srv/pste/data:ro
       - /srv/pste/static:/srv/pste/static:ro
@@ -36,3 +36,6 @@ networks:
     ipam:
       config:
         - subnet: fd00:cafe:babe:1234::/64
+
+volumes:
+  caddy_config:
