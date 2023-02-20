@@ -11,6 +11,7 @@ services:
     read_only: true
     networks:
       - gentoogram-bot
+      - caddy
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -18,6 +19,11 @@ services:
       DYNACONF_TELEGRAM__ADMIN_ID: ${TELEGRAM_ADMIN_ID:?}
       DYNACONF_TELEGRAM__CHAT_ID: ${TELEGRAM_CHAT_ID:?}
       DYNACONF_TELEGRAM__TOKEN: ${TELEGRAM_API_KEY:?}
+      DYNACONF_TELEGRAM__WEBHOOK__ENABLED: ${TELEGRAM_WEBHOOK}
+      DYNACONF_TELEGRAM__WEBHOOK__LISTEN: ${TELEGRAM_WEBHOOK_LISTEN}
+      DYNACONF_TELEGRAM__WEBHOOK__PORT: ${TELEGRAM_WEBHOOK_PORT}
+      DYNACONF_TELEGRAM__WEBHOOK__URL_BASE: ${TELEGRAM_WEBHOOK_URL_BASE}
+      DYNACONF_TELEGRAM__WEBHOOK__URL_PATH: ${TELEGRAM_WEBHOOK_URL_PATH}
       PGID: ${PGID:?}
       PUID: ${PUID:?}
     restart: unless-stopped
@@ -25,3 +31,5 @@ services:
 networks:
   gentoogram-bot:
     name: gentoogram-bot
+  caddy:
+    external: true
