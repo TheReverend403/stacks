@@ -13,6 +13,7 @@ services:
     tmpfs: /run:exec
     networks:
       - pste
+      - caddy
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -27,3 +28,5 @@ services:
 networks:
   pste:
     name: pste
+  caddy:
+    external: true

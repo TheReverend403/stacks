@@ -48,6 +48,7 @@ services:
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     networks:
       - gitea
+      - caddy
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
@@ -70,3 +71,5 @@ services:
 networks:
   gitea:
     name: gitea
+  caddy:
+    external: true

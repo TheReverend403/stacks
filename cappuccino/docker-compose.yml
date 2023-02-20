@@ -12,6 +12,7 @@ services:
     read_only: true
     networks:
       - cappuccino
+      - caddy
     environment:
       CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
@@ -35,3 +36,5 @@ services:
 networks:
   cappuccino:
     name: cappuccino
+  caddy:
+    external: true

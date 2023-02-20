@@ -14,6 +14,7 @@ services:
       - 6882:6882/udp
     networks:
       - mediaserver
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -31,6 +32,7 @@ services:
       - ${BASE_DIR:?}/data:/data
     networks:
       - mediaserver
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -50,6 +52,7 @@ services:
       - ${BASE_DIR:?}/config/overseerr:/config
     networks:
       - mediaserver
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -72,6 +75,7 @@ services:
       - ${BASE_DIR:?}/data/media:/media
     networks:
       - mediaserver
+      - caddy
     deploy:
       resources:
         limits:
@@ -97,6 +101,7 @@ services:
       - ${BASE_DIR:?}/config/prowlarr:/config
     networks:
       - mediaserver
+      - caddy
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID_PROWLARR:?}
@@ -112,6 +117,7 @@ services:
       - ${BASE_DIR:?}/data:/data
     networks:
       - mediaserver
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -132,6 +138,7 @@ services:
       - ${BASE_DIR:?}/data:/data
     networks:
       - mediaserver
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -146,3 +153,5 @@ services:
 networks:
   mediaserver:
     name: mediaserver
+  caddy:
+    external: true

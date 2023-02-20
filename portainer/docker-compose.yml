@@ -11,6 +11,7 @@ services:
       - ${BASE_DIR:?}/data:/data
     networks:
       - portainer
+      - caddy
     labels:
       - diun.enable=true
     environment:
@@ -22,3 +23,5 @@ services:
 networks:
   portainer:
     name: portainer
+  caddy:
+    external: true

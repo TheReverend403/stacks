@@ -16,6 +16,7 @@ services:
       - /tmp
     networks:
       - rehome
+      - caddy
     labels:
       - telegram-notifier.monitor=true
     environment:
@@ -30,3 +31,5 @@ services:
 networks:
   rehome:
     name: rehome
+  caddy:
+    external: true
