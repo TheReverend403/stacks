@@ -22,6 +22,8 @@ services:
       - /srv/rehome/static:/srv/rehome/static:ro
       - /srv/gitea/public:/srv/gitea/public:ro
       - /run/php-fpm:/run/php-fpm:ro
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN:-}
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
