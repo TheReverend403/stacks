@@ -6,14 +6,6 @@ services:
     container_name: caddy
     networks:
       - caddy
-      - monitoring
-      - portainer
-      - gitea
-      - cappuccino
-      - mediaserver
-      - drone
-      - pste
-      - rehome
     ports:
       - "80:80"
       - "443:443"
@@ -44,19 +36,3 @@ networks:
     ipam:
       config:
         - subnet: fd00:cafe:babe:1234::/64
-  monitoring:
-    external: true
-  portainer:
-    external: true
-  gitea:
-    external: true
-  cappuccino:
-    external: true
-  mediaserver:
-    external: true
-  drone:
-    external: true
-  pste:
-    external: true
-  rehome:
-    external: true
