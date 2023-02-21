@@ -6,6 +6,7 @@ services:
     container_name: cappuccino
     restart: unless-stopped
     read_only: true
+    tmpfs: /tmp
     user: ${PUID:?}:${PGID:?}
     environment:
       CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
