@@ -39,7 +39,6 @@ services:
       - docker-monitoring
     labels:
       - diun.enable=true
-      - telegram-notifier.monitor=true
 
 volumes:
   data:
