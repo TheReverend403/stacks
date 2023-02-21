@@ -4,29 +4,26 @@ services:
   rehome:
     image: ghcr.io/thereverend403/rehome:main
     container_name: rehome
+    restart: unless-stopped
     read_only: true
+    tmpfs: /tmp
+    user: ${PUID:?}:${PGID:?}
+    environment:
+      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
+      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
+      FLASK_SQLALCHEMY_DATABASE_URI: ${FLASK_SQLALCHEMY_DATABASE_URI:?}
+      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
-    tmpfs:
-      - /run:exec
-      - /tmp
     networks:
       - rehome
       - caddy
     labels:
       - telegram-notifier.monitor=true
-    environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
-      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
-      FLASK_SQLALCHEMY_DATABASE_URI: ${FLASK_SQLALCHEMY_DATABASE_URI:?}
-      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
-      PGID: ${PGID:?}
-      PUID: ${PUID:?}
-    restart: unless-stopped
 
 networks:
   rehome:

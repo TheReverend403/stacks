@@ -4,28 +4,37 @@ services:
   deluge:
     image: linuxserver/deluge:latest
     container_name: deluge
+    restart: unless-stopped
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_DELUGE:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/deluge:/config
       - ${BASE_DIR:?}/data/torrents/incomplete:/downloads
       - ${BASE_DIR:?}/data/torrents:/data/torrents
-    ports:
-      - 6882:6882
-      - 6882:6882/udp
     networks:
       - mediaserver
       - caddy
+    ports:
+      - 6882:6882
+      - 6882:6882/udp
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_DELUGE:?}
-      UMASK: ${UMASK:-007}
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
   lidarr:
     image: hotio/lidarr:latest
     container_name: lidarr
+    restart: unless-stopped
+    depends_on:
+      - deluge
+      - prowlarr
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_LIDARR:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/lidarr:/config
@@ -35,18 +44,20 @@ services:
       - caddy
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_LIDARR:?}
-      UMASK: ${UMASK:-007}
-    depends_on:
-      - deluge
-      - prowlarr
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
   overseerr:
     image: hotio/overseerr:release
     container_name: overseerr
+    restart: unless-stopped
+    depends_on:
+      - plex
+      - radarr
+      - sonarr
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_OVERSEERR:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/overseerr:/config
@@ -55,19 +66,20 @@ services:
       - caddy
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_OVERSEERR:?}
-      UMASK: ${UMASK:-007}
-    depends_on:
-      - plex
-      - radarr
-      - sonarr
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
   plex:
     image: hotio/plex:release
     container_name: plex
+    restart: unless-stopped
+    environment:
+      PGID: ${PGID:?}
+      PLEX_CLAIM:
+      PLEX_PASS:
+      ADVERTISE_IP:
+      PUID: ${PUID_PLEX:?}
+      UMASK: ${UMASK:-007}
+      VERSION: docker
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/plex:/config
@@ -83,34 +95,36 @@ services:
           memory: ${PLEX_LIMIT_MEM:-0}
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PLEX_CLAIM:
-      PLEX_PASS:
-      ADVERTISE_IP:
-      PUID: ${PUID_PLEX:?}
-      UMASK: ${UMASK:-007}
-      VERSION: docker
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
   prowlarr:
     image: hotio/prowlarr:nightly
     container_name: prowlarr
+    restart: unless-stopped
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_PROWLARR:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/prowlarr:/config
     networks:
       - mediaserver
       - caddy
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_PROWLARR:?}
-      UMASK: ${UMASK:-007}
-    restart: unless-stopped
+    labels:
+      - telegram-notifier.monitor=true
 
   radarr:
     image: hotio/radarr:latest
     container_name: radarr
+    restart: unless-stopped
+    depends_on:
+      - deluge
+      - prowlarr
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_RADARR:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/radarr:/config
@@ -120,18 +134,19 @@ services:
       - caddy
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_RADARR:?}
-      UMASK: ${UMASK:-007}
-    depends_on:
-      - deluge
-      - prowlarr
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
   sonarr:
     image: hotio/sonarr:latest
     container_name: sonarr
+    restart: unless-stopped
+    depends_on:
+      - deluge
+      - prowlarr
+    environment:
+      PGID: ${PGID:?}
+      PUID: ${PUID_SONARR:?}
+      UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/sonarr:/config
@@ -141,14 +156,7 @@ services:
       - caddy
     labels:
       - diun.enable=true
-    environment:
-      PGID: ${PGID:?}
-      PUID: ${PUID_SONARR:?}
-      UMASK: ${UMASK:-007}
-    depends_on:
-      - deluge
-      - prowlarr
-    restart: unless-stopped
+      - telegram-notifier.monitor=true
 
 networks:
   mediaserver:

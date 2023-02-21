@@ -4,16 +4,9 @@ services:
   gentoogram-bot:
     image: ghcr.io/thereverend403/gentoogram-bot:main
     container_name: gentoogram-bot
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config:/config
-    tmpfs: /run:exec
+    restart: unless-stopped
     read_only: true
-    networks:
-      - gentoogram-bot
-      - caddy
-    labels:
-      - telegram-notifier.monitor=true
+    user: ${PUID:?}:${PGID:?}
     environment:
       DYNACONF_SENTRY__DSN: ${SENTRY_DSN:-}
       DYNACONF_TELEGRAM__ADMIN_ID: ${TELEGRAM_ADMIN_ID:?}
@@ -24,9 +17,14 @@ services:
       DYNACONF_TELEGRAM__WEBHOOK__PORT: ${TELEGRAM_WEBHOOK_PORT}
       DYNACONF_TELEGRAM__WEBHOOK__URL_BASE: ${TELEGRAM_WEBHOOK_URL_BASE}
       DYNACONF_TELEGRAM__WEBHOOK__URL_PATH: ${TELEGRAM_WEBHOOK_URL_PATH}
-      PGID: ${PGID:?}
-      PUID: ${PUID:?}
-    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/config:/config
+    networks:
+      - gentoogram-bot
+      - caddy
+    labels:
+      - telegram-notifier.monitor=true
 
 networks:
   gentoogram-bot:

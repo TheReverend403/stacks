@@ -4,6 +4,8 @@ services:
   znc:
     image: lscr.io/linuxserver/znc:latest
     container_name: znc
+    restart: unless-stopped
+    network_mode: host
     environment:
       PGID: ${PGID:?}
       PUID: ${PUID:?}
@@ -13,5 +15,3 @@ services:
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
-    network_mode: host
-    restart: unless-stopped

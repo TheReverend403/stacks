@@ -4,24 +4,10 @@ services:
   proxy:
     image: itzg/bungeecord:latest
     container_name: proxy
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/proxy/config:/config
-      - ${BASE_DIR:?}/proxy/data:/server
-      - ${BASE_DIR:?}/proxy/logs:/server/logs
-      - ${BASE_DIR:?}/proxy/plugins:/plugins
-    ports:
-      - 25565:25577
-    networks:
-      - minecraft
-    deploy:
-      resources:
-        limits:
-          cpus: ${PROXY_LIMIT_CPUS:-0}
-          memory: ${PROXY_LIMIT_MEM:-0}
-    labels:
-      - diun.enable=true
-      - telegram-notifier.monitor=true
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    stdin_open: true
+    tty: true
     environment:
       CFG_DB_PASSWORD: ${DB_PASSWORD:?}
       CFG_DB_USER: ${DB_USER:?}
@@ -36,33 +22,34 @@ services:
       REPLACE_ENV_VARIABLES: 'true'
       TYPE: ${PROXY_TYPE:-WATERFALL}
       UID: ${PUID:?}
-    stdin_open: true
-    user: ${PUID:?}:${PGID:?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/proxy/config:/config
+      - ${BASE_DIR:?}/proxy/data:/server
+      - ${BASE_DIR:?}/proxy/logs:/server/logs
+      - ${BASE_DIR:?}/proxy/plugins:/plugins
+    networks:
+      - minecraft
+    ports:
+      - 25565:25577
     extra_hosts:
       - host.docker.internal:host-gateway
-    restart: unless-stopped
-    tty: true
+    deploy:
+      resources:
+        limits:
+          cpus: ${PROXY_LIMIT_CPUS:-0}
+          memory: ${PROXY_LIMIT_MEM:-0}
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
 
   survival:
     image: itzg/minecraft-server:latest
     container_name: survival
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/survival/config:/config
-      - ${BASE_DIR:?}/survival/data:/data
-      - ${BASE_DIR:?}/survival/logs:/data/logs
-      - ${BASE_DIR:?}/survival/plugins:/plugins
-      - ${BASE_DIR:?}/survival/worlds:/worlds
-    networks:
-      - minecraft
-    deploy:
-      resources:
-        limits:
-          cpus: ${SERVER_LIMIT_CPUS:-0}
-          memory: ${SERVER_LIMIT_MEM:-0}
-    labels:
-      - diun.enable=true
-      - telegram-notifier.monitor=true
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    stdin_open: true
+    tty: true
     environment:
       CFG_DB_PASSWORD: ${DB_PASSWORD:?}
       CFG_DB_USER: ${DB_USER:?}
@@ -82,11 +69,25 @@ services:
       UID: ${PUID:?}
       USE_AIKAR_FLAGS: 'true'
       VERSION: ${VERSION:-LATEST}
-    stdin_open: true
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/survival/config:/config
+      - ${BASE_DIR:?}/survival/data:/data
+      - ${BASE_DIR:?}/survival/logs:/data/logs
+      - ${BASE_DIR:?}/survival/plugins:/plugins
+      - ${BASE_DIR:?}/survival/worlds:/worlds
+    networks:
+      - minecraft
     extra_hosts:
       - host.docker.internal:host-gateway
-    restart: unless-stopped
-    tty: true
+    deploy:
+      resources:
+        limits:
+          cpus: ${SERVER_LIMIT_CPUS:-0}
+          memory: ${SERVER_LIMIT_MEM:-0}
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
 
 networks:
   minecraft:

@@ -4,12 +4,9 @@ services:
   caddy:
     image: caddy:latest
     container_name: caddy
-    networks:
-      - caddy
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
+    restart: unless-stopped
+    environment:
+      CF_API_TOKEN: ${CF_API_TOKEN:-}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/data
@@ -22,14 +19,17 @@ services:
       - /srv/rehome/static:/srv/rehome/static:ro
       - /srv/gitea/public:/srv/gitea/public:ro
       - /run/php-fpm:/run/php-fpm:ro
-    environment:
-      CF_API_TOKEN: ${CF_API_TOKEN:-}
+    networks:
+      - caddy
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    extra_hosts:
+      - host.docker.internal:host-gateway
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
-    extra_hosts:
-      - host.docker.internal:host-gateway
-    restart: unless-stopped
 
 networks:
   caddy:

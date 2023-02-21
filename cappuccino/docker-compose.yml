@@ -4,15 +4,9 @@ services:
   cappuccino:
     image: ghcr.io/thereverend403/cappuccino:main
     container_name: cappuccino
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
-      - ${BASE_DIR:?}/config:/config
-    tmpfs: /run:exec
+    restart: unless-stopped
     read_only: true
-    networks:
-      - cappuccino
-      - caddy
+    user: ${PUID:?}:${PGID:?}
     environment:
       CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
@@ -29,9 +23,15 @@ services:
       CFG_INFLUX_TOKEN: ${CFG_INFLUX_TOKEN:-}
       CFG_INFLUX_BUCKET: ${CFG_INFLUX_BUCKET:-}
       CFG_INFLUX_ORG: ${CFG_INFLUX_ORG:-}
-      PGID: ${PGID:?}
-      PUID: ${PUID:?}
-    restart: unless-stopped
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /run/postgresql:/run/postgresql
+      - ${BASE_DIR:?}/config:/config
+    networks:
+      - cappuccino
+      - caddy
+    labels:
+      - telegram-notifier.monitor=true
 
 networks:
   cappuccino:
