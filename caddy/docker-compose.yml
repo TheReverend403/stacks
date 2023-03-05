@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   caddy:
-    image: slothcroissant/caddy-cloudflaredns:latest
+    image: caddy:latest
     container_name: caddy
     restart: unless-stopped
     environment:
