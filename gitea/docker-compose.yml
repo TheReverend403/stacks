@@ -26,6 +26,7 @@ services:
     image: gitea/gitea:latest-rootless
     container_name: gitea
     restart: unless-stopped
+    tmpfs: /tmp
     user: ${PUID:?}:${PGID:?}
     depends_on:
       - redis
