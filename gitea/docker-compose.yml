@@ -54,7 +54,6 @@ services:
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/data:/var/lib/gitea
       - ${BASE_DIR:?}/git:/var/lib/gitea/git
-      - ${BASE_DIR:?}/logs:/var/lib/gitea/log
       - ${BASE_DIR:?}/config:/etc/gitea
     networks:
       - gitea
