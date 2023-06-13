@@ -38,8 +38,8 @@ services:
       GITEA__database__HOST: ${DB_HOST:-/run/postgresql}
       GITEA__database__NAME: ${DB_NAME:-gitea}
       GITEA__database__USER: ${DB_USER:-gitea}
-      GITEA__database__PASSWD: ${DB_PASSWORD:?}
-      GITEA__server__HTTP_PORT: ${GITEA_HTTP_PORT:-3000}
+      GITEA__database__PASSWD: ${DB_PASSWD:?}
+      GITEA__server__HTTP_PORT: ${HTTP_PORT:-3000}
       GITEA__server__START_SSH_SERVER: "false"
       GITEA__queue__TYPE: redis
       GITEA__queue__CONN_STR: ${REDIS_URL:-redis://gitea_redis:6379/0}
@@ -61,7 +61,7 @@ services:
       - gitea
       - caddy
     healthcheck:
-      test: ["CMD-SHELL", "curl -fSs gitea:${GITEA_HTTP_PORT:-3000}/api/healthz"]
+      test: ["CMD-SHELL", "curl -fSs gitea:${HTTP_PORT:-3000}/api/healthz"]
       start_period: 10s
       interval: 30s
       timeout: 5s
