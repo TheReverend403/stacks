@@ -113,6 +113,7 @@ services:
       - caddy
     labels:
       - telegram-notifier.monitor=true
+      - diun.enable=true
 
   radarr:
     image: hotio/radarr:latest
