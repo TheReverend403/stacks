@@ -47,7 +47,7 @@ services:
       - telegram-notifier.monitor=true
 
   overseerr:
-    image: hotio/overseerr:release
+    image: hotio/overseerr:latest
     container_name: overseerr
     restart: unless-stopped
     depends_on:
@@ -69,7 +69,7 @@ services:
       - telegram-notifier.monitor=true
 
   plex:
-    image: hotio/plex:release
+    image: hotio/plex:latest
     container_name: plex
     restart: unless-stopped
     environment:
@@ -98,7 +98,7 @@ services:
       - telegram-notifier.monitor=true
 
   prowlarr:
-    image: hotio/prowlarr:nightly
+    image: hotio/prowlarr:latest
     container_name: prowlarr
     restart: unless-stopped
     environment:
