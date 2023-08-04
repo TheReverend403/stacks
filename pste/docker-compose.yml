@@ -9,7 +9,6 @@ services:
     tmpfs:
       - /tmp
       - /run:exec
-    user: ${PUID:?}:${PGID:?}
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
