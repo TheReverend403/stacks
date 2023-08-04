@@ -8,7 +8,8 @@ services:
     read_only: true
     tmpfs:
       - /tmp
-      - /run
+      - /run:exec
+
     user: ${PUID:?}:${PGID:?}
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
