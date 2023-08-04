@@ -14,6 +14,8 @@ services:
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
       FLASK_SQLALCHEMY_DATABASE_URI: ${FLASK_SQLALCHEMY_DATABASE_URI:?}
       GUNICORN_OPTS: ${GUNICORN_OPTS:-}
+      PUID: ${PUID:?}
+      PGID: ${PGID:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
