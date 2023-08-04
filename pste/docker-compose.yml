@@ -6,7 +6,9 @@ services:
     container_name: pste
     restart: unless-stopped
     read_only: true
-    tmpfs: /tmp
+    tmpfs:
+      - /tmp
+      - /run
     user: ${PUID:?}:${PGID:?}
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
