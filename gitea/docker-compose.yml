@@ -2,7 +2,7 @@ version: '3.9'
 
 services:
   # Fix redis /tmp and /data perms so it can actually write to them.
-  gitea_chown:
+  gitea_redis_chown:
     image: busybox:latest
     command: chown -R ${PUID:?}:${PGID:?} /tmp/redis /data
     restart: no
