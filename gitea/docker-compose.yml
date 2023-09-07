@@ -1,6 +1,12 @@
 version: '3.9'
 
 services:
+  gitea_tmp:
+    image: busybox:latest
+    command: chmod -R 777 /tmp/redis
+    volumes:
+        - redis_socket:/tmp/redis
+
   redis:
     image: redis:alpine
     container_name: gitea_redis
