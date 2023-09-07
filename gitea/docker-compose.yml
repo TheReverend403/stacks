@@ -7,16 +7,16 @@ services:
     command: ${REDIS_ARGS:-/usr/local/etc/redis/redis.conf}
     restart: unless-stopped
     user: ${PUID:?}:${PGID:?}
-    tmpfs: /tmp
+    tmpfs: /run
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - redis_socket:/tmp/redis
+      - redis_socket:/run/redis
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
     networks:
       - gitea
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -s /tmp/redis/redis.sock ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
       start_period: 5s
       interval: 5s
       retries: 5
@@ -56,7 +56,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
-      - redis_socket:/tmp/redis
+      - redis_socket:/run/redis
       - ${BASE_DIR:?}/data:/var/lib/gitea
       - ${BASE_DIR:?}/git:/var/lib/gitea/git
       - ${BASE_DIR:?}/config:/etc/gitea
