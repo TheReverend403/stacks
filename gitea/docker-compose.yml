@@ -59,6 +59,7 @@ services:
       - ${BASE_DIR:?}/git:/var/lib/gitea/git
       - ${BASE_DIR:?}/config:/etc/gitea
     networks:
+      - gitea
       - caddy
     healthcheck:
       test: ["CMD-SHELL", "curl -fSs gitea:${HTTP_PORT:-3000}/api/healthz"]
@@ -71,6 +72,8 @@ services:
       - telegram-notifier.monitor=true
 
 networks:
+  gitea:
+    name: gitea
   caddy:
     external: true
 
