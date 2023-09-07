@@ -3,7 +3,7 @@ version: '3.9'
 services:
   gitea_tmp:
     image: busybox:latest
-    command: chmod -R 777 /tmp/redis
+    command: chown -R ${PUID:?}:${PGID:?} /tmp/redis /data
     volumes:
         - redis_socket:/tmp/redis
 
