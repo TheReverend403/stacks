@@ -9,7 +9,7 @@ services:
     user: ${PUID:?}:${PGID:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - redis_socket:/run/redis
+      - redis_socket:/tmp/redis
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
     networks:
@@ -55,7 +55,7 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
-      - redis_socket:/run/redis
+      - redis_socket:/tmp/redis
       - ${BASE_DIR:?}/data:/var/lib/gitea
       - ${BASE_DIR:?}/git:/var/lib/gitea/git
       - ${BASE_DIR:?}/config:/etc/gitea
