@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+  # Fix redis /tmp and /data perms so it can actually write to them.
   gitea_tmp:
     image: busybox:latest
     command: chown -R ${PUID:?}:${PGID:?} /tmp/redis /data
@@ -21,7 +22,7 @@ services:
     networks:
       - gitea
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -s /run/redis.sock ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli -s /tmp/redis/redis.sock ping | grep PONG"]
       start_period: 5s
       interval: 5s
       retries: 5
