@@ -8,13 +8,12 @@ services:
     restart: unless-stopped
     user: ${PUID:?}:${PGID:?}
     tmpfs: /run
+    network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - redis_socket:/run/redis
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
-    networks:
-      - gitea
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
       start_period: 5s
