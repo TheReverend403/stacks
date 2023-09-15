@@ -32,8 +32,7 @@ services:
     user: ${PUID:?}:${PGID:?}
     depends_on:
       - redis
-    env_file:
-      - ../stack.env
+    env_file: .env
     environment:
       USER_UID: ${PUID:?}
       USER_GID: ${PGID:?}
