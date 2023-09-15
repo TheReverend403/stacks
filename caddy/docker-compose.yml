@@ -31,6 +31,7 @@ services:
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
+    build: .
 
 networks:
   caddy:
