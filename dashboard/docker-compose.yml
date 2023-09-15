@@ -1,0 +1,52 @@
+version: '3.9'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    user: ${GRAFANA_UID:?}:${GRAFANA_GID:?}
+    depends_on:
+      - influxdb
+    environment:
+      GF_SERVER_DOMAIN: ${GF_SERVER_DOMAIN:?}
+      GF_SERVER_ROOT_URL: ${GF_SERVER_ROOT_URL:?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/grafana/data:/var/lib/grafana
+      - ${BASE_DIR:?}/grafana/config:/etc/grafana
+      - ${BASE_DIR:?}/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - monitoring
+      - caddy
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
+
+  influxdb:
+    image: influxdb:latest
+    container_name: influxdb
+    restart: unless-stopped
+    user: ${INFLUXDB_UID:?}:${INFLUXDB_GID:?}
+    environment:
+      INFLUX_TOKEN: ${INFLUX_TOKEN}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/influxdb/data:/var/lib/influxdb2
+      - ${BASE_DIR:?}/influxdb/config:/etc/influxdb2
+    networks:
+      - monitoring
+      - caddy
+    deploy:
+      resources:
+        limits:
+          memory: ${INFLUXDB_MEMORY_LIMIT:-0}
+    labels:
+      - diun.enable=true
+      - telegram-notifier.monitor=true
+
+networks:
+  monitoring:
+    name: monitoring
+  caddy:
+    external: true
