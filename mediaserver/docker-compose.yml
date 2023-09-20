@@ -20,6 +20,7 @@ services:
     ports:
       - 6882:6882
       - 6882:6882/udp
+      - ${DELUGE_REMOTE_HOST:?}:${DELUGE_REMOTE_PORT:-58846}:58846
     labels:
       - diun.enable=true
       - telegram-notifier.monitor=true
