@@ -1,10 +1,10 @@
-version: '3.9'
+version: "3.9"
 
 services:
   redis:
     image: redis:alpine
     container_name: gitea_redis
-    command: ${REDIS_ARGS:-/usr/local/etc/redis/redis.conf}
+    command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     user: ${PUID:?}:${PGID:?}
     tmpfs: /run

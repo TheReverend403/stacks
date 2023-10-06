@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   proxy:
@@ -15,11 +15,11 @@ services:
       CFG_MYSQL_PORT: ${MYSQL_PORT:-3306}
       CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
       CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      ENABLE_RCON: 'true'
+      ENABLE_RCON: "true"
       GID: ${PGID:?}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       MEMORY: ${PROXY_MEMORY:?}
-      REPLACE_ENV_VARIABLES: 'true'
+      REPLACE_ENV_VARIABLES: "true"
       TYPE: ${PROXY_TYPE:-WATERFALL}
       UID: ${PUID:?}
     volumes:
@@ -59,15 +59,15 @@ services:
       CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
       CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       COPY_CONFIG_DEST: /data
-      ENABLE_ROLLING_LOGS: 'true'
-      EULA: 'true'
+      ENABLE_ROLLING_LOGS: "true"
+      EULA: "true"
       JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
       GID: ${PGID:?}
       MEMORY: ${SERVER_MEMORY:?}
-      REPLACE_ENV_VARIABLES: 'true'
+      REPLACE_ENV_VARIABLES: "true"
       TYPE: PAPER
       UID: ${PUID:?}
-      USE_AIKAR_FLAGS: 'true'
+      USE_AIKAR_FLAGS: "true"
       VERSION: ${VERSION:-LATEST}
     volumes:
       - /etc/localtime:/etc/localtime:ro
