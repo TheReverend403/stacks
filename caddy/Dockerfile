@@ -1,6 +1,7 @@
 FROM caddy:builder AS builder
 
-RUN xcaddy build \
+RUN --mount=type=cache,target=/root/go/pkg/mod \
+    xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
 FROM caddy:latest
