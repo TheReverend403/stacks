@@ -56,7 +56,6 @@ services:
       - /run/postgresql:/run/postgresql
       - redis_socket:/run/redis
       - ${BASE_DIR:?}/data:/var/lib/gitea
-      - ${BASE_DIR:?}/git:/var/lib/gitea/git
       - ${BASE_DIR:?}/config:/etc/gitea
     networks:
       - gitea
