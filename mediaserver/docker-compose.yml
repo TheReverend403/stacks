@@ -26,7 +26,7 @@ services:
       - telegram-notifier.monitor=true
 
   lidarr:
-    image: hotio/lidarr:latest
+    image: ghcr.io/hotio/lidarr:latest
     container_name: lidarr
     restart: unless-stopped
     depends_on:
@@ -48,7 +48,7 @@ services:
       - telegram-notifier.monitor=true
 
   overseerr:
-    image: hotio/overseerr:latest
+    image: ghcr.io/hotio/overseerr:latest
     container_name: overseerr
     restart: unless-stopped
     depends_on:
@@ -70,7 +70,7 @@ services:
       - telegram-notifier.monitor=true
 
   plex:
-    image: hotio/plex:latest
+    image: ghcr.io/hotio/plex:latest
     container_name: plex
     restart: unless-stopped
     environment:
@@ -99,7 +99,7 @@ services:
       - telegram-notifier.monitor=true
 
   prowlarr:
-    image: hotio/prowlarr:latest
+    image: ghcr.io/hotio/prowlarr:latest
     container_name: prowlarr
     restart: unless-stopped
     environment:
@@ -117,7 +117,7 @@ services:
       - diun.enable=true
 
   radarr:
-    image: hotio/radarr:latest
+    image: ghcr.io/hotio/radarr:latest
     container_name: radarr
     restart: unless-stopped
     depends_on:
@@ -139,7 +139,7 @@ services:
       - telegram-notifier.monitor=true
 
   sonarr:
-    image: hotio/sonarr:latest
+    image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
     restart: unless-stopped
     depends_on:
