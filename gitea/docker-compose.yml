@@ -48,7 +48,8 @@ services:
       "GITEA__queue.issue_indexer__CONN_STR": ${REDIS_URL:-network=unix,addr=/run/redis/redis.sock,db=0}
       GITEA__cache__ADAPTER: redis
       GITEA__cache__HOST: ${REDIS_URL:-network=unix,addr=/run/redis/redis.sock,db=0}
-      GITEA__session__PROVIDER: db
+      GITEA__session__PROVIDER: redis
+      GITEA__session__PROVIDER_CONFIG: ${REDIS_URL:-network=unix,addr=/run/redis/redis.sock,db=0}
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     volumes:
       - /etc/localtime:/etc/localtime:ro
