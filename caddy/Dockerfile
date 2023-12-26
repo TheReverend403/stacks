@@ -10,6 +10,7 @@ FROM caddy:latest
 
 # For healthchecks
 RUN --mount=type=cache,target=/var/cache/apk \
+    apk update && \
     apk add curl
 
 COPY docker/rootfs /
