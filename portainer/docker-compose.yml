@@ -18,7 +18,6 @@ services:
       - portainer
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
 networks:

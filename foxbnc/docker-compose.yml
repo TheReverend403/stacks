@@ -13,5 +13,4 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/config
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true

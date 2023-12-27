@@ -20,7 +20,6 @@ services:
       - monitoring
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   influxdb:
@@ -42,7 +41,6 @@ services:
         limits:
           memory: ${INFLUXDB_MEMORY_LIMIT:-0}
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
 networks:

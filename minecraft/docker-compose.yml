@@ -40,7 +40,6 @@ services:
           cpus: ${PROXY_LIMIT_CPUS:-0}
           memory: ${PROXY_LIMIT_MEM:-0}
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   survival:
@@ -86,7 +85,6 @@ services:
           cpus: ${SERVER_LIMIT_CPUS:-0}
           memory: ${SERVER_LIMIT_MEM:-0}
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
 networks:

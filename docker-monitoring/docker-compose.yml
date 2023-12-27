@@ -11,6 +11,7 @@ services:
       DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID:?}
       DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY:?}
       DIUN_PROVIDERS_DOCKER: "true"
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
       DIUN_WATCH_SCHEDULE: ${DIUN_WATCH_SCHEDULE:-0 */6 * * *}
       DIUN_WATCH_WORKERS: ${DIUN_WATCH_WORKERS:-4}
       LOG_JSON: "false"
@@ -22,7 +23,6 @@ services:
     networks:
       - docker-monitoring
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   telegram-notifier:
@@ -39,7 +39,6 @@ services:
     networks:
       - docker-monitoring
     labels:
-      - diun.enable=true
 
 volumes:
   data:

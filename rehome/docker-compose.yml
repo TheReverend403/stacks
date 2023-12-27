@@ -24,7 +24,6 @@ services:
       - caddy
     labels:
       - telegram-notifier.monitor=true
-      - diun.enable=true
       - diun.regopt=ghcr
 
 networks:

@@ -32,7 +32,6 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
     build: .
 

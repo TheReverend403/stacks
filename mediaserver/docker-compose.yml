@@ -22,7 +22,6 @@ services:
       - 6882:6882/udp
       - ${DELUGE_REMOTE_HOST:?}:${DELUGE_REMOTE_PORT:-58846}:58846
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   lidarr:
@@ -44,7 +43,6 @@ services:
       - mediaserver
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   overseerr:
@@ -66,7 +64,6 @@ services:
       - mediaserver
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   plex:
@@ -95,7 +92,6 @@ services:
           cpus: ${PLEX_LIMIT_CPUS:-0}
           memory: ${PLEX_LIMIT_MEM:-0}
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   prowlarr:
@@ -114,7 +110,6 @@ services:
       - caddy
     labels:
       - telegram-notifier.monitor=true
-      - diun.enable=true
 
   radarr:
     image: ghcr.io/hotio/radarr:latest
@@ -135,7 +130,6 @@ services:
       - mediaserver
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
   sonarr:
@@ -157,7 +151,6 @@ services:
       - mediaserver
       - caddy
     labels:
-      - diun.enable=true
       - telegram-notifier.monitor=true
 
 networks:
