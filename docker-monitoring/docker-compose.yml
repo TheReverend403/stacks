@@ -24,7 +24,7 @@ services:
       - docker-monitoring
 
   telegram-notifier:
-    image: luc-ass/docker-telegram-notifier:latest
+    image: lorcas/docker-telegram-notifier:latest
     container_name: docker-telegram-notifier
     restart: unless-stopped
     environment:
