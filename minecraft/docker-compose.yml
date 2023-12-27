@@ -39,8 +39,6 @@ services:
         limits:
           cpus: ${PROXY_LIMIT_CPUS:-0}
           memory: ${PROXY_LIMIT_MEM:-0}
-    labels:
-      - telegram-notifier.monitor=true
 
   survival:
     image: itzg/minecraft-server:latest
@@ -84,8 +82,6 @@ services:
         limits:
           cpus: ${SERVER_LIMIT_CPUS:-0}
           memory: ${SERVER_LIMIT_MEM:-0}
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   minecraft:

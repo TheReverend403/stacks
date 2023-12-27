@@ -12,5 +12,3 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/config
-    labels:
-      - telegram-notifier.monitor=true

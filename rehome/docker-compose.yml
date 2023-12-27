@@ -23,7 +23,6 @@ services:
       - rehome
       - caddy
     labels:
-      - telegram-notifier.monitor=true
       - diun.regopt=ghcr
 
 networks:

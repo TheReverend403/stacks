@@ -23,8 +23,6 @@ services:
     networks:
       - gentoogram-bot
       - caddy
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   gentoogram-bot:

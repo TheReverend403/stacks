@@ -20,8 +20,6 @@ services:
       interval: 5s
       retries: 5
       timeout: 3s
-    labels:
-      - telegram-notifier.monitor=true
 
   gitea:
     image: gitea/gitea:latest-rootless
@@ -66,8 +64,6 @@ services:
       interval: 30s
       timeout: 5s
       retries: 5
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   gitea:

@@ -19,8 +19,6 @@ services:
     networks:
       - monitoring
       - caddy
-    labels:
-      - telegram-notifier.monitor=true
 
   influxdb:
     image: influxdb:latest
@@ -40,8 +38,6 @@ services:
       resources:
         limits:
           memory: ${INFLUXDB_MEMORY_LIMIT:-0}
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   monitoring:

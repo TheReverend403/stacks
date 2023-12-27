@@ -22,15 +22,12 @@ services:
       - data:/data
     networks:
       - docker-monitoring
-    labels:
-      - telegram-notifier.monitor=true
 
   telegram-notifier:
-    image: lorcas/docker-telegram-notifier:latest
+    image: luc-ass/docker-telegram-notifier:latest
     container_name: docker-telegram-notifier
     restart: unless-stopped
     environment:
-      ONLY_WHITELIST: "true"
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
     volumes:
@@ -38,7 +35,6 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - docker-monitoring
-    labels:
 
 volumes:
   data:

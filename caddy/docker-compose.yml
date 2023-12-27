@@ -31,8 +31,6 @@ services:
       - "443:443/udp"
     extra_hosts:
       - host.docker.internal:host-gateway
-    labels:
-      - telegram-notifier.monitor=true
     build: .
 
 networks:

@@ -17,8 +17,6 @@ services:
     networks:
       - portainer
       - caddy
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   portainer:

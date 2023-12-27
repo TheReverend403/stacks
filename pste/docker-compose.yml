@@ -24,8 +24,6 @@ services:
     networks:
       - pste
       - caddy
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   pste:

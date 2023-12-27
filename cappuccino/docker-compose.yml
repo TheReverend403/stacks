@@ -31,8 +31,6 @@ services:
     networks:
       - cappuccino
       - caddy
-    labels:
-      - telegram-notifier.monitor=true
 
 networks:
   cappuccino:
