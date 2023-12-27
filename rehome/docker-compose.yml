@@ -25,6 +25,7 @@ services:
     labels:
       - telegram-notifier.monitor=true
       - diun.enable=true
+      - diun.regopts_id=ghcr.io
 
 networks:
   rehome:
