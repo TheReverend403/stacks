@@ -5,7 +5,7 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     restart: unless-stopped
-    user: ${GRAFANA_UID:?}:${GRAFANA_GID:?}
+    user: ${GRAFANA_UID:-1000}:${GRAFANA_GID:-1000}
     depends_on:
       - influxdb
     environment:
@@ -24,9 +24,9 @@ services:
     image: influxdb:latest
     container_name: influxdb
     restart: unless-stopped
-    user: ${INFLUXDB_UID:?}:${INFLUXDB_GID:?}
+    user: ${INFLUXDB_UID:-1000}:${INFLUXDB_GID:-1000}
     environment:
-      INFLUX_TOKEN: ${INFLUX_TOKEN}
+      INFLUX_TOKEN: ${INFLUX_TOKEN:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/influxdb/data:/var/lib/influxdb2

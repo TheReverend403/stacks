@@ -6,7 +6,7 @@ services:
     container_name: gitea_redis
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     tmpfs: /run
     network_mode: "none"
     volumes:
@@ -26,13 +26,13 @@ services:
     container_name: gitea
     restart: unless-stopped
     tmpfs: /tmp
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
       - redis
     env_file: .env
     environment:
-      USER_UID: ${PUID:?}
-      USER_GID: ${PGID:?}
+      USER_UID: ${PUID:-1000}
+      USER_GID: ${PGID:-1000}
       GITEA__database__DB_TYPE: ${DB_TYPE:-postgres}
       GITEA__database__HOST: ${DB_HOST:-/run/postgresql}
       GITEA__database__NAME: ${DB_NAME:-gitea}

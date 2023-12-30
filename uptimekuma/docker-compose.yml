@@ -7,8 +7,8 @@ services:
     restart: unless-stopped
     env_file: .env
     environment:
-      PUID: ${PUID:?}
-      PGID: ${PGID:?}
+      PUID: ${PUID:-1000}
+      PGID: ${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/app/data

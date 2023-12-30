@@ -7,7 +7,7 @@ services:
     restart: unless-stopped
     read_only: true
     tmpfs: /tmp
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}

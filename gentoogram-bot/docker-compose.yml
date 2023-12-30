@@ -6,7 +6,7 @@ services:
     container_name: gentoogram-bot
     restart: unless-stopped
     read_only: true
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     environment:
       DYNACONF_SENTRY__DSN: ${SENTRY_DSN:-}
       DYNACONF_TELEGRAM__ADMIN_ID: ${TELEGRAM_ADMIN_ID:?}

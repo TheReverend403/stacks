@@ -5,7 +5,7 @@ services:
     image: itzg/bungeecord:latest
     container_name: proxy
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     stdin_open: true
     tty: true
     environment:
@@ -16,12 +16,12 @@ services:
       CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
       CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       ENABLE_RCON: "true"
-      GID: ${PGID:?}
+      GID: ${PGID:-1000}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       MEMORY: ${PROXY_MEMORY:?}
       REPLACE_ENV_VARIABLES: "true"
       TYPE: ${PROXY_TYPE:-WATERFALL}
-      UID: ${PUID:?}
+      UID: ${PUID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/proxy/config:/config
@@ -44,7 +44,7 @@ services:
     image: itzg/minecraft-server:latest
     container_name: survival
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     stdin_open: true
     tty: true
     environment:
@@ -59,11 +59,11 @@ services:
       ENABLE_ROLLING_LOGS: "true"
       EULA: "true"
       JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
-      GID: ${PGID:?}
+      GID: ${PGID:-1000}
       MEMORY: ${SERVER_MEMORY:?}
       REPLACE_ENV_VARIABLES: "true"
       TYPE: PAPER
-      UID: ${PUID:?}
+      UID: ${PUID:-1000}
       USE_AIKAR_FLAGS: "true"
       VERSION: ${VERSION:-LATEST}
     volumes:
