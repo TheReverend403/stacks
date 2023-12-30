@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  uptime-kuma:
+    image: louislam/uptime-kuma:latest
+    container_name: uptime-kuma
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      PUID: ${PUID:?}
+      PGID: ${PGID:?}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/data:/app/data
+    networks:
+      - uptime-kuma
+      - caddy
+
+networks:
+  uptime-kuma:
+    name: uptime-kuma
+  caddy:
+    external: true
