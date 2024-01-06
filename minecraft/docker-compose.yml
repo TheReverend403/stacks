@@ -69,6 +69,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/survival/config:/config
+      - ${BASE_DIR:?}/survival/config/server.properties:/server.properties # AntiPopup
       - ${BASE_DIR:?}/survival/data:/data
       - ${BASE_DIR:?}/survival/logs:/data/logs
       - ${BASE_DIR:?}/survival/plugins:/plugins
