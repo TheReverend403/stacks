@@ -8,13 +8,8 @@ services:
     user: ${PUID:-1000}:${PGID:-1000}
     stdin_open: true
     tty: true
+    env_file: .env
     environment:
-      CFG_DB_PASSWORD: ${DB_PASSWORD:?}
-      CFG_DB_USER: ${DB_USER:?}
-      CFG_MYSQL_HOST: ${MYSQL_HOST:?}
-      CFG_MYSQL_PORT: ${MYSQL_PORT:-3306}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
       ENABLE_RCON: "true"
       GID: ${PGID:-1000}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
@@ -24,10 +19,10 @@ services:
       UID: ${PUID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/proxy/config:/config
       - ${BASE_DIR:?}/proxy/data:/server
+      - ${BASE_DIR:?}/proxy/config:/config
+      - ${BASE_DIR:?}/proxy/plugins:/server/plugins
       - ${BASE_DIR:?}/proxy/logs:/server/logs
-      - ${BASE_DIR:?}/proxy/plugins:/plugins
     networks:
       - minecraft
     ports:
@@ -47,15 +42,8 @@ services:
     user: ${PUID:-1000}:${PGID:-1000}
     stdin_open: true
     tty: true
+    env_file: .env
     environment:
-      CFG_DB_PASSWORD: ${DB_PASSWORD:?}
-      CFG_DB_USER: ${DB_USER:?}
-      CFG_DISCORD_TOKEN: ${DISCORD_TOKEN:?}
-      CFG_MYSQL_HOST: ${MYSQL_HOST:?}
-      CFG_MYSQL_PORT: ${MYSQL_PORT:-3306}
-      CFG_POSTGRES_HOST: ${POSTGRES_HOST:?}
-      CFG_POSTGRES_PORT: ${POSTGRES_PORT:-5432}
-      COPY_CONFIG_DEST: /data
       ENABLE_ROLLING_LOGS: "true"
       EULA: "true"
       JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
@@ -68,12 +56,12 @@ services:
       VERSION: ${VERSION:-LATEST}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/survival/config:/config
-      - ${BASE_DIR:?}/survival/config/server.properties:/server.properties # AntiPopup
       - ${BASE_DIR:?}/survival/data:/data
-      - ${BASE_DIR:?}/survival/logs:/data/logs
-      - ${BASE_DIR:?}/survival/plugins:/plugins
+      - ${BASE_DIR:?}/survival/config:/config
+      - ${BASE_DIR:?}/survival/plugins:/data/plugins
       - ${BASE_DIR:?}/survival/worlds:/worlds
+      - ${BASE_DIR:?}/survival/logs:/data/logs
+      - ${BASE_DIR:?}/survival/data/server.properties:/server.properties # AntiPopup
     networks:
       - minecraft
     extra_hosts:
