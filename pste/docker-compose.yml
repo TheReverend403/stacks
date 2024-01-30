@@ -8,6 +8,7 @@ services:
     tmpfs:
       - /tmp
       - /run:exec
+    env_file: .env
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
       FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
@@ -24,6 +25,11 @@ services:
     networks:
       - pste
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPU_LIMIT:-0}
+          memory: ${MEM_LIMIT:-0}
 
 networks:
   pste:

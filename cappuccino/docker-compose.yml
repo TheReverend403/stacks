@@ -8,6 +8,7 @@ services:
     read_only: true
     tmpfs: /tmp
     user: ${PUID:-1000}:${PGID:-1000}
+    env_file: .env
     environment:
       CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
@@ -31,6 +32,11 @@ services:
     networks:
       - cappuccino
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPU_LIMIT:-0}
+          memory: ${MEM_LIMIT:-0}
 
 networks:
   cappuccino:

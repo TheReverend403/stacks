@@ -12,3 +12,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data:/config
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPU_LIMIT:-0}
+          memory: ${MEM_LIMIT:-0}

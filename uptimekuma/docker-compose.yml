@@ -15,6 +15,11 @@ services:
     networks:
       - uptime-kuma
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${CPU_LIMIT:-0}
+          memory: ${MEM_LIMIT:-0}
 
 networks:
   uptime-kuma:

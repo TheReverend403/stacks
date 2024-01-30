@@ -22,6 +22,11 @@ services:
       - data:/data
     networks:
       - docker-monitoring
+    deploy:
+      resources:
+        limits:
+          cpus: ${DIUN_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${DIUN_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   telegram-notifier:
     image: lorcas/docker-telegram-notifier:latest
@@ -35,6 +40,11 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - docker-monitoring
+    deploy:
+      resources:
+        limits:
+          cpus: ${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 volumes:
   data:

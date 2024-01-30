@@ -19,6 +19,11 @@ services:
     networks:
       - monitoring
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${GRAFANA_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${GRAFANA_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   influxdb:
     image: influxdb:latest
@@ -37,7 +42,8 @@ services:
     deploy:
       resources:
         limits:
-          memory: ${INFLUXDB_MEMORY_LIMIT:-0}
+          cpus: ${INFLUX_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${INFLUX_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   monitoring:

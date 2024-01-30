@@ -21,6 +21,11 @@ services:
       - 6882:6882
       - 6882:6882/udp
       - ${DELUGE_REMOTE_HOST:?}:${DELUGE_REMOTE_PORT:-58846}:58846
+    deploy:
+      resources:
+        limits:
+          cpus: ${DELUGE_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${DELUGE_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   lidarr:
     image: ghcr.io/hotio/lidarr:latest
@@ -40,6 +45,11 @@ services:
     networks:
       - mediaserver
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${LIDARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${LIDARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   overseerr:
     image: ghcr.io/hotio/overseerr:latest
@@ -59,6 +69,11 @@ services:
     networks:
       - mediaserver
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${OVERSEERR_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${OVERSEERR_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   plex:
     image: ghcr.io/hotio/plex:latest
@@ -83,8 +98,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${PLEX_LIMIT_CPUS:-0}
-          memory: ${PLEX_LIMIT_MEM:-0}
+          cpus: ${PLEX_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${PLEX_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   prowlarr:
     image: ghcr.io/hotio/prowlarr:latest
@@ -100,6 +115,11 @@ services:
     networks:
       - mediaserver
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${PROWLARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${PROWLARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   radarr:
     image: ghcr.io/hotio/radarr:latest
@@ -119,7 +139,11 @@ services:
     networks:
       - mediaserver
       - caddy
-
+    deploy:
+      resources:
+        limits:
+          cpus: ${RADARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${RADARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
@@ -138,6 +162,11 @@ services:
     networks:
       - mediaserver
       - caddy
+    deploy:
+      resources:
+        limits:
+          cpus: ${SONARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${SONARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   mediaserver:

@@ -34,8 +34,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${PROXY_LIMIT_CPUS:-0}
-          memory: ${PROXY_LIMIT_MEM:-0}
+          cpus: ${PROXY_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${PROXY_MEM_LIMIT:-${MEM_LIMIT:-0}}
     healthcheck:
       disable: true # https://github.com/itzg/docker-minecraft-server/issues/2545
 
@@ -74,8 +74,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${SERVER_LIMIT_CPUS:-0}
-          memory: ${SERVER_LIMIT_MEM:-0}
+          cpus: ${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   minecraft:
