@@ -144,6 +144,7 @@ services:
         limits:
           cpus: ${RADARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${RADARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
   sonarr:
     image: ghcr.io/hotio/sonarr:latest
     container_name: sonarr
