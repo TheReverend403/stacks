@@ -37,7 +37,6 @@ services:
     environment:
       SECRET_KEY: ${SECRET_KEY:?}
       MEDIA_ROOT: /opt/netbox/netbox/media
-      DB_HOST: ${DB_HOST:-/run/postgresql}
       REDIS_HOST: ${REDIS_HOST:-unix:///run/redis/redis.sock?db=0}
     volumes:
       - /etc/localtime:/etc/localtime:ro
