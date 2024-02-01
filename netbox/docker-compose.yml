@@ -1,0 +1,105 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:alpine
+    container_name: netbox_redis
+    command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
+    restart: unless-stopped
+    user: ${PUID:-1000}:${PGID:-1000}
+    tmpfs: /run
+    network_mode: "none"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - redis_socket:/run/redis
+      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
+      start_period: 5s
+      interval: 5s
+      retries: 5
+      timeout: 3s
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+  netbox: &netbox
+    image: netboxcommunity/netbox:latest
+    container_name: netbox
+    restart: unless-stopped
+    user: ${PUID:-1000}:${PGID:-1000}
+    depends_on:
+      - redis
+    env_file: .env
+    environment:
+      SECRET_KEY: ${SECRET_KEY:?}
+      MEDIA_ROOT: /opt/netbox/netbox/media
+      DB_HOST: ${DB_HOST:-/run/postgresql}
+      REDIS_HOST: ${REDIS_HOST:-unix:///run/redis/redis.sock?db=0}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /run/postgresql:/run/postgresql
+      - redis_socket:/run/redis
+      - ${BASE_DIR:?}/config:/etc/netbox/config:ro
+      - ${BASE_DIR:?}/data/media:/opt/netbox/netbox/media
+      - ${BASE_DIR:?}/data/reports:/opt/netbox/netbox/reports
+      - ${BASE_DIR:?}/data/scripts:/opt/netbox/netbox/scripts
+    networks:
+      - netbox
+      - caddy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/ || exit 1"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: ${NETBOX_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${NETBOX_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+  netbox_rqworker:
+    <<: *netbox
+    container_name: netbox_rqworker
+    depends_on:
+      netbox:
+        condition: service_healthy
+    command:
+      - /opt/netbox/venv/bin/python
+      - /opt/netbox/netbox/manage.py
+      - rqworker
+    healthcheck:
+      test: ["CMD-SHELL", "ps -aux | grep -v grep | grep -q rqworker || exit 1"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+  netbox_housekeeping:
+    <<: *netbox
+    container_name: netbox_housekeeping
+    depends_on:
+      netbox:
+        condition: service_healthy
+    command:
+      - /opt/netbox/housekeeping.sh
+    healthcheck:
+      test:
+        ["CMD-SHELL", "ps -aux | grep -v grep | grep -q housekeeping || exit 1"]
+      start_period: 10s
+      interval: 30s
+      timeout: 5s
+      retries: 5
+
+networks:
+  netbox:
+    name: netbox
+  caddy:
+    external: true
+
+volumes:
+  redis_socket:
