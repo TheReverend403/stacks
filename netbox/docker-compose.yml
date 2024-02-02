@@ -9,6 +9,7 @@ services:
       - redis_socket:/run/redis
     labels:
       telegram-notifier.monitor: false
+      diun.enable: false
 
   redis:
     image: redis:alpine
@@ -26,10 +27,9 @@ services:
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
-      start_period: 5s
-      interval: 5s
-      retries: 5
-      timeout: 3s
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
     deploy:
       resources:
         limits:
@@ -63,9 +63,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/api/ || exit 1"]
       start_period: 10s
-      interval: 30s
+      interval: 10s
       timeout: 5s
-      retries: 5
     deploy:
       resources:
         limits:
@@ -85,9 +84,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "ps -aux | grep -v grep | grep -q rqworker || exit 1"]
       start_period: 10s
-      interval: 30s
+      interval: 10s
       timeout: 5s
-      retries: 5
 
   netbox_housekeeping:
     <<: *netbox
@@ -101,9 +99,8 @@ services:
       test:
         ["CMD-SHELL", "ps -aux | grep -v grep | grep -q housekeeping || exit 1"]
       start_period: 10s
-      interval: 30s
+      interval: 10s
       timeout: 5s
-      retries: 5
 
 networks:
   netbox:
