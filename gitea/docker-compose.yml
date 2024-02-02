@@ -1,10 +1,10 @@
 version: "3.9"
 
 services:
-  redis_socket:
+  sockets:
     image: busybox:latest
-    container_name: gitea_redis_socket
-    command: chmod -R 777 /run/redis
+    container_name: gitea_sockets
+    command: chmod -R 777 /run
     volumes:
       - redis_socket:/run/redis
     labels:
@@ -18,7 +18,7 @@ services:
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
-      - redis_socket
+      - sockets
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
