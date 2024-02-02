@@ -1,13 +1,21 @@
 version: "3.9"
 
 services:
+  redis_socket:
+    image: busybox:latest
+    container_name: gitea_redis_socket
+    command: chmod -R 777 /run/redis
+    volumes:
+      - redis_socket:/run/redis
+
   redis:
     image: redis:alpine
     container_name: gitea_redis
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
-    tmpfs: /run
+    depends_on:
+      - redis_socket
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -33,7 +41,8 @@ services:
     tmpfs: /tmp
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
-      - redis
+      redis:
+        condition: service_healthy
     env_file: .env
     environment:
       USER_UID: ${PUID:-1000}
