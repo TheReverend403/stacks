@@ -7,6 +7,8 @@ services:
     command: chmod -R 777 /run/redis
     volumes:
       - redis_socket:/run/redis
+    labels:
+      telegram-notifier.monitor: false
 
   redis:
     image: redis:alpine
