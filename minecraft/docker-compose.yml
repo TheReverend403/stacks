@@ -36,8 +36,6 @@ services:
         limits:
           cpus: ${PROXY_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${PROXY_MEM_LIMIT:-${MEM_LIMIT:-0}}
-    healthcheck:
-      disable: true # https://github.com/itzg/docker-minecraft-server/issues/2545
 
   survival:
     image: itzg/minecraft-server:latest
