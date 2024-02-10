@@ -6,7 +6,6 @@ services:
     container_name: rehome
     restart: unless-stopped
     read_only: true
-    tmpfs: /tmp
     user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env
     environment:
@@ -20,6 +19,8 @@ services:
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
       - ${BASE_DIR:?}/static:/static
+    tmpfs:
+      - /tmp
     networks:
       - rehome
       - caddy

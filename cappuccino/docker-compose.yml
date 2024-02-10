@@ -6,7 +6,6 @@ services:
     container_name: cappuccino
     restart: unless-stopped
     read_only: true
-    tmpfs: /tmp
     user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env
     environment:
@@ -29,6 +28,8 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
+    tmpfs:
+      - /tmp
     networks:
       - cappuccino
       - caddy

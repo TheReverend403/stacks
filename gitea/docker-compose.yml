@@ -1,30 +1,20 @@
 version: "3.9"
 
 services:
-  sockets:
-    image: busybox:latest
-    container_name: gitea_sockets
-    command: chmod -R 777 /run
-    volumes:
-      - redis_socket:/run/redis
-    labels:
-      telegram-notifier.monitor: false
-      diun.enable: false
-
   redis:
     image: redis:alpine
     container_name: gitea_redis
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
-    depends_on:
-      - sockets
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - redis_socket:/run/redis
+      - redis_socket:/run/redis:rw
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+    tmpfs:
+      - /run
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
       start_period: 10s
@@ -41,7 +31,6 @@ services:
     image: gitea/gitea:latest-rootless
     container_name: gitea
     restart: unless-stopped
-    tmpfs: /tmp
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
       redis:
@@ -70,6 +59,8 @@ services:
       - redis_socket:/run/redis
       - ${BASE_DIR:?}/data:/var/lib/gitea
       - ${BASE_DIR:?}/config:/etc/gitea
+    tmpfs:
+      - /tmp
     networks:
       - gitea
       - caddy

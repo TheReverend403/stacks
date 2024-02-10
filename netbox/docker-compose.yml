@@ -1,30 +1,20 @@
 version: "3.9"
 
 services:
-  sockets:
-    image: busybox:latest
-    container_name: netbox_sockets
-    command: chmod -R 777 /run
-    volumes:
-      - redis_socket:/run/redis
-    labels:
-      telegram-notifier.monitor: false
-      diun.enable: false
-
   redis:
     image: redis:alpine
     container_name: netbox_redis
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
-    depends_on:
-      - sockets
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - redis_socket:/run/redis
+      - redis_socket:/run/redis:rw
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+    tmpfs:
+      - /run
     healthcheck:
       test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
       start_period: 10s
@@ -58,6 +48,8 @@ services:
       - ${BASE_DIR:?}/data/media:/opt/netbox/netbox/media
       - ${BASE_DIR:?}/data/reports:/opt/netbox/netbox/reports
       - ${BASE_DIR:?}/data/scripts:/opt/netbox/netbox/scripts
+    tmpfs:
+      - /run
     networks:
       - netbox
       - caddy
