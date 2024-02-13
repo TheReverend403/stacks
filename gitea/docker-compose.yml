@@ -54,7 +54,6 @@ services:
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /etc/timezone:/etc/timezone:ro
       - /run/postgresql:/run/postgresql
       - redis_socket:/run/redis
       - ${BASE_DIR:?}/data:/var/lib/gitea
