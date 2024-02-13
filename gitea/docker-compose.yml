@@ -66,6 +66,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -fSs gitea:${HTTP_PORT:-3000}/api/healthz"]
       start_period: 10s
+      start_interval: 1s
       interval: 10s
       timeout: 5s
     deploy:
