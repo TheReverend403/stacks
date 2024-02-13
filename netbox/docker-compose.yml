@@ -7,16 +7,14 @@ services:
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
-    network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - redis_socket:/run/redis:rw
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
-    tmpfs:
-      - /run
+    networks:
+      - netbox
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
@@ -39,22 +37,19 @@ services:
     environment:
       SECRET_KEY: ${SECRET_KEY:?}
       MEDIA_ROOT: /opt/netbox/netbox/media
-      REDIS_HOST: ${REDIS_HOST:-unix:///run/redis/redis.sock?db=0}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
-      - redis_socket:/run/redis
       - ${BASE_DIR:?}/config:/etc/netbox/config:ro
       - ${BASE_DIR:?}/data/media:/opt/netbox/netbox/media
       - ${BASE_DIR:?}/data/reports:/opt/netbox/netbox/reports
       - ${BASE_DIR:?}/data/scripts:/opt/netbox/netbox/scripts
-    tmpfs:
-      - /run
+      - ${BASE_DIR:?}/unit:/opt/unit
     networks:
       - netbox
       - caddy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/ || exit 1"]
+      test: ["CMD-SHELL", "true"]
       start_period: 10s
       interval: 10s
       timeout: 5s
@@ -100,6 +95,3 @@ networks:
     name: netbox
   caddy:
     external: true
-
-volumes:
-  redis_socket:

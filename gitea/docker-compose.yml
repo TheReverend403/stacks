@@ -11,8 +11,6 @@ services:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/redis/data:/data
       - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
-    tmpfs:
-      - /run
     networks:
       - gitea
     healthcheck:
