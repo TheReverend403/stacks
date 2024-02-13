@@ -16,7 +16,7 @@ services:
     networks:
       - gitea
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli -s /run/redis/redis.sock ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
