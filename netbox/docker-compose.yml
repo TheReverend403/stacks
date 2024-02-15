@@ -69,6 +69,8 @@ services:
       - /opt/netbox/venv/bin/python
       - /opt/netbox/netbox/manage.py
       - rqworker
+    networks:
+      - netbox
     healthcheck:
       test: ["CMD-SHELL", "ps -aux | grep -v grep | grep -q rqworker || exit 1"]
       start_period: 10s
@@ -83,6 +85,8 @@ services:
         condition: service_healthy
     command:
       - /opt/netbox/housekeeping.sh
+    networks:
+      - netbox
     healthcheck:
       test:
         ["CMD-SHELL", "ps -aux | grep -v grep | grep -q housekeeping || exit 1"]
