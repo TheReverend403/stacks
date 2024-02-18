@@ -81,12 +81,10 @@ services:
     restart: unless-stopped
     environment:
       PGID: ${PGID:-1000}
-      PLEX_CLAIM:
-      PLEX_PASS:
-      ADVERTISE_IP:
       PUID: ${PUID_PLEX:-1000}
       UMASK: ${UMASK:-007}
       VERSION: docker
+    env_file: .env
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/plex:/config
