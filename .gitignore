@@ -1,6 +1,7 @@
-/**
-!Dockerfile
-!docker-compose.yml
-!.env.example
-!.gitignore
-!README.md
+*
+!**/Dockerfile
+!**/docker-compose.yml
+!**/.env.example
+!**/.gitignore
+!**/README.md
+!**/.editorconfig
