@@ -5,6 +5,7 @@ services:
     image: ghcr.io/thereverend403/gentoogram-bot:main
     container_name: gentoogram-bot
     restart: unless-stopped
+    init: true
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env

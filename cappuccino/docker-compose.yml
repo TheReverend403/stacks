@@ -5,6 +5,7 @@ services:
     image: ghcr.io/thereverend403/cappuccino:main
     container_name: cappuccino
     restart: unless-stopped
+    init: true
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env

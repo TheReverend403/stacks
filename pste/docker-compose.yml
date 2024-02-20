@@ -5,6 +5,7 @@ services:
     image: ghcr.io/thereverend403/pste:latest
     container_name: pste
     restart: unless-stopped
+    init: true
     env_file: .env
     environment:
       FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
