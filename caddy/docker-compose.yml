@@ -5,6 +5,7 @@ services:
     image: caddy:latest
     container_name: caddy
     restart: unless-stopped
+    init: true
     user: ${PUID:-1000}:${PGID:-1000}
     read_only: true
     env_file: .env
