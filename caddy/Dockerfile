@@ -17,4 +17,4 @@ COPY docker/rootfs /
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
 
-HEALTHCHECK --interval=10s --timeout=5s CMD ["/docker-healthcheck.sh"]
+HEALTHCHECK --start-interval=1s --start-period=10s --interval=10s --timeout=5s CMD ["/docker-healthcheck.sh"]

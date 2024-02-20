@@ -51,6 +51,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/api/ || exit 1"]
       start_period: 10s
+      start_interval: 1s
       interval: 10s
       timeout: 5s
     deploy:
@@ -74,6 +75,7 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "ps -aux | grep -v grep | grep -q rqworker || exit 1"]
       start_period: 10s
+      start_interval: 1s
       interval: 10s
       timeout: 5s
 
@@ -91,6 +93,7 @@ services:
       test:
         ["CMD-SHELL", "ps -aux | grep -v grep | grep -q housekeeping || exit 1"]
       start_period: 10s
+      start_interval: 1s
       interval: 10s
       timeout: 5s
 
