@@ -17,7 +17,6 @@ services:
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
-      - ${BASE_DIR:?}/static:/static
     tmpfs:
       - /tmp
     networks:
