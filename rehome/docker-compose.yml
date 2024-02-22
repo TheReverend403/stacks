@@ -11,9 +11,7 @@ services:
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SENTRY_DSN: ${CFG_SENTRY_DSN:-}
       CFG_SQLALCHEMY_DATABASE_URI: ${CFG_SQLALCHEMY_DATABASE_URI:?}
-      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
