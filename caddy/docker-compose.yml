@@ -20,7 +20,6 @@ services:
       - /srv/pste/data:/srv/pste/data:ro
       - /srv/pste/static:/srv/pste/static:ro
       - /srv/rehome/data:/srv/rehome/data:ro
-      - /srv/rehome/static:/srv/rehome/static:ro
       - /srv/gitea/public:/srv/gitea/public:ro
       - /srv/mediaserver/data/media:/srv/mediaserver/data/media:ro
       - /run/php-fpm:/run/php-fpm:ro
