@@ -6,6 +6,7 @@ services:
     container_name: netbox_redis
     command: ${REDIS_ARGS:-} /usr/local/etc/redis/redis.conf
     restart: unless-stopped
+    init: true
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
