@@ -2,29 +2,28 @@ version: "3.9"
 
 services:
   pste:
-    image: ghcr.io/thereverend403/pste:main
+    image: ghcr.io/pste/rehome:main
     container_name: pste
     restart: unless-stopped
+    init: true
+    read_only: true
+    user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env
     environment:
-      FLASK_SECRET_KEY: ${FLASK_SECRET_KEY:?}
-      FLASK_SENTRY_DSN: ${FLASK_SENTRY_DSN:-}
-      FLASK_SQLALCHEMY_DATABASE_URI: ${FLASK_SQLALCHEMY_DATABASE_URI:?}
-      GUNICORN_OPTS: ${GUNICORN_OPTS:-}
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-1000}
+      CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
+      CFG_SQLALCHEMY_DATABASE_URI: ${CFG_SQLALCHEMY_DATABASE_URI:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
       - ${BASE_DIR:?}/config:/config
       - ${BASE_DIR:?}/data:/data
-      - ${BASE_DIR:?}/static:/static
     tmpfs:
       - /tmp
-      - /run:exec
     networks:
       - pste
       - caddy
+    labels:
+      - diun.regopt=ghcr
     deploy:
       resources:
         limits:
