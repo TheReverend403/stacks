@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   cappuccino:
-    image: ghcr.io/thereverend403/cappuccino:latest
+    image: ghcr.io/thereverend403/cappuccino:main
     container_name: cappuccino
     restart: unless-stopped
     init: true
