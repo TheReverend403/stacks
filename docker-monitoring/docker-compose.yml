@@ -6,6 +6,7 @@ services:
     container_name: diun
     command: serve
     restart: unless-stopped
+    init: true
     env_file: .env
     environment:
       DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID:?}
@@ -32,6 +33,7 @@ services:
     image: lorcas/docker-telegram-notifier:latest
     container_name: docker-telegram-notifier
     restart: unless-stopped
+    init: true
     environment:
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
