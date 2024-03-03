@@ -9,9 +9,8 @@ RUN --mount=type=cache,target=${GOPATH}/pkg/mod \
 FROM caddy:latest
 
 # For healthchecks
-RUN --mount=type=cache,target=/var/cache/apk \
-    apk update && \
-    apk add curl
+RUN --mount=type=cache,target=/var/cache/apk,sharing=private \
+    apk --update add curl
 
 COPY docker/rootfs /
 
