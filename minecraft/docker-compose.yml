@@ -6,6 +6,9 @@ services:
     container_name: proxy
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
+    depends_on:
+      survival:
+        condition: service_healthy
     stdin_open: true
     tty: true
     env_file: .env
