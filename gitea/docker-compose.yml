@@ -1,38 +1,6 @@
 version: "3.9"
 
 services:
-  redis:
-    image: redis:alpine
-    container_name: gitea_redis
-    command:
-      - --dir /data
-      - --dbfilename dump.rdb
-      - --save 60 10
-      - --appendonly yes
-      - --appenddirname append
-      - --appendfilename appendonly.aof
-      - ${REDIS_ARGS:-}
-    restart: unless-stopped
-    init: true
-    user: ${PUID:-1000}:${PGID:-1000}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
-      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
-    networks:
-      - gitea
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
   gitea:
     image: gitea/gitea:latest-rootless
     container_name: gitea
@@ -79,6 +47,38 @@ services:
         limits:
           cpus: ${GITEA_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${GITEA_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+  redis:
+    image: redis:alpine
+    container_name: gitea_redis
+    command:
+      - --dir /data
+      - --dbfilename dump.rdb
+      - --save 60 10
+      - --appendonly yes
+      - --appenddirname append
+      - --appendfilename appendonly.aof
+      - ${REDIS_ARGS:-}
+    restart: unless-stopped
+    init: true
+    user: ${PUID:-1000}:${PGID:-1000}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+    networks:
+      - gitea
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 10s
+      start_interval: 1s
+      interval: 10s
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   gitea:

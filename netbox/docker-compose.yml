@@ -1,38 +1,6 @@
 version: "3.9"
 
 services:
-  redis:
-    image: redis:alpine
-    container_name: netbox_redis
-    command:
-      - --dir /data
-      - --dbfilename dump.rdb
-      - --save 60 10
-      - --appendonly yes
-      - --appenddirname append
-      - --appendfilename appendonly.aof
-      - ${REDIS_ARGS:-}
-    restart: unless-stopped
-    init: true
-    user: ${PUID:-1000}:${PGID:-1000}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
-      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
-    networks:
-      - netbox
-    healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
-    deploy:
-      resources:
-        limits:
-          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
   netbox: &netbox
     image: netboxcommunity/netbox:latest
     container_name: netbox
@@ -104,6 +72,38 @@ services:
       start_interval: 1s
       interval: 10s
       timeout: 5s
+
+  redis:
+    image: redis:alpine
+    container_name: netbox_redis
+    command:
+      - --dir /data
+      - --dbfilename dump.rdb
+      - --save 60 10
+      - --appendonly yes
+      - --appenddirname append
+      - --appendfilename appendonly.aof
+      - ${REDIS_ARGS:-}
+    restart: unless-stopped
+    init: true
+    user: ${PUID:-1000}:${PGID:-1000}
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+    networks:
+      - netbox
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      start_period: 10s
+      start_interval: 1s
+      interval: 10s
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   netbox:

@@ -10,7 +10,6 @@ services:
     user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env
     environment:
-      CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:-}
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
       CFG_BOT_REALNAME: ${CFG_BOT_REALNAME:?}
       CFG_BOT_USERNAME: ${CFG_BOT_USERNAME:?}
@@ -18,13 +17,6 @@ services:
       CFG_IRC_HOST: ${CFG_IRC_HOST:?}
       CFG_IRC_PORT: ${CFG_IRC_PORT:-6697}
       CFG_IRC_SSL: ${CFG_IRC_SSL:-true}
-      CFG_LASTFM_API_KEY: ${CFG_LASTFM_API_KEY:-}
-      CFG_NICKSERV_PASSWORD: ${CFG_NICKSERV_PASSWORD:-}
-      CFG_SENTRY_DSN: ${CFG_SENTRY_DSN:-}
-      CFG_INFLUX_URL: ${CFG_INFLUX_URL:-}
-      CFG_INFLUX_TOKEN: ${CFG_INFLUX_TOKEN:-}
-      CFG_INFLUX_BUCKET: ${CFG_INFLUX_BUCKET:-}
-      CFG_INFLUX_ORG: ${CFG_INFLUX_ORG:-}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
