@@ -15,7 +15,7 @@ services:
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
       CFG_SQLALCHEMY_DATABASE_URI: ${CFG_SQLALCHEMY_DATABASE_URI:?}
-      CFG_KEYDB_URL: ${CFG_REDIS_URL:-redis://keydb:6379}
+      CFG_KEYDB_URL: ${CFG_KEYDB_URL:-redis://keydb:6379}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
