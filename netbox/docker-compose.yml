@@ -7,12 +7,13 @@ services:
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
-      redis:
+      keydb:
         condition: service_healthy
     env_file: .env
     environment:
       SECRET_KEY: ${SECRET_KEY:?}
       MEDIA_ROOT: /opt/netbox/netbox/media
+      REDIS_HOST: ${KEYDB_HOST:-keydb}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
@@ -73,28 +74,26 @@ services:
       interval: 10s
       timeout: 5s
 
-  redis:
-    image: redis:alpine
-    container_name: netbox_redis
+  keydb:
+    image: eqalpha/keydb:latest
+    container_name: netbox_keydb
     command:
       - --dir /data
       - --dbfilename dump.rdb
       - --save 60 10
       - --appendonly yes
-      - --appenddirname append
       - --appendfilename appendonly.aof
-      - ${REDIS_ARGS:-}
+      - ${KEYDB_ARGS:-}
     restart: unless-stopped
     init: true
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
-      - ${BASE_DIR:?}/redis/config:/usr/local/etc/redis
+      - ${BASE_DIR:?}/keydb/data:/data
     networks:
       - netbox
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: ["CMD-SHELL", "keydb-cli ping | grep PONG"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
@@ -102,8 +101,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: ${KEYDB_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${KEYDB_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   netbox:
