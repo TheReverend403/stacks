@@ -40,9 +40,6 @@ services:
     command:
       - --dir /data
       - --dbfilename dump.rdb
-      - --save 60 1000
-      - --save 600 100
-      - --save 3600 10
       - --appendonly yes
       - --appendfilename appendonly.aof
       - ${KEYDB_ARGS:-}
