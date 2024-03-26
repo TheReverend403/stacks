@@ -39,9 +39,7 @@ services:
     container_name: pste_keydb
     command:
       - --dir /data
-      - --dbfilename dump.rdb
       - --appendonly yes
-      - --appendfilename appendonly.aof
       - ${KEYDB_ARGS:-}
     restart: unless-stopped
     init: true
