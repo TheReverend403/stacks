@@ -26,7 +26,7 @@ services:
       - netbox
       - caddy
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/ || exit 1"]
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api || exit 1"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
