@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   pste:
     image: ghcr.io/thereverend403/pste:main

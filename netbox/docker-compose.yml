@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   netbox: &netbox
     image: netboxcommunity/netbox:latest

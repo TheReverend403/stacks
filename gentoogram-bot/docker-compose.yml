@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   gentoogram-bot:
     image: ghcr.io/thereverend403/gentoogram-bot:main
