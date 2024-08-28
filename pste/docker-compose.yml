@@ -7,13 +7,13 @@ services:
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
-      keydb:
+      redis:
         condition: service_healthy
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
       CFG_SQLALCHEMY_DATABASE_URI: ${CFG_SQLALCHEMY_DATABASE_URI:?}
-      CFG_REDIS_URL: ${CFG_KEYDB_URL:-redis://keydb:6379}
+      CFG_REDIS_URL: ${CFG_REDIS_URL:-redis://redis:6379}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /run/postgresql:/run/postgresql
@@ -32,23 +32,23 @@ services:
           cpus: ${CPU_LIMIT:-0}
           memory: ${MEM_LIMIT:-0}
 
-  keydb:
-    image: eqalpha/keydb:latest
-    container_name: pste_keydb
+  redis:
+    image: redis:latest
+    container_name: pste_redis
     command:
       - --dir /data
       - --appendonly yes
-      - ${KEYDB_ARGS:-}
+      - ${REDIS_ARGS:-}
     restart: unless-stopped
     init: true
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/keydb/data:/data
+      - ${BASE_DIR:?}/redis/data:/data
     networks:
       - pste
     healthcheck:
-      test: ["CMD-SHELL", "keydb-cli ping | grep PONG"]
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
@@ -56,8 +56,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${KEYDB_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${KEYDB_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   pste:
