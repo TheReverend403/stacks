@@ -25,30 +25,6 @@ services:
           cpus: ${DELUGE_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${DELUGE_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
-  lidarr:
-    image: ghcr.io/hotio/lidarr:latest
-    container_name: lidarr
-    restart: unless-stopped
-    depends_on:
-      - deluge
-      - prowlarr
-    environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID_LIDARR:-1000}
-      UMASK: ${UMASK:-007}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/lidarr:/config
-      - ${BASE_DIR:?}/data:/data
-    networks:
-      - mediaserver
-      - caddy
-    deploy:
-      resources:
-        limits:
-          cpus: ${LIDARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${LIDARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
   overseerr:
     image: ghcr.io/hotio/overseerr:latest
     container_name: overseerr
