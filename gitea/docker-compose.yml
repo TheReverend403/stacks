@@ -64,7 +64,7 @@ services:
       POSTGRES_HOST: ${DB_HOST:-/run/postgresql}
       POSTGRES_DB: ${DB_NAME:-gitea}
       POSTGRES_USER: ${DB_USER:-gitea}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+      POSTGRES_PASSWORD: ${DB_PASSWD:?}
     healthcheck:
       test:
         [
