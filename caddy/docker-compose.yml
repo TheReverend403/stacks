@@ -16,7 +16,7 @@ services:
       - caddy_config:/config
       - /srv/www:/srv/www:ro
       - /srv/pste/data/pste:/srv/pste/data:ro
-      - /srv/rehome/data:/srv/rehome/data:ro
+      - /srv/rehome/data/rehome:/srv/rehome/data:ro
       - /srv/mediaserver/data/media:/srv/mediaserver/data/media:ro
     networks:
       - caddy
