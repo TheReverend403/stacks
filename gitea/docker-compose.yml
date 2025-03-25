@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
+      db-17:
+        condition: service_healthy
       redis:
         condition: service_healthy
     env_file: .env
