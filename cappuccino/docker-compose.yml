@@ -14,7 +14,7 @@ services:
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
       CFG_BOT_REALNAME: ${CFG_BOT_REALNAME:?}
       CFG_BOT_USERNAME: ${CFG_BOT_USERNAME:?}
-      CFG_DB_URI: postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST:-}/${DB_NAME}
+      CFG_DB_URI: postgresql://${DB_USER:-cappuccino}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-cappuccino}
       CFG_IRC_HOST: ${CFG_IRC_HOST:?}
       CFG_IRC_PORT: ${CFG_IRC_PORT:-6697}
       CFG_IRC_SSL: ${CFG_IRC_SSL:-true}

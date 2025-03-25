@@ -7,18 +7,20 @@ services:
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
+      db-17:
+        condition: service_healthy
       redis:
         condition: service_healthy
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SQLALCHEMY_DATABASE_URI: ${CFG_SQLALCHEMY_DATABASE_URI:?}
+      CFG_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:-pste}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-pste}
       CFG_REDIS_URL: ${CFG_REDIS_URL:-redis://redis:6379}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
-      - ${BASE_DIR:?}/config:/config
-      - ${BASE_DIR:?}/data:/data
+      - postgres_17_socket:/run/postgresql
+      - ${BASE_DIR:?}/config/pste:/config
+      - ${BASE_DIR:?}/data/pste:/data
     tmpfs:
       - /tmp
     networks:
@@ -29,8 +31,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${CPU_LIMIT:-0}
-          memory: ${MEM_LIMIT:-0}
+          cpus: ${PSTE_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${PSTE_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   redis:
     image: redis:latest
@@ -38,13 +40,12 @@ services:
     command:
       - --dir /data
       - --appendonly yes
-      - ${REDIS_ARGS:-}
     restart: unless-stopped
     init: true
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/data/redis:/data
     networks:
       - pste
     healthcheck:
@@ -58,6 +59,44 @@ services:
         limits:
           cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+  db-17:
+    image: postgres:17-alpine
+    container_name: pste_db_17
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    network_mode: "none"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:-.}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - postgres_17_socket:/run/postgresql
+    tmpfs:
+      - /run
+    environment:
+      POSTGRES_HOST: /run/postgresql
+      POSTGRES_DB: ${DB_NAME:-pste}
+      POSTGRES_USER: ${DB_USER:-pste}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+        ]
+      start_period: 10s
+      start_interval: 1s
+      interval: 10s
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+volumes:
+  postgres_17_socket:
 
 networks:
   pste:
