@@ -13,7 +13,11 @@ services:
     environment:
       SECRET_KEY: ${SECRET_KEY:?}
       MEDIA_ROOT: /opt/netbox/netbox/media
-      REDIS_HOST: ${REDIS_HOST:-redis}
+      DB_HOST: ${POSTGRES_HOST:-/run/postgresql}
+      DB_NAME: ${POSTGRES_DB:-netbox}
+      DB_USER: ${POSTGRES_USER:-netbox}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:-netbox}
+      REDIS_HOST: redis
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
@@ -78,26 +82,26 @@ services:
     image: postgres:17-alpine
     container_name: netbox_db_17
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:-.}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - ${BASE_DIR:?}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:?}/config/db/17/postgresql.conf:/etc/postgresql.conf
       - postgres_17_socket:/run/postgresql
     tmpfs:
       - /run
     environment:
       POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: ${DB_NAME:-netbox}
-      POSTGRES_USER: ${DB_USER:-netbox}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+      POSTGRES_DB: netbox
+      POSTGRES_USER: netbox
+      POSTGRES_PASSWORD: netbox
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
         ]
       start_period: 10s
       start_interval: 1s
