@@ -74,6 +74,11 @@ services:
       start_period: 5s
       interval: 10s
       timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   redis:
     image: redis:latest
@@ -81,7 +86,6 @@ services:
     command:
       - --dir /data
       - --appendonly yes
-      - ${REDIS_ARGS:-}
     restart: unless-stopped
     init: true
     user: ${PUID:-1000}:${PGID:-1000}
