@@ -102,6 +102,9 @@ services:
           cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
+volumes:
+  postgres_17_socket:
+
 networks:
   gitea:
     name: gitea
