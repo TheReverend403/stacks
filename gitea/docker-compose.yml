@@ -73,7 +73,8 @@ services:
           "CMD-SHELL",
           "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
         ]
-      start_period: 5s
+      start_period: 10s
+      start_interval: 1s
       interval: 10s
       timeout: 5s
     deploy:
