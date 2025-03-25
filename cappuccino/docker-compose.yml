@@ -12,12 +12,13 @@ services:
     env_file: .env
     environment:
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
-      CFG_BOT_REALNAME: ${CFG_BOT_REALNAME:?}
-      CFG_BOT_USERNAME: ${CFG_BOT_USERNAME:?}
-      CFG_DB_URI: postgresql://${DB_USER:-cappuccino}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-cappuccino}
+      CFG_BOT_REALNAME: cappuccino
+      CFG_BOT_USERNAME: cappuccino
       CFG_IRC_HOST: ${CFG_IRC_HOST:?}
-      CFG_IRC_PORT: ${CFG_IRC_PORT:-6697}
-      CFG_IRC_SSL: ${CFG_IRC_SSL:-true}
+      CFG_IRC_PORT: 6697
+      CFG_IRC_SSL: true
+      CFG_BOT_ADMIN: ${CFG_BOT_ADMIN:?}
+      CFG_DB_URI: postgresql://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
@@ -37,7 +38,8 @@ services:
     image: postgres:17-alpine
     container_name: cappuccino_db_17
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    init: true
+    user: ${PUID:-1000}:${PGID:-1000}
     command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     network_mode: "none"
     volumes:
@@ -49,14 +51,14 @@ services:
       - /run
     environment:
       POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: ${DB_NAME:-cappuccino}
-      POSTGRES_USER: ${DB_USER:-cappuccino}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+      POSTGRES_DB: cappuccino
+      POSTGRES_USER: cappuccino
+      POSTGRES_PASSWORD: cappuccino
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
         ]
       start_period: 10s
       start_interval: 1s
