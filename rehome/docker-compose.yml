@@ -12,7 +12,7 @@ services:
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${DB_USER:-rehome}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-rehome}
+      CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER:-rehome}:${POSTGRES_PASSWORD:-rehome}@/${POSTGRES_DB:-rehome}?host=${POSTGRES_HOST:-/run/postgresql}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
@@ -35,7 +35,7 @@ services:
     image: postgres:17-alpine
     container_name: rehome_db_17
     restart: unless-stopped
-    user: ${PUID:?}:${PGID:?}
+    user: ${PUID:-1000}:${PGID:-1000}
     command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
     network_mode: "none"
     volumes:
@@ -47,14 +47,14 @@ services:
       - /run
     environment:
       POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: ${DB_NAME:-rehome}
-      POSTGRES_USER: ${DB_USER:-rehome}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+      POSTGRES_DB: rehome
+      POSTGRES_USER: rehome
+      POSTGRES_PASSWORD: rehome
     healthcheck:
       test:
         [
           "CMD-SHELL",
-          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
         ]
       start_period: 10s
       start_interval: 1s
