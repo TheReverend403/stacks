@@ -14,7 +14,7 @@ services:
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SQLALCHEMY_DATABASE_URI: postgresql://${DB_USER:-pste}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-pste}
+      CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${DB_USER:-pste}:${DB_PASSWORD:?}@${DB_HOST:-}/${DB_NAME:-pste}
       CFG_REDIS_URL: ${CFG_REDIS_URL:-redis://redis:6379}
     volumes:
       - /etc/localtime:/etc/localtime:ro
