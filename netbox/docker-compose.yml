@@ -5,6 +5,8 @@ services:
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
+      db-17:
+        condition: service_healthy
       redis:
         condition: service_healthy
     env_file: .env
@@ -14,12 +16,12 @@ services:
       REDIS_HOST: ${REDIS_HOST:-redis}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
-      - ${BASE_DIR:?}/config:/etc/netbox/config:ro
-      - ${BASE_DIR:?}/data/media:/opt/netbox/netbox/media
-      - ${BASE_DIR:?}/data/reports:/opt/netbox/netbox/reports
-      - ${BASE_DIR:?}/data/scripts:/opt/netbox/netbox/scripts
-      - ${BASE_DIR:?}/unit:/opt/unit
+      - postgres_17_socket:/run/postgresql
+      - ${BASE_DIR:?}/config/netbox:/etc/netbox/config:ro
+      - ${BASE_DIR:?}/data/netbox/media:/opt/netbox/netbox/media
+      - ${BASE_DIR:?}/data/netbox/reports:/opt/netbox/netbox/reports
+      - ${BASE_DIR:?}/data/netbox/scripts:/opt/netbox/netbox/scripts
+      - ${BASE_DIR:?}/data/unit:/opt/unit
     networks:
       - netbox
       - caddy
@@ -72,19 +74,53 @@ services:
       interval: 10s
       timeout: 5s
 
+  db-17:
+    image: postgres:17-alpine
+    container_name: netbox_db_17
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    network_mode: "none"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:-.}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - postgres_17_socket:/run/postgresql
+    tmpfs:
+      - /run
+    environment:
+      POSTGRES_HOST: /run/postgresql
+      POSTGRES_DB: ${DB_NAME:-netbox}
+      POSTGRES_USER: ${DB_USER:-netbox}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+        ]
+      start_period: 10s
+      start_interval: 1s
+      interval: 10s
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
   redis:
     image: redis:latest
     container_name: netbox_redis
     command:
       - --dir /data
       - --appendonly yes
-      - ${REDIS_ARGS:-}
     restart: unless-stopped
     init: true
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/data/redis:/data
     networks:
       - netbox
     healthcheck:
@@ -98,6 +134,9 @@ services:
         limits:
           cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+volumes:
+  postgres_17_socket:
 
 networks:
   netbox:
