@@ -11,14 +11,14 @@ services:
       DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY:?}
       DIUN_PROVIDERS_DOCKER: "true"
       DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
-      DIUN_WATCH_SCHEDULE: ${DIUN_WATCH_SCHEDULE:-0 */6 * * *}
-      DIUN_WATCH_WORKERS: ${DIUN_WATCH_WORKERS:-4}
+      DIUN_WATCH_SCHEDULE: 0 */6 * * *
+      DIUN_WATCH_WORKERS: 4
       LOG_JSON: "false"
       LOG_LEVEL: info
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - data:/data
+      - ${BASE_DIR:?}/data/diun:/data
     networks:
       - docker-monitoring
     deploy:
@@ -32,6 +32,7 @@ services:
     container_name: docker-telegram-notifier
     restart: unless-stopped
     init: true
+    env_file: .env
     environment:
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
@@ -45,9 +46,6 @@ services:
         limits:
           cpus: ${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
-volumes:
-  data:
 
 networks:
   docker-monitoring:

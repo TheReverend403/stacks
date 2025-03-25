@@ -30,8 +30,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${CPU_LIMIT:-0}
-          memory: ${MEM_LIMIT:-0}
+          cpus: ${CADDY_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${CADDY_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   caddy:

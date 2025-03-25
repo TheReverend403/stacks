@@ -20,8 +20,8 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${CPU_LIMIT:-0}
-          memory: ${MEM_LIMIT:-0}
+          cpus: ${GENTOOGRAM_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${GENTOOGRAM_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
 networks:
   gentoogram-bot:

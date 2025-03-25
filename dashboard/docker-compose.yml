@@ -3,17 +3,18 @@ services:
     image: grafana/grafana:latest
     container_name: grafana
     restart: unless-stopped
-    user: ${GRAFANA_UID:-1000}:${GRAFANA_GID:-1000}
+    init: true
+    user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
       - influxdb
+    env_file: .env
     environment:
       GF_SERVER_DOMAIN: ${GF_SERVER_DOMAIN:?}
       GF_SERVER_ROOT_URL: ${GF_SERVER_ROOT_URL:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/grafana/data:/var/lib/grafana
-      - ${BASE_DIR:?}/grafana/config:/etc/grafana
-      - ${BASE_DIR:?}/grafana/provisioning:/etc/grafana/provisioning
+      - ${BASE_DIR:?}/data/grafana:/var/lib/grafana
+      - ${BASE_DIR:?}/config/grafana:/etc/grafana
     networks:
       - monitoring
       - caddy
@@ -27,13 +28,15 @@ services:
     image: influxdb:latest
     container_name: influxdb
     restart: unless-stopped
-    user: ${INFLUXDB_UID:-1000}:${INFLUXDB_GID:-1000}
+    init: true
+    user: ${PUID:-1000}:${PGID:-1000}
+    env_file: .env
     environment:
       INFLUX_TOKEN: ${INFLUX_TOKEN:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/influxdb/data:/var/lib/influxdb2
-      - ${BASE_DIR:?}/influxdb/config:/etc/influxdb2
+      - ${BASE_DIR:?}/data/influxdb:/var/lib/influxdb2
+      - ${BASE_DIR:?}/config/influxdb:/etc/influxdb2
     networks:
       - monitoring
       - caddy

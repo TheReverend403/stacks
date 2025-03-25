@@ -4,9 +4,9 @@ services:
     container_name: deluge
     restart: unless-stopped
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/deluge:/config
@@ -34,9 +34,9 @@ services:
       - radarr
       - sonarr
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/overseerr:/config
@@ -54,9 +54,9 @@ services:
     container_name: plex
     restart: unless-stopped
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
       VERSION: docker
     env_file: .env
     volumes:
@@ -78,9 +78,9 @@ services:
     container_name: prowlarr
     restart: unless-stopped
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/prowlarr:/config
@@ -101,9 +101,9 @@ services:
       - deluge
       - prowlarr
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/radarr:/config
@@ -125,9 +125,9 @@ services:
       - deluge
       - prowlarr
     environment:
-      PGID: ${PGID:-1000}
-      PUID: ${PUID:-1000}
-      UMASK: ${UMASK:-007}
+      PGID: 1000
+      PUID: 1000
+      UMASK: 007
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/config/sonarr:/config
