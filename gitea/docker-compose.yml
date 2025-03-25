@@ -26,9 +26,9 @@ services:
       GITEA__indexer__ISSUE_INDEXER_TYPE: db
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
-      - ${BASE_DIR:?}/data:/var/lib/gitea
-      - ${BASE_DIR:?}/config:/etc/gitea
+      - postgres_17_socket:/run/postgresql
+      - ${BASE_DIR:?}/data/gitea:/var/lib/gitea
+      - ${BASE_DIR:?}/config/gitea:/etc/gitea
     tmpfs:
       - /tmp
     networks:
@@ -46,6 +46,35 @@ services:
           cpus: ${GITEA_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${GITEA_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
+  db-17:
+    image: postgres:17-alpine
+    container_name: gitea_db_17
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    network_mode: "none"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:-.}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - postgres_17_socket:/run/postgresql
+    tmpfs:
+      - /run
+    environment:
+      POSTGRES_HOST: ${DB_HOST:-/run/postgresql}
+      POSTGRES_DB: ${DB_NAME:-gitea}
+      POSTGRES_USER: ${DB_USER:-gitea}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+        ]
+      start_period: 5s
+      interval: 10s
+      timeout: 5s
+
   redis:
     image: redis:latest
     container_name: gitea_redis
@@ -58,7 +87,7 @@ services:
     user: ${PUID:-1000}:${PGID:-1000}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/redis/data:/data
+      - ${BASE_DIR:?}/data/redis:/data
     networks:
       - gitea
     healthcheck:
