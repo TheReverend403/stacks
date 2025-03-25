@@ -16,8 +16,8 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
-      - ${BASE_DIR:?}/config:/config
-      - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:?}/config/rehome:/config
+      - ${BASE_DIR:?}/data/rehome:/data
     tmpfs:
       - /tmp
     networks:
