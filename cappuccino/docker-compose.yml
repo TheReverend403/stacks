@@ -6,19 +6,22 @@ services:
     init: true
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
+    depends_on:
+      db-17:
+        condition: service_healthy
     env_file: .env
     environment:
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
       CFG_BOT_REALNAME: ${CFG_BOT_REALNAME:?}
       CFG_BOT_USERNAME: ${CFG_BOT_USERNAME:?}
-      CFG_DB_URI: ${CFG_DB_URI:?}
+      CFG_DB_URI: postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST:-}/${DB_NAME}
       CFG_IRC_HOST: ${CFG_IRC_HOST:?}
       CFG_IRC_PORT: ${CFG_IRC_PORT:-6697}
       CFG_IRC_SSL: ${CFG_IRC_SSL:-true}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /run/postgresql:/run/postgresql
-      - ${BASE_DIR:?}/config:/config
+      - postgres_17_socket:/run/postgresql
+      - ${BASE_DIR:?}/config/cappuccino:/config
     tmpfs:
       - /tmp
     networks:
@@ -27,8 +30,46 @@ services:
     deploy:
       resources:
         limits:
-          cpus: ${CPU_LIMIT:-0}
-          memory: ${MEM_LIMIT:-0}
+          cpus: ${CAPPUCCINO_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${CAPPUCCINO_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+  db-17:
+    image: postgres:17-alpine
+    container_name: cappuccino_db_17
+    restart: unless-stopped
+    user: ${PUID:?}:${PGID:?}
+    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    network_mode: "none"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:-.}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - postgres_17_socket:/run/postgresql
+    tmpfs:
+      - /run
+    environment:
+      POSTGRES_HOST: /run/postgresql
+      POSTGRES_DB: ${DB_NAME:-cappuccino}
+      POSTGRES_USER: ${DB_USER:-cappuccino}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?}
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -q --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
+        ]
+      start_period: 10s
+      start_interval: 1s
+      interval: 10s
+      timeout: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
+          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
+
+volumes:
+  postgres_17_socket:
 
 networks:
   cappuccino:
