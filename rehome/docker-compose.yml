@@ -41,7 +41,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:?}/config/db/17:/etc/postgresql/postgresql.conf
+      - ${BASE_DIR:?}/config/db/17:/etc/postgresql
       - postgres_17_socket:/run/postgresql
     tmpfs:
       - /run
