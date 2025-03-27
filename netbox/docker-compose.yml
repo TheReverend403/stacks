@@ -83,12 +83,12 @@ services:
     container_name: netbox_db_17
     restart: unless-stopped
     user: ${PUID:-1000}:${PGID:-1000}
-    command: ["postgres", "-c", "config_file=/etc/postgresql.conf"]
+    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:?}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:?}/config/db/17/postgresql.conf:/etc/postgresql.conf
+      - ${BASE_DIR:?}/config/db/17:/etc/postgresql
       - postgres_17_socket:/run/postgresql
     tmpfs:
       - /run
