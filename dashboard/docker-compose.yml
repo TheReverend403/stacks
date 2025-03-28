@@ -7,7 +7,6 @@ services:
     user: ${PUID:-1000}:${PGID:-1000}
     depends_on:
       - influxdb
-      - caddy
     env_file: .env
     environment:
       GRAFANA_INFLUX_TOKEN: ${GRAFANA_INFLUX_TOKEN:-${INFLUX_TOKEN}}
