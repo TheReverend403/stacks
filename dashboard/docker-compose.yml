@@ -57,7 +57,7 @@ services:
     environment:
       TELEGRAF_INFLUX_TOKEN: ${TELEGRAF_INFLUX_TOKEN:-${INFLUX_TOKEN}}
       TELEGRAF_INFLUX_ORG: ${TELEGRAF_INFLUX_ORG:-${INFLUX_ORG}}
-      TELEGRAF_INFLUX_BUCKET: ${TELEGRAF_INFLUX_TOKEN:-${INFLUX_BUCKET:-telegraf}}
+      TELEGRAF_INFLUX_BUCKET: ${TELEGRAF_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
