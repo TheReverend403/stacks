@@ -64,6 +64,7 @@ services:
       start_interval: 1s
       interval: 10s
       timeout: 5s
+    shm_size: ${SHM_SIZE:-512M}
     deploy:
       resources:
         limits:
