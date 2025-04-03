@@ -3,7 +3,7 @@ services:
     image: itzg/bungeecord:latest
     container_name: proxy
     restart: unless-stopped
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${PROXY_PUID:-${PUID:-1000}}:${PROXY_PGID:-${PGID:-1000}}
     depends_on:
       survival:
         condition: service_healthy
@@ -12,12 +12,12 @@ services:
     env_file: .env
     environment:
       ENABLE_RCON: "true"
-      GID: ${PGID:-1000}
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
+      UID: ${PROXY_PUID:-${PUID:-1000}}
+      GID: ${PROXY_PGID:-${PGID:-1000}}
       MEMORY: ${PROXY_MEMORY:?}
       REPLACE_ENV_VARIABLES: "true"
       TYPE: ${PROXY_TYPE:-WATERFALL}
-      UID: ${PUID:-1000}
       PATCH_DEFINITIONS: /patches
     volumes:
       - /etc/localtime:/etc/localtime:ro
@@ -42,7 +42,7 @@ services:
     image: itzg/minecraft-server:latest
     container_name: survival
     restart: unless-stopped
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${SERVER_PUID:-${PUID:-1000}}:${SERVER_PGID:-${PGID:-1000}}
     stdin_open: true
     tty: true
     env_file: .env
@@ -50,11 +50,11 @@ services:
       ENABLE_ROLLING_LOGS: "true"
       EULA: "true"
       JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
-      GID: ${PGID:-1000}
+      UID: ${SERVER_PUID:-${PUID:-1000}}
+      GID: ${SERVER_PGID:-${PGID:-1000}}
       MEMORY: ${SERVER_MEMORY:?}
       REPLACE_ENV_VARIABLES: "true"
       TYPE: PAPER
-      UID: ${PUID:-1000}
       USE_AIKAR_FLAGS: "true"
       VERSION: ${VERSION:-LATEST}
       PATCH_DEFINITIONS: /patches

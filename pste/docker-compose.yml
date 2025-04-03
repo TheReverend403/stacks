@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     init: true
     read_only: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${PSTE_PUID:-${PUID:-1000}}:${PSTE_PGID:-${PGID:-1000}}
     depends_on:
       db-17:
         condition: service_healthy
@@ -39,7 +39,7 @@ services:
     container_name: pste_db_17
     restart: unless-stopped
     init: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     network_mode: "none"
     volumes:
@@ -79,7 +79,7 @@ services:
       - --appendonly yes
     restart: unless-stopped
     init: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/data/redis:/data

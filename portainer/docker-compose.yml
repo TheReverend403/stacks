@@ -5,6 +5,7 @@ services:
     command: -H unix:///var/run/docker.sock
     restart: unless-stopped
     init: true
+    user: ${PORTAINER_PUID:-${PUID:-1000}}:${PORTAINER_PGID:-${PGID:-1000}}
     environment:
       UMASK: 007
       VIRTUAL_HOST: ${VIRTUAL_HOST?}

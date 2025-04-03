@@ -5,11 +5,10 @@ services:
     restart: unless-stopped
     init: true
     read_only: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${REHOME_PUID:-${PUID:-1000}}:${REHOME_PGID:-${PGID:-1000}}
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_UPLOADS__UPLOAD_TOKEN: ${CFG_UPLOADS__UPLOAD_TOKEN:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/rehome:/config
