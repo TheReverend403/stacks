@@ -6,16 +6,12 @@ services:
     init: true
     read_only: true
     user: ${PUID:-1000}:${PGID:-1000}
-    depends_on:
-      db-17:
-        condition: service_healthy
     env_file: .env
     environment:
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER:-rehome}:${POSTGRES_PASSWORD:-rehome}@/${POSTGRES_DB:-rehome}?host=${POSTGRES_HOST:-/run/postgresql}
+      CFG_UPLOADS__UPLOAD_TOKEN: ${CFG_UPLOADS__UPLOAD_TOKEN:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - postgres_17_socket:/run/postgresql
       - ${BASE_DIR:-.}/config/rehome:/config
       - ${BASE_DIR:-.}/data/rehome:/data
     tmpfs:
@@ -30,45 +26,6 @@ services:
         limits:
           cpus: ${REHOME_CPU_LIMIT:-${CPU_LIMIT:-0}}
           memory: ${REHOME_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
-  db-17:
-    image: postgres:17-alpine
-    container_name: rehome_db_17
-    restart: unless-stopped
-    user: ${PUID:-1000}:${PGID:-1000}
-    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
-    network_mode: "none"
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:-.}/config/db/17:/etc/postgresql
-      - postgres_17_socket:/run/postgresql
-    tmpfs:
-      - /run
-    environment:
-      POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: rehome
-      POSTGRES_USER: rehome
-      POSTGRES_PASSWORD: rehome
-    healthcheck:
-      test:
-        [
-          "CMD-SHELL",
-          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
-        ]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
-    shm_size: ${SHM_SIZE:-512M}
-    deploy:
-      resources:
-        limits:
-          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
-
-volumes:
-  postgres_17_socket:
 
 networks:
   rehome:
