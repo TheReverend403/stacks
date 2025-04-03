@@ -5,7 +5,7 @@ services:
     restart: unless-stopped
     init: true
     read_only: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${GENTOOGRAM_PUID:-${PUID:-1000}}:${GENTOOGRAM_PGID:-${PGID:-1000}}
     env_file: .env
     environment:
       CFG_TELEGRAM__ADMINS: ${CFG_TELEGRAM__ADMINS:?}
@@ -13,7 +13,7 @@ services:
       CFG_TELEGRAM__TOKEN: ${CFG_TELEGRAM__TOKEN:?}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config:/config
+      - ${BASE_DIR:-.}/config:/config
     networks:
       - gentoogram-bot
       - caddy

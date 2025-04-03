@@ -21,11 +21,11 @@ services:
       PATCH_DEFINITIONS: /patches
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/proxy/data:/server
-      - ${BASE_DIR:?}/proxy/config:/config
-      - ${BASE_DIR:?}/proxy/patches:/patches
-      - ${BASE_DIR:?}/proxy/plugins:/server/plugins
-      - ${BASE_DIR:?}/proxy/logs:/server/logs
+      - ${BASE_DIR:-.}/proxy/data:/server
+      - ${BASE_DIR:-.}/proxy/config:/config
+      - ${BASE_DIR:-.}/proxy/patches:/patches
+      - ${BASE_DIR:-.}/proxy/plugins:/server/plugins
+      - ${BASE_DIR:-.}/proxy/logs:/server/logs
     networks:
       - minecraft
     ports:
@@ -60,12 +60,12 @@ services:
       PATCH_DEFINITIONS: /patches
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/survival/data:/data
-      - ${BASE_DIR:?}/survival/config:/config
-      - ${BASE_DIR:?}/survival/patches:/patches
-      - ${BASE_DIR:?}/survival/plugins:/data/plugins
-      - ${BASE_DIR:?}/survival/worlds:/worlds
-      - ${BASE_DIR:?}/survival/logs:/data/logs
+      - ${BASE_DIR:-.}/survival/data:/data
+      - ${BASE_DIR:-.}/survival/config:/config
+      - ${BASE_DIR:-.}/survival/patches:/patches
+      - ${BASE_DIR:-.}/survival/plugins:/data/plugins
+      - ${BASE_DIR:-.}/survival/worlds:/worlds
+      - ${BASE_DIR:-.}/survival/logs:/data/logs
     networks:
       - minecraft
     extra_hosts:

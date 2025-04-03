@@ -5,11 +5,15 @@ services:
     restart: unless-stopped
     init: true
     read_only: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${CAPPUCCINO_PUID:-${PUID:-1000}}:${CAPPUCCINO_PGID:-${PGID:-1000}}
     depends_on:
       db-17:
         condition: service_healthy
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+      - path: stack.env
+        required: false
     environment:
       CFG_BOT_NICK: ${CFG_BOT_NICK:?}
       CFG_BOT_REALNAME: cappuccino
@@ -22,7 +26,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
-      - ${BASE_DIR:?}/config/cappuccino:/config
+      - ${BASE_DIR:-.}/config/cappuccino:/config
     tmpfs:
       - /tmp
     networks:
@@ -39,13 +43,13 @@ services:
     container_name: cappuccino_db_17
     restart: unless-stopped
     init: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     network_mode: "none"
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:?}/config/db/17:/etc/postgresql
+      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
+      - ${BASE_DIR:-.}/config/db/17:/etc/postgresql
       - postgres_17_socket:/run/postgresql
     tmpfs:
       - /run

@@ -12,7 +12,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:-.}/data:/data
     networks:
       - portainer
       - caddy

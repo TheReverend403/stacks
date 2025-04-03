@@ -4,15 +4,19 @@ services:
     container_name: caddy
     restart: unless-stopped
     init: true
-    user: ${PUID:-1000}:${PGID:-1000}
+    user: ${CADDY_PUID:-${PUID:-1000}}:${CADDY_PGID:-${PGID:-1000}}
     read_only: true
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+      - path: stack.env
+        required: false
     environment:
       CF_API_TOKEN: ${CF_API_TOKEN:-}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/data:/data
-      - ${BASE_DIR:?}/config:/etc/caddy
+      - ${BASE_DIR:-.}/data:/data
+      - ${BASE_DIR:-.}/config:/etc/caddy
       - caddy_config:/config
       - /srv/www:/srv/www:ro
       - /srv/pste/data/pste:/srv/pste/data:ro
@@ -27,6 +31,7 @@ services:
     extra_hosts:
       - host.docker.internal:host-gateway
     build: .
+    pull_policy: build
     deploy:
       resources:
         limits:

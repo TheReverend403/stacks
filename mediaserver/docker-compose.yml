@@ -9,9 +9,9 @@ services:
       UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/deluge:/config
-      - ${BASE_DIR:?}/data/torrents/incomplete:/downloads
-      - ${BASE_DIR:?}/data/torrents:/data/torrents
+      - ${BASE_DIR:-.}/config/deluge:/config
+      - ${BASE_DIR:-.}/data/torrents/incomplete:/downloads
+      - ${BASE_DIR:-.}/data/torrents:/data/torrents
     networks:
       - mediaserver
       - caddy
@@ -39,7 +39,7 @@ services:
       UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/overseerr:/config
+      - ${BASE_DIR:-.}/config/overseerr:/config
     networks:
       - mediaserver
       - caddy
@@ -61,9 +61,9 @@ services:
     env_file: .env
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/plex:/config
-      - ${BASE_DIR:?}/data/media/transcode:/transcode
-      - ${BASE_DIR:?}/data/media:/media
+      - ${BASE_DIR:-.}/config/plex:/config
+      - ${BASE_DIR:-.}/data/media/transcode:/transcode
+      - ${BASE_DIR:-.}/data/media:/media
     networks:
       - mediaserver
       - caddy
@@ -83,7 +83,7 @@ services:
       UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/prowlarr:/config
+      - ${BASE_DIR:-.}/config/prowlarr:/config
     networks:
       - mediaserver
       - caddy
@@ -106,8 +106,8 @@ services:
       UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/radarr:/config
-      - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:-.}/config/radarr:/config
+      - ${BASE_DIR:-.}/data:/data
     networks:
       - mediaserver
       - caddy
@@ -130,8 +130,8 @@ services:
       UMASK: ${UMASK:-007}
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${BASE_DIR:?}/config/sonarr:/config
-      - ${BASE_DIR:?}/data:/data
+      - ${BASE_DIR:-.}/config/sonarr:/config
+      - ${BASE_DIR:-.}/data:/data
     networks:
       - mediaserver
       - caddy

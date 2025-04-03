@@ -5,7 +5,11 @@ services:
     command: serve
     restart: unless-stopped
     init: true
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+      - path: stack.env
+        required: false
     environment:
       DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID:?}
       DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY:?}
@@ -18,7 +22,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${BASE_DIR:?}/data/diun:/data
+      - ${BASE_DIR:-.}/data/diun:/data
     networks:
       - docker-monitoring
     deploy:
@@ -32,7 +36,11 @@ services:
     container_name: docker-telegram-notifier
     restart: unless-stopped
     init: true
-    env_file: .env
+    env_file:
+      - path: .env
+        required: false
+      - path: stack.env
+        required: false
     environment:
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
