@@ -47,10 +47,7 @@ services:
     depends_on:
       netbox:
         condition: service_healthy
-    command:
-      - /opt/netbox/venv/bin/python
-      - /opt/netbox/netbox/manage.py
-      - rqworker
+    command: python manage.py rqworker
     networks:
       - netbox
     healthcheck:
