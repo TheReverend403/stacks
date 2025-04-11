@@ -6,7 +6,7 @@ RUN --mount=type=cache,target=${GOPATH}/pkg/mod \
     xcaddy build \
     --with github.com/caddy-dns/cloudflare
 
-FROM caddy:latest
+FROM caddy:latest AS caddy-cloudflare
 
 # For healthchecks
 RUN --mount=type=cache,target=/var/cache/apk,sharing=private \
