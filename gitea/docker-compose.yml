@@ -89,7 +89,7 @@ services:
           memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
 
   redis:
-    image: redis:latest
+    image: valkey/valkey:latest
     container_name: gitea_redis
     command:
       - --dir /data
@@ -103,7 +103,7 @@ services:
     networks:
       - gitea
     healthcheck:
-      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
       start_period: 10s
       start_interval: 1s
       interval: 10s
