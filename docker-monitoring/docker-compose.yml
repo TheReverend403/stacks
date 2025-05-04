@@ -74,7 +74,7 @@ services:
     networks:
       - docker-monitoring
     ports:
-      - 127.0.0.1:2525:2525
+      - ${ST_HOST:-127.0.0.1}:2525:2525
     deploy:
       resources:
         limits:
