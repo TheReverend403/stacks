@@ -12,9 +12,9 @@ services:
       - path: stack.env
         required: false
     environment:
+      TZ: UTC
       CF_API_TOKEN: ${CF_API_TOKEN:-}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/data:/data
       - ${BASE_DIR:-.}/data/config:/config
       - ${BASE_DIR:-.}/config:/etc/caddy

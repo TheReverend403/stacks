@@ -4,11 +4,11 @@ services:
     container_name: deluge
     restart: unless-stopped
     environment:
+      TZ: UTC
       PGID: ${DELUGE_PGID:-${PGID:-1000}}
       PUID: ${DELUGE_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/deluge:/config
       - ${BASE_DIR:-.}/data/torrents/incomplete:/downloads
       - ${BASE_DIR:-.}/data/torrents:/data/torrents
@@ -34,11 +34,11 @@ services:
       - radarr
       - sonarr
     environment:
+      TZ: UTC
       PGID: ${OVERSEERR_PGID:-${PGID:-1000}}
       PUID: ${OVERSEERR_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/overseerr:/config
     networks:
       - mediaserver
@@ -54,13 +54,13 @@ services:
     container_name: plex
     restart: unless-stopped
     environment:
+      TZ: UTC
       PGID: ${PLEX_PGID:-${PGID:-1000}}
       PUID: ${PLEX_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
       VERSION: docker
     env_file: .env
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/plex:/config
       - ${BASE_DIR:-.}/data/transcode:/transcode
       - ${BASE_DIR:-.}/data/media:/media:ro
@@ -78,11 +78,11 @@ services:
     container_name: prowlarr
     restart: unless-stopped
     environment:
+      TZ: UTC
       PGID: ${PROWLARR_PGID:-${PGID:-1000}}
       PUID: ${PROWLARR_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/prowlarr:/config
     networks:
       - mediaserver
@@ -101,11 +101,11 @@ services:
       - deluge
       - prowlarr
     environment:
+      TZ: UTC
       PGID: ${RADARR_PGID:-${PGID:-1000}}
       PUID: ${RADARR_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/radarr:/config
       - ${BASE_DIR:-.}/data:/data
     networks:
@@ -125,11 +125,11 @@ services:
       - deluge
       - prowlarr
     environment:
+      TZ: UTC
       PGID: ${SONARR_PGID:-${PGID:-1000}}
       PUID: ${SONARR_PUID:-${PUID:-1000}}
       UMASK: ${UMASK:-007}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/sonarr:/config
       - ${BASE_DIR:-.}/data:/data
     networks:

@@ -3,12 +3,13 @@ services:
     image: louislam/uptime-kuma:latest
     container_name: uptime-kuma
     restart: unless-stopped
+    user: ${PUID:-1000}:${PGID:-1000}
     env_file: .env
     environment:
+      TZ: UTC
       PUID: ${PUID:-1000}
       PGID: ${PGID:-1000}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/data:/app/data
     networks:
       - uptime-kuma

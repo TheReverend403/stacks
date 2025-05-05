@@ -7,11 +7,11 @@ services:
     init: true
     user: ${PORTAINER_PUID:-${PUID:-1000}}:${PORTAINER_PGID:-${PGID:-1000}}
     environment:
+      TZ: UTC
       UMASK: 007
       VIRTUAL_HOST: ${VIRTUAL_HOST?}
       VIRTUAL_PORT: 9000
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${BASE_DIR:-.}/data:/data
     networks:

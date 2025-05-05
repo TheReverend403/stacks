@@ -8,9 +8,9 @@ services:
     user: ${REHOME_PUID:-${PUID:-1000}}:${REHOME_PGID:-${PGID:-1000}}
     env_file: .env
     environment:
+      TZ: UTC
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/config/rehome:/config
       - ${BASE_DIR:-.}/data/rehome:/data
     tmpfs:

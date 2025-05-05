@@ -13,11 +13,11 @@ services:
         condition: service_healthy
     env_file: .env
     environment:
+      TZ: UTC
       CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
       CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER:-pste}:${POSTGRES_PASSWORD:-pste}@/${POSTGRES_DB:-pste}?host=${POSTGRES_HOST:-/run/postgresql}
       CFG_REDIS_URL: ${REDIS_URL:-redis://redis:6379}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - postgres_17_socket:/run/postgresql
       - ${BASE_DIR:-.}/config/pste:/config
       - ${BASE_DIR:-.}/data/pste:/data
@@ -42,18 +42,18 @@ services:
     user: ${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}
     command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
     network_mode: "none"
+    environment:
+      TZ: UTC
+      POSTGRES_HOST: /run/postgresql
+      POSTGRES_DB: pste
+      POSTGRES_USER: pste
+      POSTGRES_PASSWORD: pste
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
       - ${BASE_DIR:-.}/config/db/17:/etc/postgresql
       - postgres_17_socket:/run/postgresql
     tmpfs:
       - /run
-    environment:
-      POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: pste
-      POSTGRES_USER: pste
-      POSTGRES_PASSWORD: pste
     healthcheck:
       test:
         [
@@ -80,8 +80,9 @@ services:
     restart: unless-stopped
     init: true
     user: ${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}
+    environment:
+      TZ: UTC
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/data/redis:/data
     networks:
       - pste

@@ -11,6 +11,7 @@ services:
       - path: stack.env
         required: false
     environment:
+      TZ: UTC
       DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID:?}
       DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY:?}
       DIUN_PROVIDERS_DOCKER: "true"
@@ -20,7 +21,6 @@ services:
       LOG_JSON: "false"
       LOG_LEVEL: info
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
       - ${BASE_DIR:-.}/data/diun:/data
       - ${BASE_DIR:-.}/config/diun:/etc/diun
@@ -43,10 +43,10 @@ services:
       - path: stack.env
         required: false
     environment:
+      TZ: UTC
       TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
       - docker-monitoring
@@ -67,10 +67,9 @@ services:
       - path: stack.env
         required: false
     environment:
+      TZ: UTC
       ST_TELEGRAM_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
       ST_TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_ID:?}
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
     networks:
       - docker-monitoring
     ports:

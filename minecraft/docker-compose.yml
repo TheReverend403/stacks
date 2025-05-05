@@ -11,6 +11,7 @@ services:
     tty: true
     env_file: .env
     environment:
+      TZ: UTC
       ENABLE_RCON: "true"
       JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
       UID: ${PROXY_PUID:-${PUID:-1000}}
@@ -20,7 +21,6 @@ services:
       TYPE: ${PROXY_TYPE:-WATERFALL}
       PATCH_DEFINITIONS: /patches
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/proxy/data:/server
       - ${BASE_DIR:-.}/proxy/config:/config
       - ${BASE_DIR:-.}/proxy/patches:/patches
@@ -47,6 +47,7 @@ services:
     tty: true
     env_file: .env
     environment:
+      TZ: UTC
       ENABLE_ROLLING_LOGS: "true"
       EULA: "true"
       JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
@@ -59,7 +60,6 @@ services:
       VERSION: ${VERSION:-LATEST}
       PATCH_DEFINITIONS: /patches
     volumes:
-      - /etc/localtime:/etc/localtime:ro
       - ${BASE_DIR:-.}/survival/data:/data
       - ${BASE_DIR:-.}/survival/config:/config
       - ${BASE_DIR:-.}/survival/patches:/patches
