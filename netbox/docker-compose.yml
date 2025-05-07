@@ -100,8 +100,8 @@ services:
           "CMD-SHELL",
           "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
         ]
-      start_period: 10s
-      start_interval: 1s
+      start_period: 60s
+      start_interval: 5s
       interval: 10s
       timeout: 5s
     shm_size: ${SHM_SIZE:-512M}
