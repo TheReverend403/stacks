@@ -33,7 +33,7 @@ services:
       test: ["CMD-SHELL", "curl -f http://localhost:8080/api || exit 1"]
       start_period: 60s
       start_interval: 5s
-      interval: 30s
+      interval: 10s
       timeout: 5s
     deploy:
       resources:
