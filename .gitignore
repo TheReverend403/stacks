@@ -1,8 +1,16 @@
-**
-!/*
-!**/Dockerfile
-!**/docker-compose.yml
-!**/.env.example
-!**/.gitignore
-!**/README.md
-!**/.editorconfig
+config/
+data/
+
+.vscode/
+.idea/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+!.git*

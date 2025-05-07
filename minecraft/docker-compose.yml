@@ -1,81 +1,82 @@
+---
 services:
   proxy:
-    image: itzg/bungeecord:latest
-    container_name: proxy
-    restart: unless-stopped
-    user: ${PROXY_PUID:-${PUID:-1000}}:${PROXY_PGID:-${PGID:-1000}}
+    image: "itzg/bungeecord:latest"
+    container_name: "proxy"
+    restart: "unless-stopped"
+    user: "${PROXY_PUID:-${PUID:-1000}}:${PROXY_PGID:-${PGID:-1000}}"
     depends_on:
       survival:
-        condition: service_healthy
+        condition: "service_healthy"
     stdin_open: true
     tty: true
-    env_file: .env
+    env_file: ".env"
     environment:
-      TZ: UTC
+      TZ: "UTC"
       ENABLE_RCON: "true"
-      JVM_XX_OPTS: -XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch
-      UID: ${PROXY_PUID:-${PUID:-1000}}
-      GID: ${PROXY_PGID:-${PGID:-1000}}
-      MEMORY: ${PROXY_MEMORY:?}
+      JVM_XX_OPTS: "-XX:+UnlockExperimentalVMOptions -XX:+DisableExplicitGC -XX:+AlwaysPreTouch"
+      UID: "${PROXY_PUID:-${PUID:-1000}}"
+      GID: "${PROXY_PGID:-${PGID:-1000}}"
+      MEMORY: "${PROXY_MEMORY:?}"
       REPLACE_ENV_VARIABLES: "true"
-      TYPE: ${PROXY_TYPE:-WATERFALL}
-      PATCH_DEFINITIONS: /patches
+      TYPE: "${PROXY_TYPE:-WATERFALL}"
+      PATCH_DEFINITIONS: "/patches"
     volumes:
-      - ${BASE_DIR:-.}/proxy/data:/server
-      - ${BASE_DIR:-.}/proxy/config:/config
-      - ${BASE_DIR:-.}/proxy/patches:/patches
-      - ${BASE_DIR:-.}/proxy/plugins:/server/plugins
-      - ${BASE_DIR:-.}/proxy/logs:/server/logs
+      - "${BASE_DIR:-.}/proxy/data:/server"
+      - "${BASE_DIR:-.}/proxy/config:/config"
+      - "${BASE_DIR:-.}/proxy/patches:/patches"
+      - "${BASE_DIR:-.}/proxy/plugins:/server/plugins"
+      - "${BASE_DIR:-.}/proxy/logs:/server/logs"
     networks:
-      - minecraft
+      - "minecraft"
     ports:
-      - 25565:25577
+      - "25565:25577"
     extra_hosts:
-      - host.docker.internal:host-gateway
+      - "host.docker.internal:host-gateway"
     deploy:
       resources:
         limits:
-          cpus: ${PROXY_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${PROXY_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${PROXY_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${PROXY_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   survival:
-    image: itzg/minecraft-server:latest
-    container_name: survival
-    restart: unless-stopped
-    user: ${SERVER_PUID:-${PUID:-1000}}:${SERVER_PGID:-${PGID:-1000}}
+    image: "itzg/minecraft-server:latest"
+    container_name: "survival"
+    restart: "unless-stopped"
+    user: "${SERVER_PUID:-${PUID:-1000}}:${SERVER_PGID:-${PGID:-1000}}"
     stdin_open: true
     tty: true
-    env_file: .env
+    env_file: ".env"
     environment:
-      TZ: UTC
+      TZ: "UTC"
       ENABLE_ROLLING_LOGS: "true"
       EULA: "true"
-      JVM_DD_OPTS: ${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}
-      UID: ${SERVER_PUID:-${PUID:-1000}}
-      GID: ${SERVER_PGID:-${PGID:-1000}}
-      MEMORY: ${SERVER_MEMORY:?}
+      JVM_DD_OPTS: "${JVM_DD_OPTS:-paper.useLegacyPluginLoading=true}"
+      UID: "${SERVER_PUID:-${PUID:-1000}}"
+      GID: "${SERVER_PGID:-${PGID:-1000}}"
+      MEMORY: "${SERVER_MEMORY:?}"
       REPLACE_ENV_VARIABLES: "true"
-      TYPE: PAPER
+      TYPE: "PAPER"
       USE_AIKAR_FLAGS: "true"
-      VERSION: ${VERSION:-LATEST}
-      PATCH_DEFINITIONS: /patches
+      VERSION: "${VERSION:-LATEST}"
+      PATCH_DEFINITIONS: "/patches"
     volumes:
-      - ${BASE_DIR:-.}/survival/data:/data
-      - ${BASE_DIR:-.}/survival/config:/config
-      - ${BASE_DIR:-.}/survival/patches:/patches
-      - ${BASE_DIR:-.}/survival/plugins:/data/plugins
-      - ${BASE_DIR:-.}/survival/worlds:/worlds
-      - ${BASE_DIR:-.}/survival/logs:/data/logs
+      - "${BASE_DIR:-.}/survival/data:/data"
+      - "${BASE_DIR:-.}/survival/config:/config"
+      - "${BASE_DIR:-.}/survival/patches:/patches"
+      - "${BASE_DIR:-.}/survival/plugins:/data/plugins"
+      - "${BASE_DIR:-.}/survival/worlds:/worlds"
+      - "${BASE_DIR:-.}/survival/logs:/data/logs"
     networks:
-      - minecraft
+      - "minecraft"
     extra_hosts:
-      - host.docker.internal:host-gateway
+      - "host.docker.internal:host-gateway"
     deploy:
       resources:
         limits:
-          cpus: ${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   minecraft:
-    name: minecraft
+    name: "minecraft"

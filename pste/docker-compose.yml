@@ -1,108 +1,112 @@
+---
 services:
   pste:
-    image: ghcr.io/thereverend403/pste:main
-    container_name: pste
-    restart: unless-stopped
+    image: "ghcr.io/thereverend403/pste:main"
+    container_name: "pste"
+    restart: "unless-stopped"
     init: true
     read_only: true
-    user: ${PSTE_PUID:-${PUID:-1000}}:${PSTE_PGID:-${PGID:-1000}}
+    user: "${PSTE_PUID:-${PUID:-1000}}:${PSTE_PGID:-${PGID:-1000}}"
     depends_on:
       db-17:
-        condition: service_healthy
+        condition: "service_healthy"
       redis:
-        condition: service_healthy
-    env_file: .env
+        condition: "service_healthy"
+    env_file: ".env"
     environment:
-      TZ: UTC
-      CFG_SECRET_KEY: ${CFG_SECRET_KEY:?}
-      CFG_SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER:-pste}:${POSTGRES_PASSWORD:-pste}@/${POSTGRES_DB:-pste}?host=${POSTGRES_HOST:-/run/postgresql}
-      CFG_REDIS_URL: ${REDIS_URL:-redis://redis:6379}
+      TZ: "UTC"
+      CFG_SECRET_KEY: "${CFG_SECRET_KEY:?}"
+      CFG_SQLALCHEMY_DATABASE_URI: "postgresql+psycopg://${POSTGRES_USER:-pste}:${POSTGRES_PASSWORD:-pste}@/${POSTGRES_DB:-pste}?host=${POSTGRES_HOST:-/run/postgresql}"
+      CFG_REDIS_URL: "${REDIS_URL:-redis://redis:6379}"
     volumes:
-      - postgres_17_socket:/run/postgresql
-      - ${BASE_DIR:-.}/config/pste:/config
-      - ${BASE_DIR:-.}/data/pste:/data
+      - "postgres_17_socket:/run/postgresql"
+      - "${BASE_DIR:-.}/config/pste:/config"
+      - "${BASE_DIR:-.}/data/pste:/data"
     tmpfs:
-      - /tmp
+      - "/tmp"
     networks:
-      - pste
-      - caddy
+      - "pste"
+      - "caddy"
     labels:
-      - diun.regopt=ghcr
+      - "diun.regopt=ghcr"
     deploy:
       resources:
         limits:
-          cpus: ${PSTE_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${PSTE_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${PSTE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${PSTE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   db-17:
-    image: postgres:17-alpine
-    container_name: pste_db_17
-    restart: unless-stopped
+    image: "postgres:17-alpine"
+    container_name: "pste_db_17"
+    restart: "unless-stopped"
     init: true
-    user: ${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}
-    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
     network_mode: "none"
     environment:
-      TZ: UTC
-      POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: pste
-      POSTGRES_USER: pste
-      POSTGRES_PASSWORD: pste
+      TZ: "UTC"
+      POSTGRES_HOST: "/run/postgresql"
+      POSTGRES_DB: "pste"
+      POSTGRES_USER: "pste"
+      POSTGRES_PASSWORD: "pste"
     volumes:
-      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:-.}/config/db/17:/etc/postgresql
-      - postgres_17_socket:/run/postgresql
+      - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
+      - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"
+      - "postgres_17_socket:/run/postgresql"
     tmpfs:
-      - /run
+      - "/run"
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
-        ]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
-    shm_size: ${SHM_SIZE:-512M}
+        - "CMD-SHELL"
+        - "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
+    shm_size: "${SHM_SIZE:-512M}"
     deploy:
       resources:
         limits:
-          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   redis:
-    image: valkey/valkey:latest
-    container_name: pste_redis
+    image: "valkey/valkey:latest"
+    container_name: "pste_redis"
     command:
-      - --dir /data
-      - --appendonly yes
-    restart: unless-stopped
+      - "--dir /data"
+      - "--appendonly yes"
+    restart: "unless-stopped"
     init: true
-    user: ${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}
+    user: "${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}"
     environment:
-      TZ: UTC
+      TZ: "UTC"
     volumes:
-      - ${BASE_DIR:-.}/data/redis:/data
+      - "${BASE_DIR:-.}/data/redis:/data"
     networks:
-      - pste
+      - "pste"
     healthcheck:
-      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
+      test:
+        - "CMD-SHELL"
+        - "valkey-cli ping | grep PONG"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
     deploy:
       resources:
         limits:
-          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 volumes:
   postgres_17_socket:
 
 networks:
   pste:
-    name: pste
+    name: "pste"
   caddy:
     external: true

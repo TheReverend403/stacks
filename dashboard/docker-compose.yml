@@ -1,90 +1,91 @@
+---
 services:
   grafana:
-    image: grafana/grafana:latest
-    container_name: grafana
-    restart: unless-stopped
+    image: "grafana/grafana:latest"
+    container_name: "grafana"
+    restart: "unless-stopped"
     init: true
-    user: ${GRAFANA_PUID:-${PUID:-1000}}:${GRAFANA_PGID:-${PGID:-1000}}
+    user: "${GRAFANA_PUID:-${PUID:-1000}}:${GRAFANA_PGID:-${PGID:-1000}}"
     depends_on:
-      - influxdb
+      - "influxdb"
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      GRAFANA_INFLUX_TOKEN: ${GRAFANA_INFLUX_TOKEN:-${INFLUX_TOKEN}}
-      GRAFANA_INFLUX_ORG: ${GRAFANA_INFLUX_ORG:-${INFLUX_ORG}}
-      GRAFANA_INFLUX_BUCKET: ${GRAFANA_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}
+      TZ: "UTC"
+      GRAFANA_INFLUX_TOKEN: "${GRAFANA_INFLUX_TOKEN:-${INFLUX_TOKEN}}"
+      GRAFANA_INFLUX_ORG: "${GRAFANA_INFLUX_ORG:-${INFLUX_ORG}}"
+      GRAFANA_INFLUX_BUCKET: "${GRAFANA_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}"
     volumes:
-      - ${BASE_DIR:-.}/data/grafana:/var/lib/grafana
-      - ${BASE_DIR:-.}/config/grafana:/etc/grafana
+      - "${BASE_DIR:-.}/data/grafana:/var/lib/grafana"
+      - "${BASE_DIR:-.}/config/grafana:/etc/grafana"
     networks:
-      - dashboard
-      - caddy
+      - "dashboard"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${GRAFANA_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${GRAFANA_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${GRAFANA_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${GRAFANA_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   influxdb:
-    image: influxdb:latest
-    container_name: influxdb
-    restart: unless-stopped
+    image: "influxdb:latest"
+    container_name: "influxdb"
+    restart: "unless-stopped"
     init: true
-    user: ${INFLUXDB_PUID:-${PUID:-1000}}:${INFLUXDB_PGID:-${PGID:-1000}}
+    user: "${INFLUXDB_PUID:-${PUID:-1000}}:${INFLUXDB_PGID:-${PGID:-1000}}"
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
+      TZ: "UTC"
     volumes:
-      - ${BASE_DIR:-.}/data/influxdb:/var/lib/influxdb2
-      - ${BASE_DIR:-.}/config/influxdb:/etc/influxdb2
+      - "${BASE_DIR:-.}/data/influxdb:/var/lib/influxdb2"
+      - "${BASE_DIR:-.}/config/influxdb:/etc/influxdb2"
     networks:
-      - dashboard
-      - caddy
+      - "dashboard"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${INFLUXDB_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${INFLUXDB_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${INFLUXDB_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${INFLUXDB_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   telegraf:
-    image: telegraf:latest
-    container_name: telegraf
-    restart: unless-stopped
+    image: "telegraf:latest"
+    container_name: "telegraf"
+    restart: "unless-stopped"
     init: true
-    user: ${TELEGRAF_PUID:-${PUID:-1000}}:${TELEGRAF_PGID:-${PGID:-1000}}
+    user: "${TELEGRAF_PUID:-${PUID:-1000}}:${TELEGRAF_PGID:-${PGID:-1000}}"
     depends_on:
-      - influxdb
+      - "influxdb"
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      TELEGRAF_INFLUX_TOKEN: ${TELEGRAF_INFLUX_TOKEN:-${INFLUX_TOKEN}}
-      TELEGRAF_INFLUX_ORG: ${TELEGRAF_INFLUX_ORG:-${INFLUX_ORG}}
-      TELEGRAF_INFLUX_BUCKET: ${TELEGRAF_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}
+      TZ: "UTC"
+      TELEGRAF_INFLUX_TOKEN: "${TELEGRAF_INFLUX_TOKEN:-${INFLUX_TOKEN}}"
+      TELEGRAF_INFLUX_ORG: "${TELEGRAF_INFLUX_ORG:-${INFLUX_ORG}}"
+      TELEGRAF_INFLUX_BUCKET: "${TELEGRAF_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${BASE_DIR:-.}/config/telegraf:/etc/telegraf/telegraf.d
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${BASE_DIR:-.}/config/telegraf:/etc/telegraf/telegraf.d"
     networks:
-      - dashboard
+      - "dashboard"
     deploy:
       resources:
         limits:
-          cpus: ${TELEGRAF_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${TELEGRAF_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${TELEGRAF_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${TELEGRAF_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   dashboard:
-    name: dashboard
+    name: "dashboard"
   caddy:
     external: true

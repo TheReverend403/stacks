@@ -1,85 +1,86 @@
+---
 services:
   diun:
-    image: crazymax/diun:latest
-    container_name: diun
-    command: serve
-    restart: unless-stopped
+    image: "crazymax/diun:latest"
+    container_name: "diun"
+    command: "serve"
+    restart: "unless-stopped"
     init: true
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      DIUN_NOTIF_TELEGRAM_CHATIDS: ${TELEGRAM_CHAT_ID:?}
-      DIUN_NOTIF_TELEGRAM_TOKEN: ${TELEGRAM_API_KEY:?}
+      TZ: "UTC"
+      DIUN_NOTIF_TELEGRAM_CHATIDS: "${TELEGRAM_CHAT_ID:?}"
+      DIUN_NOTIF_TELEGRAM_TOKEN: "${TELEGRAM_API_KEY:?}"
       DIUN_PROVIDERS_DOCKER: "true"
       DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
-      DIUN_WATCH_SCHEDULE: 0 */6 * * *
+      DIUN_WATCH_SCHEDULE: "0 */6 * * *"
       DIUN_WATCH_WORKERS: 4
       LOG_JSON: "false"
-      LOG_LEVEL: info
+      LOG_LEVEL: "info"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ${BASE_DIR:-.}/data/diun:/data
-      - ${BASE_DIR:-.}/config/diun:/etc/diun
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${BASE_DIR:-.}/data/diun:/data"
+      - "${BASE_DIR:-.}/config/diun:/etc/diun"
     networks:
-      - docker-monitoring
+      - "docker-monitoring"
     deploy:
       resources:
         limits:
-          cpus: ${DIUN_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${DIUN_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${DIUN_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${DIUN_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   telegram-notifier:
-    image: lorcas/docker-telegram-notifier:latest
-    container_name: docker-telegram-notifier
-    restart: unless-stopped
+    image: "lorcas/docker-telegram-notifier:latest"
+    container_name: "docker-telegram-notifier"
+    restart: "unless-stopped"
     init: true
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      TELEGRAM_NOTIFIER_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
-      TELEGRAM_NOTIFIER_CHAT_ID: ${TELEGRAM_CHAT_ID:?}
+      TZ: "UTC"
+      TELEGRAM_NOTIFIER_BOT_TOKEN: "${TELEGRAM_API_KEY:?}"
+      TELEGRAM_NOTIFIER_CHAT_ID: "${TELEGRAM_CHAT_ID:?}"
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
     networks:
-      - docker-monitoring
+      - "docker-monitoring"
     deploy:
       resources:
         limits:
-          cpus: ${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   smtp-to-telegram:
-    image: kostyaesmukov/smtp_to_telegram:latest
-    container_name: smtp_to_telegram
-    restart: unless-stopped
+    image: "kostyaesmukov/smtp_to_telegram:latest"
+    container_name: "smtp_to_telegram"
+    restart: "unless-stopped"
     init: true
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      ST_TELEGRAM_BOT_TOKEN: ${TELEGRAM_API_KEY:?}
-      ST_TELEGRAM_CHAT_IDS: ${TELEGRAM_CHAT_ID:?}
+      TZ: "UTC"
+      ST_TELEGRAM_BOT_TOKEN: "${TELEGRAM_API_KEY:?}"
+      ST_TELEGRAM_CHAT_IDS: "${TELEGRAM_CHAT_ID:?}"
     networks:
-      - docker-monitoring
+      - "docker-monitoring"
     ports:
-      - ${ST_HOST:-127.0.0.1}:2525:2525
+      - "${ST_HOST:-127.0.0.1}:2525:2525"
     deploy:
       resources:
         limits:
-          cpus: ${ST_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${ST_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${ST_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${ST_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   docker-monitoring:
-    name: docker-monitoring
+    name: "docker-monitoring"

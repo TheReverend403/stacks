@@ -1,47 +1,48 @@
+---
 services:
   caddy:
-    image: caddy-cloudflare:latest
-    container_name: caddy
-    restart: unless-stopped
+    image: "caddy-cloudflare:latest"
+    container_name: "caddy"
+    restart: "unless-stopped"
     init: true
-    user: ${CADDY_PUID:-${PUID:-1000}}:${CADDY_PGID:-${PGID:-1000}}
+    user: "${CADDY_PUID:-${PUID:-1000}}:${CADDY_PGID:-${PGID:-1000}}"
     read_only: true
     env_file:
-      - path: .env
+      - path: ".env"
         required: false
-      - path: stack.env
+      - path: "stack.env"
         required: false
     environment:
-      TZ: UTC
-      CF_API_TOKEN: ${CF_API_TOKEN:-}
+      TZ: "UTC"
+      CF_API_TOKEN: "${CF_API_TOKEN:-}"
     volumes:
-      - ${BASE_DIR:-.}/data:/data
-      - ${BASE_DIR:-.}/data/config:/config
-      - ${BASE_DIR:-.}/config:/etc/caddy
-      - /srv/www:/srv/www:ro
-      - /srv/pste/data/pste:/srv/pste/data:ro
-      - /srv/rehome/data/rehome:/srv/rehome/data:ro
-      - /srv/mediaserver/data/media:/srv/mediaserver/data/media:ro
+      - "${BASE_DIR:-.}/data:/data"
+      - "${BASE_DIR:-.}/data/config:/config"
+      - "${BASE_DIR:-.}/config:/etc/caddy"
+      - "/srv/www:/srv/www:ro"
+      - "/srv/pste/data/pste:/srv/pste/data:ro"
+      - "/srv/rehome/data/rehome:/srv/rehome/data:ro"
+      - "/srv/mediaserver/data/media:/srv/mediaserver/data/media:ro"
     networks:
-      - caddy
+      - "caddy"
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
     extra_hosts:
-      - host.docker.internal:host-gateway
-    build: .
-    pull_policy: build
+      - "host.docker.internal:host-gateway"
+    build: "."
+    pull_policy: "build"
     deploy:
       resources:
         limits:
-          cpus: ${CADDY_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${CADDY_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${CADDY_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${CADDY_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   caddy:
-    name: caddy
+    name: "caddy"
     enable_ipv6: true
     ipam:
       config:
-        - subnet: fd00:cafe:babe:1234::/64
+        - subnet: "fd00:cafe:babe:1234::/64"

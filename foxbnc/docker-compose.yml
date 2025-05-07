@@ -1,17 +1,18 @@
+---
 services:
   znc:
-    image: lscr.io/linuxserver/znc:latest
-    container_name: znc
-    restart: unless-stopped
-    network_mode: host
+    image: "lscr.io/linuxserver/znc:latest"
+    container_name: "znc"
+    restart: "unless-stopped"
+    network_mode: "host"
     environment:
-      TZ: UTC
-      PGID: ${ZNC_PGID:-${PGID:-1000}}
-      PUID: ${ZNC_PUID:-${PUID:-1000}}
+      TZ: "UTC"
+      PGID: "${ZNC_PGID:-${PGID:-1000}}"
+      PUID: "${ZNC_PUID:-${PUID:-1000}}"
     volumes:
-      - ${BASE_DIR:-.}/data:/config
+      - "${BASE_DIR:-.}/data:/config"
     deploy:
       resources:
         limits:
-          cpus: ${ZNC_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${ZNC_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${ZNC_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${ZNC_MEM_LIMIT:-${MEM_LIMIT:-0}}"

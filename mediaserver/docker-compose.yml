@@ -1,148 +1,149 @@
+---
 services:
   deluge:
-    image: linuxserver/deluge:latest
-    container_name: deluge
-    restart: unless-stopped
+    image: "linuxserver/deluge:latest"
+    container_name: "deluge"
+    restart: "unless-stopped"
     environment:
-      TZ: UTC
-      PGID: ${DELUGE_PGID:-${PGID:-1000}}
-      PUID: ${DELUGE_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
+      TZ: "UTC"
+      PGID: "${DELUGE_PGID:-${PGID:-1000}}"
+      PUID: "${DELUGE_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
     volumes:
-      - ${BASE_DIR:-.}/config/deluge:/config
-      - ${BASE_DIR:-.}/data/torrents/incomplete:/downloads
-      - ${BASE_DIR:-.}/data/torrents:/data/torrents
+      - "${BASE_DIR:-.}/config/deluge:/config"
+      - "${BASE_DIR:-.}/data/torrents/incomplete:/downloads"
+      - "${BASE_DIR:-.}/data/torrents:/data/torrents"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     ports:
-      - 6882:6882
-      - 6882:6882/udp
-      - ${DELUGE_REMOTE_HOST:-127.0.0.1}:${DELUGE_REMOTE_PORT:-58846}:58846
+      - "6882:6882"
+      - "6882:6882/udp"
+      - "${DELUGE_REMOTE_HOST:-127.0.0.1}:${DELUGE_REMOTE_PORT:-58846}:58846"
     deploy:
       resources:
         limits:
-          cpus: ${DELUGE_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${DELUGE_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${DELUGE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${DELUGE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   overseerr:
-    image: ghcr.io/hotio/overseerr:latest
-    container_name: overseerr
-    restart: unless-stopped
+    image: "ghcr.io/hotio/overseerr:latest"
+    container_name: "overseerr"
+    restart: "unless-stopped"
     depends_on:
-      - plex
-      - radarr
-      - sonarr
+      - "plex"
+      - "radarr"
+      - "sonarr"
     environment:
-      TZ: UTC
-      PGID: ${OVERSEERR_PGID:-${PGID:-1000}}
-      PUID: ${OVERSEERR_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
+      TZ: "UTC"
+      PGID: "${OVERSEERR_PGID:-${PGID:-1000}}"
+      PUID: "${OVERSEERR_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
     volumes:
-      - ${BASE_DIR:-.}/config/overseerr:/config
+      - "${BASE_DIR:-.}/config/overseerr:/config"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${OVERSEERR_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${OVERSEERR_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${OVERSEERR_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${OVERSEERR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   plex:
-    image: ghcr.io/hotio/plex:latest
-    container_name: plex
-    restart: unless-stopped
+    image: "ghcr.io/hotio/plex:latest"
+    container_name: "plex"
+    restart: "unless-stopped"
     environment:
-      TZ: UTC
-      PGID: ${PLEX_PGID:-${PGID:-1000}}
-      PUID: ${PLEX_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
-      VERSION: docker
-    env_file: .env
+      TZ: "UTC"
+      PGID: "${PLEX_PGID:-${PGID:-1000}}"
+      PUID: "${PLEX_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
+      VERSION: "docker"
+    env_file: ".env"
     volumes:
-      - ${BASE_DIR:-.}/config/plex:/config
-      - ${BASE_DIR:-.}/data/transcode:/transcode
-      - ${BASE_DIR:-.}/data/media:/media:ro
+      - "${BASE_DIR:-.}/config/plex:/config"
+      - "${BASE_DIR:-.}/data/transcode:/transcode"
+      - "${BASE_DIR:-.}/data/media:/media:ro"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${PLEX_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${PLEX_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${PLEX_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${PLEX_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   prowlarr:
-    image: ghcr.io/hotio/prowlarr:latest
-    container_name: prowlarr
-    restart: unless-stopped
+    image: "ghcr.io/hotio/prowlarr:latest"
+    container_name: "prowlarr"
+    restart: "unless-stopped"
     environment:
-      TZ: UTC
-      PGID: ${PROWLARR_PGID:-${PGID:-1000}}
-      PUID: ${PROWLARR_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
+      TZ: "UTC"
+      PGID: "${PROWLARR_PGID:-${PGID:-1000}}"
+      PUID: "${PROWLARR_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
     volumes:
-      - ${BASE_DIR:-.}/config/prowlarr:/config
+      - "${BASE_DIR:-.}/config/prowlarr:/config"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${PROWLARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${PROWLARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${PROWLARR_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${PROWLARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   radarr:
-    image: ghcr.io/hotio/radarr:latest
-    container_name: radarr
-    restart: unless-stopped
+    image: "ghcr.io/hotio/radarr:latest"
+    container_name: "radarr"
+    restart: "unless-stopped"
     depends_on:
-      - deluge
-      - prowlarr
+      - "deluge"
+      - "prowlarr"
     environment:
-      TZ: UTC
-      PGID: ${RADARR_PGID:-${PGID:-1000}}
-      PUID: ${RADARR_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
+      TZ: "UTC"
+      PGID: "${RADARR_PGID:-${PGID:-1000}}"
+      PUID: "${RADARR_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
     volumes:
-      - ${BASE_DIR:-.}/config/radarr:/config
-      - ${BASE_DIR:-.}/data:/data
+      - "${BASE_DIR:-.}/config/radarr:/config"
+      - "${BASE_DIR:-.}/data:/data"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${RADARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${RADARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${RADARR_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${RADARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   sonarr:
-    image: ghcr.io/hotio/sonarr:latest
-    container_name: sonarr
-    restart: unless-stopped
+    image: "ghcr.io/hotio/sonarr:latest"
+    container_name: "sonarr"
+    restart: "unless-stopped"
     depends_on:
-      - deluge
-      - prowlarr
+      - "deluge"
+      - "prowlarr"
     environment:
-      TZ: UTC
-      PGID: ${SONARR_PGID:-${PGID:-1000}}
-      PUID: ${SONARR_PUID:-${PUID:-1000}}
-      UMASK: ${UMASK:-007}
+      TZ: "UTC"
+      PGID: "${SONARR_PGID:-${PGID:-1000}}"
+      PUID: "${SONARR_PUID:-${PUID:-1000}}"
+      UMASK: "${UMASK:-007}"
     volumes:
-      - ${BASE_DIR:-.}/config/sonarr:/config
-      - ${BASE_DIR:-.}/data:/data
+      - "${BASE_DIR:-.}/config/sonarr:/config"
+      - "${BASE_DIR:-.}/data:/data"
     networks:
-      - mediaserver
-      - caddy
+      - "mediaserver"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${SONARR_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${SONARR_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${SONARR_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${SONARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   mediaserver:
-    name: mediaserver
+    name: "mediaserver"
   caddy:
     external: true

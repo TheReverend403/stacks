@@ -1,30 +1,31 @@
+---
 services:
   gentoogram-bot:
-    image: ghcr.io/thereverend403/gentoogram-bot:main
-    container_name: gentoogram-bot
-    restart: unless-stopped
+    image: "ghcr.io/thereverend403/gentoogram-bot:main"
+    container_name: "gentoogram-bot"
+    restart: "unless-stopped"
     init: true
     read_only: true
-    user: ${GENTOOGRAM_PUID:-${PUID:-1000}}:${GENTOOGRAM_PGID:-${PGID:-1000}}
-    env_file: .env
+    user: "${GENTOOGRAM_PUID:-${PUID:-1000}}:${GENTOOGRAM_PGID:-${PGID:-1000}}"
+    env_file: ".env"
     environment:
-      TZ: UTC
-      CFG_TELEGRAM__ADMINS: ${CFG_TELEGRAM__ADMINS:?}
-      CFG_TELEGRAM__CHAT_ID: ${CFG_TELEGRAM__CHAT_ID:?}
-      CFG_TELEGRAM__TOKEN: ${CFG_TELEGRAM__TOKEN:?}
+      TZ: "UTC"
+      CFG_TELEGRAM__ADMINS: "${CFG_TELEGRAM__ADMINS:?}"
+      CFG_TELEGRAM__CHAT_ID: "${CFG_TELEGRAM__CHAT_ID:?}"
+      CFG_TELEGRAM__TOKEN: "${CFG_TELEGRAM__TOKEN:?}"
     volumes:
-      - ${BASE_DIR:-.}/config:/config
+      - "${BASE_DIR:-.}/config:/config"
     networks:
-      - gentoogram-bot
-      - caddy
+      - "gentoogram-bot"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${GENTOOGRAM_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${GENTOOGRAM_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${GENTOOGRAM_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${GENTOOGRAM_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   gentoogram-bot:
-    name: gentoogram-bot
+    name: "gentoogram-bot"
   caddy:
     external: true

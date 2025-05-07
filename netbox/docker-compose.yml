@@ -1,148 +1,157 @@
+---
 services:
   netbox: &netbox
-    image: netboxcommunity/netbox:latest
-    container_name: netbox
-    restart: unless-stopped
-    user: ${NETBOX_PUID:-${PUID:-1000}}:${NETBOX_PGID:-${PGID:-1000}}
+    image: "netboxcommunity/netbox:latest"
+    container_name: "netbox"
+    restart: "unless-stopped"
+    user: "${NETBOX_PUID:-${PUID:-1000}}:${NETBOX_PGID:-${PGID:-1000}}"
     depends_on:
       db-17:
-        condition: service_healthy
+        condition: "service_healthy"
       redis:
-        condition: service_healthy
-    env_file: .env
+        condition: "service_healthy"
+    env_file: ".env"
     environment:
-      TZ: UTC
-      SECRET_KEY: ${SECRET_KEY:?}
-      MEDIA_ROOT: /opt/netbox/netbox/media
-      DB_HOST: ${POSTGRES_HOST:-/run/postgresql}
-      DB_NAME: ${POSTGRES_DB:-netbox}
-      DB_USER: ${POSTGRES_USER:-netbox}
-      DB_PASSWORD: ${POSTGRES_PASSWORD:-netbox}
-      REDIS_HOST: redis
+      TZ: "UTC"
+      SECRET_KEY: "${SECRET_KEY:?}"
+      MEDIA_ROOT: "/opt/netbox/netbox/media"
+      DB_HOST: "${POSTGRES_HOST:-/run/postgresql}"
+      DB_NAME: "${POSTGRES_DB:-netbox}"
+      DB_USER: "${POSTGRES_USER:-netbox}"
+      DB_PASSWORD: "${POSTGRES_PASSWORD:-netbox}"
+      REDIS_HOST: "redis"
     volumes:
-      - postgres_17_socket:/run/postgresql
-      - ${BASE_DIR:-.}/config/netbox:/etc/netbox/config:ro
-      - ${BASE_DIR:-.}/data/netbox/media:/opt/netbox/netbox/media
-      - ${BASE_DIR:-.}/data/netbox/reports:/opt/netbox/netbox/reports
-      - ${BASE_DIR:-.}/data/netbox/scripts:/opt/netbox/netbox/scripts
-      - ${BASE_DIR:-.}/data/unit:/opt/unit
+      - "postgres_17_socket:/run/postgresql"
+      - "${BASE_DIR:-.}/config/netbox:/etc/netbox/config:ro"
+      - "${BASE_DIR:-.}/data/netbox/media:/opt/netbox/netbox/media"
+      - "${BASE_DIR:-.}/data/netbox/reports:/opt/netbox/netbox/reports"
+      - "${BASE_DIR:-.}/data/netbox/scripts:/opt/netbox/netbox/scripts"
+      - "${BASE_DIR:-.}/data/unit:/opt/unit"
     networks:
-      - netbox
-      - caddy
+      - "netbox"
+      - "caddy"
     healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:8080/api || exit 1"]
-      start_period: 60s
-      start_interval: 5s
-      interval: 10s
-      timeout: 5s
+      test:
+        - "CMD-SHELL"
+        - "curl -f http://localhost:8080/api || exit 1"
+      start_period: "60s"
+      start_interval: "5s"
+      interval: "10s"
+      timeout: "5s"
     deploy:
       resources:
         limits:
-          cpus: ${NETBOX_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${NETBOX_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${NETBOX_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${NETBOX_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   netbox_rqworker:
     <<: *netbox
-    container_name: netbox_rqworker
+    container_name: "netbox_rqworker"
     depends_on:
       netbox:
-        condition: service_healthy
-    command: python manage.py rqworker
+        condition: "service_healthy"
+    command: "python manage.py rqworker"
     networks:
-      - netbox
+      - "netbox"
     healthcheck:
-      test: ["CMD-SHELL", "ps -aux | grep -v grep | grep -q rqworker || exit 1"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
+      test:
+        - "CMD-SHELL"
+        - "ps -aux | grep -v grep | grep -q rqworker || exit 1"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
 
   netbox_housekeeping:
     <<: *netbox
-    container_name: netbox_housekeeping
+    container_name: "netbox_housekeeping"
     depends_on:
       netbox:
-        condition: service_healthy
+        condition: "service_healthy"
     command:
-      - /opt/netbox/housekeeping.sh
+      - "/opt/netbox/housekeeping.sh"
     networks:
-      - netbox
+      - "netbox"
     healthcheck:
       test:
-        ["CMD-SHELL", "ps -aux | grep -v grep | grep -q housekeeping || exit 1"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
+        - "CMD-SHELL"
+        - "ps -aux | grep -v grep | grep -q housekeeping || exit 1"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
 
   db-17:
-    image: postgres:17-alpine
-    container_name: netbox_db_17
-    restart: unless-stopped
-    user: ${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}
-    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+    image: "postgres:17-alpine"
+    container_name: "netbox_db_17"
+    restart: "unless-stopped"
+    user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql/postgresql.conf"
     network_mode: "none"
     environment:
-      TZ: UTC
-      POSTGRES_HOST: /run/postgresql
-      POSTGRES_DB: netbox
-      POSTGRES_USER: netbox
-      POSTGRES_PASSWORD: netbox
+      TZ: "UTC"
+      POSTGRES_HOST: "/run/postgresql"
+      POSTGRES_DB: "netbox"
+      POSTGRES_USER: "netbox"
+      POSTGRES_PASSWORD: "netbox"
     volumes:
-      - ${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data
-      - ${BASE_DIR:-.}/config/db/17:/etc/postgresql
-      - postgres_17_socket:/run/postgresql
+      - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
+      - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"
+      - "postgres_17_socket:/run/postgresql"
     tmpfs:
-      - /run
+      - "/run"
     healthcheck:
       test:
-        [
-          "CMD-SHELL",
-          "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST",
-        ]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
-    shm_size: ${SHM_SIZE:-512M}
+        - "CMD-SHELL"
+        - "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
+    shm_size: "${SHM_SIZE:-512M}"
     deploy:
       resources:
         limits:
-          cpus: ${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   redis:
-    image: valkey/valkey:latest
-    container_name: netbox_redis
+    image: "valkey/valkey:latest"
+    container_name: "netbox_redis"
     command:
-      - --dir /data
-      - --appendonly yes
-    restart: unless-stopped
+      - "--dir /data"
+      - "--appendonly yes"
+    restart: "unless-stopped"
     init: true
-    user: ${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}
+    user: "${REDIS_PUID:-${PUID:-1000}}:${REDIS_PGID:-${PGID:-1000}}"
     networks:
-      - netbox
+      - "netbox"
     environment:
-      TZ: UTC
+      TZ: "UTC"
     volumes:
-      - ${BASE_DIR:-.}/data/redis:/data
+      - "${BASE_DIR:-.}/data/redis:/data"
     healthcheck:
-      test: ["CMD-SHELL", "valkey-cli ping | grep PONG"]
-      start_period: 10s
-      start_interval: 1s
-      interval: 10s
-      timeout: 5s
+      test:
+        - "CMD-SHELL"
+        - "valkey-cli ping | grep PONG"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
     deploy:
       resources:
         limits:
-          cpus: ${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}
-          memory: ${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}
+          cpus: "${REDIS_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 volumes:
   postgres_17_socket:
 
 networks:
   netbox:
-    name: netbox
+    name: "netbox"
   caddy:
     external: true

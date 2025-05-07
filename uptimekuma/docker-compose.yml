@@ -1,26 +1,27 @@
+---
 services:
   uptime-kuma:
-    image: louislam/uptime-kuma:latest
-    container_name: uptime-kuma
-    restart: unless-stopped
-    env_file: .env
+    image: "louislam/uptime-kuma:latest"
+    container_name: "uptime-kuma"
+    restart: "unless-stopped"
+    env_file: ".env"
     environment:
-      TZ: UTC
-      PUID: ${PUID:-1000}
-      PGID: ${PGID:-1000}
+      TZ: "UTC"
+      PUID: "${PUID:-1000}"
+      PGID: "${PGID:-1000}"
     volumes:
-      - ${BASE_DIR:-.}/data:/app/data
+      - "${BASE_DIR:-.}/data:/app/data"
     networks:
-      - uptime-kuma
-      - caddy
+      - "uptime-kuma"
+      - "caddy"
     deploy:
       resources:
         limits:
-          cpus: ${CPU_LIMIT:-0}
-          memory: ${MEM_LIMIT:-0}
+          cpus: "${CPU_LIMIT:-0}"
+          memory: "${MEM_LIMIT:-0}"
 
 networks:
   uptime-kuma:
-    name: uptime-kuma
+    name: "uptime-kuma"
   caddy:
     external: true
