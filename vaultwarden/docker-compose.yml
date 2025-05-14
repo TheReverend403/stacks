@@ -27,6 +27,14 @@ services:
         limits:
           cpus: "${VAULTWARDEN_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${VAULTWARDEN_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+    healthcheck:
+      test:
+        - "CMD"
+        - "/healthcheck.sh"
+      start_period: "10s"
+      start_interval: "1s"
+      interval: "10s"
+      timeout: "5s"
 
   db-17:
     image: "postgres:17-alpine"
