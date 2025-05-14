@@ -3,7 +3,7 @@ services:
   vaultwarden:
     image: "vaultwarden/server:latest"
     container_name: "vaultwarden"
-    restart: "no"
+    restart: "unless-stopped"
     init: true
     read_only: true
     user: "${VAULTWARDEN_PUID:-${PUID:-1000}}:${VAULTWARDEN_PGID:-${PGID:-1000}}"
