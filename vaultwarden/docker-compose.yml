@@ -14,8 +14,6 @@ services:
     environment:
       TZ: "UTC"
       DATABASE_URL: "postgresql://${POSTGRES_USER:-vaultwarden}:${POSTGRES_PASSWORD:-vaultwarden}@/${POSTGRES_DB:-vaultwarden}?host=${POSTGRES_HOST:-/run/postgresql}"
-      LOG_LEVEL: "info"
-      EXTENDED_LOGGING: false
     volumes:
       - "postgres_17_socket:/run/postgresql"
       - "${BASE_DIR:-.}/data/vaultwarden:/data"
