@@ -1,7 +1,7 @@
 ---
 services:
   deluge:
-    image: "linuxserver/deluge:latest"
+    image: "gchr.io/linuxserver/deluge:latest"
     container_name: "deluge"
     restart: "unless-stopped"
     environment:
@@ -27,7 +27,7 @@ services:
           memory: "${DELUGE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   overseerr:
-    image: "ghcr.io/hotio/overseerr:latest"
+    image: "ghcr.io/linuxserver/overseerr:latest"
     container_name: "overseerr"
     restart: "unless-stopped"
     depends_on:
@@ -51,7 +51,7 @@ services:
           memory: "${OVERSEERR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   plex:
-    image: "ghcr.io/hotio/plex:latest"
+    image: "ghcr.io/linuxserver/plex:latest"
     container_name: "plex"
     restart: "unless-stopped"
     environment:
@@ -75,7 +75,7 @@ services:
           memory: "${PLEX_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   prowlarr:
-    image: "ghcr.io/hotio/prowlarr:latest"
+    image: "ghcr.io/linuxserver/prowlarr:latest"
     container_name: "prowlarr"
     restart: "unless-stopped"
     environment:
@@ -95,7 +95,7 @@ services:
           memory: "${PROWLARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   radarr:
-    image: "ghcr.io/hotio/radarr:latest"
+    image: "ghcr.io/linuxserver/radarr:latest"
     container_name: "radarr"
     restart: "unless-stopped"
     depends_on:
@@ -119,7 +119,7 @@ services:
           memory: "${RADARR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   sonarr:
-    image: "ghcr.io/hotio/sonarr:latest"
+    image: "ghcr.io/linuxserver/sonarr:latest"
     container_name: "sonarr"
     restart: "unless-stopped"
     depends_on:
