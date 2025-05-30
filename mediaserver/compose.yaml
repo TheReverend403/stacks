@@ -1,7 +1,7 @@
 ---
 services:
   deluge:
-    image: "gchr.io/linuxserver/deluge:latest"
+    image: "ghcr.io/linuxserver/deluge:latest"
     container_name: "deluge"
     restart: "unless-stopped"
     environment:
