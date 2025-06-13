@@ -51,7 +51,7 @@ services:
           memory: "${OVERSEERR_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   plex:
-    image: "ghcr.io/hotio/plex:latest"
+    image: "ghcr.io/linuxserver/plex:latest"
     container_name: "plex"
     restart: "unless-stopped"
     environment:
