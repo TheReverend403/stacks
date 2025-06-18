@@ -61,7 +61,7 @@ services:
       VERSION: "docker"
     env_file: ".env"
     volumes:
-      - "${BASE_DIR:-.}/config/plex:/config"
+      - "${BASE_DIR:-.}/config/plex:/config/Library/Application Support/Plex Media Server"
       - "${BASE_DIR:-.}/data/media:/media:ro"
     tmpfs:
       - "/transcode:uid=${PLEX_PUID:-${PUID:-1000}},gid=${PLEX_PGID:-${PGID:-1000}},size=${PLEX_TRANSCODE_TMPFS_SIZE:-2G}"
