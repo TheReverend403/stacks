@@ -10,7 +10,9 @@ services:
         condition: "service_healthy"
     stdin_open: true
     tty: true
-    env_file: ".env"
+    env_file:
+      - path: ".env"
+        required: false
     environment:
       TZ: "UTC"
       ENABLE_RCON: "true"
@@ -41,7 +43,9 @@ services:
     user: "${SERVER_PUID:-${PUID:-1000}}:${SERVER_PGID:-${PGID:-1000}}"
     stdin_open: true
     tty: true
-    env_file: ".env"
+    env_file:
+      - path: ".env"
+        required: false
     environment:
       TZ: "UTC"
       ENABLE_ROLLING_LOGS: "true"
@@ -65,6 +69,31 @@ services:
         limits:
           cpus: "${SERVER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${SERVER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+  db:
+    image: "mariadb:latest"
+    container_name: "minecraft_db"
+    restart: "unless-stopped"
+    init: true
+    user: "${MARIADB_PUID:-${PUID:-1000}}:${MARIADB_PGID:-${PGID:-1000}}"
+    networks:
+      - "minecraft"
+    env_file:
+      - path: ".env"
+        required: false
+    environment:
+      TZ: "UTC"
+      MARIADB_DATABASE: "minecraft"
+      MARIADB_USER: "minecraft"
+      MARIADB_PASSWORD: "minecraft"
+      MARIADB_ROOT_PASSWORD: "minecraft"
+    volumes:
+      - "${BASE_DIR:-.}/data/db:/var/lib/mysql"
+    deploy:
+      resources:
+        limits:
+          cpus: "${MARIADB_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${MARIADB_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   minecraft:
