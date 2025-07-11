@@ -1,0 +1,35 @@
+---
+services:
+  frigate:
+    image: "ghcr.io/blakeblackshear/frigate:stable"
+    container_name: "frigate"
+    restart: "unless-stopped"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    environment:
+      TZ: "UTC"
+    volumes:
+      - "${BASE_DIR:-.}/config/frigate:/config"
+      - "${BASE_DIR:-.}/data/frigate:/media/frigate"
+    tmpfs:
+      - "/tmp/cache:size=${FRIGATE_TMPFS_SIZE:-1G}"
+      - "/dev/shm:size=${FRIGATE_SHM_SIZE:-512M}"
+    networks:
+      - "frigate"
+      - "caddy"
+    labels:
+      - "diun.regopt=ghcr"
+    deploy:
+      resources:
+        limits:
+          cpus: "${FRIGATE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${FRIGATE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+networks:
+  frigate:
+    name: "frigate"
+  caddy:
+    external: true
