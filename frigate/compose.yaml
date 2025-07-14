@@ -17,6 +17,8 @@ services:
     tmpfs:
       - "/tmp/cache:size=${FRIGATE_TMPFS_SIZE:-1G}"
       - "/dev/shm:size=${FRIGATE_SHM_SIZE:-512M}"
+    ports:
+      - "${FRIGATE_TAILSCALE_IP}:8554:8554"
     networks:
       - "frigate"
       - "caddy"
@@ -27,6 +29,35 @@ services:
         limits:
           cpus: "${FRIGATE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${FRIGATE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+  mosquitto:
+    image: "eclipse-mosquitto:latest"
+    container_name: "frigate_mosquitto"
+    restart: "unless-stopped"
+    init: true
+    read_only: true
+    user: "${MOSQUITTO_PUID:-${PUID:-1000}}:${MOSQUITTO_PGID:-${PGID:-1000}}"
+    environment:
+      TZ: "UTC"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    volumes:
+      - "${BASE_DIR:-.}/config/mosquitto:/mosquitto/config"
+      - "${BASE_DIR:-.}/data/mosquitto:/mosquitto/data"
+      - "${BASE_DIR:-.}/data/mosquitto/logs:/mosquitto/log"
+    ports:
+      - "${FRIGATE_TAILSCALE_IP}:1883:1883"
+      - "${FRIGATE_TAILSCALE_IP}:8883:8883"
+    networks:
+      - "frigate"
+    deploy:
+      resources:
+        limits:
+          cpus: "${MOSQUITTO_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${MOSQUITTO_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
   frigate:
