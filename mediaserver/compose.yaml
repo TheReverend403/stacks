@@ -155,7 +155,7 @@ services:
       UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/tautulli:/config"
-      - "${BASE_DIR:-.}/config/plex/Library/Application Support/Plex Media Server:/plex_logs:ro"
+      - "${BASE_DIR:-.}/config/plex/Library/Application Support/Plex Media Server/Logs:/plex_logs:ro"
     networks:
       - "mediaserver"
       - "caddy"
