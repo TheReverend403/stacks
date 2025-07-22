@@ -57,30 +57,6 @@ services:
           cpus: "${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  smtp-to-telegram:
-    image: "kostyaesmukov/smtp_to_telegram:latest"
-    container_name: "smtp_to_telegram"
-    restart: "unless-stopped"
-    init: true
-    env_file:
-      - path: ".env"
-        required: false
-      - path: "stack.env"
-        required: false
-    environment:
-      TZ: "UTC"
-      ST_TELEGRAM_BOT_TOKEN: "${TELEGRAM_API_KEY:?}"
-      ST_TELEGRAM_CHAT_IDS: "${TELEGRAM_CHAT_ID:?}"
-    networks:
-      - "docker-monitoring"
-    ports:
-      - "${ST_HOST:-127.0.0.1}:2525:2525"
-    deploy:
-      resources:
-        limits:
-          cpus: "${ST_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${ST_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
 networks:
   docker-monitoring:
     name: "docker-monitoring"
