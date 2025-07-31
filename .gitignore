@@ -1,6 +1,8 @@
 config/
 data/
 
+compose.override.yaml
+
 .vscode/
 .idea/
 
