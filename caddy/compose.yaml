@@ -6,6 +6,8 @@ services:
     restart: "unless-stopped"
     init: true
     user: "${CADDY_PUID:-${PUID:-1000}}:${CADDY_PGID:-${PGID:-1000}}"
+    build: "."
+    pull_policy: "build"
     read_only: true
     env_file:
       - path: ".env"
@@ -19,20 +21,12 @@ services:
       - "${BASE_DIR:-.}/data:/data"
       - "${BASE_DIR:-.}/data/config:/config"
       - "${BASE_DIR:-.}/config:/etc/caddy"
-      - "/srv/www:/srv/www:ro"
-      - "/srv/pste/data/pste:/srv/pste/data:ro"
-      - "/srv/rehome/data/rehome:/srv/rehome/data:ro"
-      - "/srv/mediaserver/data/media:/srv/mediaserver/data/media:ro"
     networks:
       - "caddy"
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    build: "."
-    pull_policy: "build"
     deploy:
       resources:
         limits:
