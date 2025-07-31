@@ -18,7 +18,6 @@ services:
     ports:
       - "6882:6882"
       - "6882:6882/udp"
-      - "${DELUGE_REMOTE_HOST:-127.0.0.1}:${DELUGE_REMOTE_PORT:-58846}:58846"
     deploy:
       resources:
         limits:
