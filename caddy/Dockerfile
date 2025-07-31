@@ -8,10 +8,6 @@ RUN --mount=type=cache,target=${GOPATH}/pkg/mod \
 
 FROM caddy:latest AS caddy-cloudflare
 
-# For healthchecks
-RUN --mount=type=cache,target=/var/cache/apk,sharing=private \
-    apk --update add curl
-
 COPY docker/rootfs /
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
