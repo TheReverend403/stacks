@@ -16,8 +16,6 @@ services:
       - "${BASE_DIR:-.}/data/vaultwarden:/data"
     networks:
       - "vaultwarden"
-    ports:
-      - "8080:8080"
     deploy:
       resources:
         limits:
