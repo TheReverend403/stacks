@@ -4,8 +4,7 @@ services:
     image: "ghcr.io/blakeblackshear/frigate:stable"
     container_name: "frigate"
     restart: "unless-stopped"
-    depends_on:
-      - "mosquitto"
+    privileged: true
     env_file:
       - path: ".env"
         required: false
@@ -14,16 +13,18 @@ services:
     environment:
       TZ: "UTC"
     volumes:
-      - "${BASE_DIR:-.}/config/frigate:/config"
-      - "${BASE_DIR:-.}/data/frigate:/media/frigate"
+      - "${BASE_DIR:-.}/config:/config"
+      - "${BASE_DIR:-.}/data:/media/frigate"
     tmpfs:
-      - "/tmp/cache:size=${FRIGATE_TMPFS_SIZE:-1G}"
       - "/dev/shm:size=${FRIGATE_SHM_SIZE:-512M}"
-    ports:
-      - "${FRIGATE_TAILSCALE_IP}:8554:8554"
     networks:
       - "frigate"
-      - "caddy"
+    ports:
+      - 8971:8971
+      # - "5000:5000"  # Internal unauthenticated access. Expose carefully.
+      - 8554:8554  # RTSP feeds
+      - 8555:8555/tcp  # WebRTC over tcp
+      - 8555:8555/udp  # WebRTC over udp
     labels:
       - "diun.regopt=ghcr"
     deploy:
@@ -32,37 +33,6 @@ services:
           cpus: "${FRIGATE_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${FRIGATE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  mosquitto:
-    image: "eclipse-mosquitto:latest"
-    container_name: "frigate_mosquitto"
-    restart: "unless-stopped"
-    init: true
-    read_only: true
-    user: "${MOSQUITTO_PUID:-${PUID:-1000}}:${MOSQUITTO_PGID:-${PGID:-1000}}"
-    environment:
-      TZ: "UTC"
-    env_file:
-      - path: ".env"
-        required: false
-      - path: "stack.env"
-        required: false
-    volumes:
-      - "${BASE_DIR:-.}/config/mosquitto:/mosquitto/config"
-      - "${BASE_DIR:-.}/data/mosquitto:/mosquitto/data"
-      - "${BASE_DIR:-.}/data/mosquitto/logs:/mosquitto/log"
-    ports:
-      - "${FRIGATE_TAILSCALE_IP}:1883:1883"
-      - "${FRIGATE_TAILSCALE_IP}:8883:8883"
-    networks:
-      - "frigate"
-    deploy:
-      resources:
-        limits:
-          cpus: "${MOSQUITTO_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${MOSQUITTO_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
 networks:
   frigate:
     name: "frigate"
-  caddy:
-    external: true
