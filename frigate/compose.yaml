@@ -17,6 +17,7 @@ services:
       - "${BASE_DIR:-.}/data:/media/frigate"
     tmpfs:
       - "/dev/shm:size=${FRIGATE_SHM_SIZE:-512M}"
+      - "/tmp/cache:size=${FRIGATE_TMPFS_SIZE:-1G}"
     networks:
       - "frigate"
     ports:
