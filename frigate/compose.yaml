@@ -11,7 +11,7 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
     volumes:
       - "${BASE_DIR:-.}/config:/config"
       - "${BASE_DIR:-.}/data:/media/frigate"
