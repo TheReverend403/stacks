@@ -6,6 +6,9 @@ services:
     restart: "unless-stopped"
     cap_add:
       - "CAP_PERFMON"
+    security_opt:
+      - "apparmor=unconfined"
+      - "systempaths=unconfined"
     env_file:
       - path: ".env"
         required: false
