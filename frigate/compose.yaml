@@ -19,6 +19,8 @@ services:
     tmpfs:
       - "/dev/shm:size=${FRIGATE_SHM_SIZE:-512M}"
       - "/tmp/cache:size=${FRIGATE_TMPFS_SIZE:-1G}"
+    devices:
+      - "/dev/dri:/dev/dri"
     networks:
       - "frigate"
     ports:
