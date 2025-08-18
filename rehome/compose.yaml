@@ -7,9 +7,13 @@ services:
     init: true
     read_only: true
     user: "${REHOME_PUID:-${PUID:-1000}}:${REHOME_PGID:-${PGID:-1000}}"
-    env_file: ".env"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       CFG_SECRET_KEY: "${CFG_SECRET_KEY:?}"
     volumes:
       - "${BASE_DIR:-.}/config/rehome:/config"

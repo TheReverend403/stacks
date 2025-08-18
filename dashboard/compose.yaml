@@ -14,7 +14,7 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       GRAFANA_INFLUX_TOKEN: "${GRAFANA_INFLUX_TOKEN:-${INFLUX_TOKEN}}"
       GRAFANA_INFLUX_ORG: "${GRAFANA_INFLUX_ORG:-${INFLUX_ORG}}"
       GRAFANA_INFLUX_BUCKET: "${GRAFANA_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}"
@@ -42,7 +42,7 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
     volumes:
       - "${BASE_DIR:-.}/data/influxdb:/var/lib/influxdb2"
       - "${BASE_DIR:-.}/config/influxdb:/etc/influxdb2"
@@ -69,7 +69,7 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       TELEGRAF_INFLUX_TOKEN: "${TELEGRAF_INFLUX_TOKEN:-${INFLUX_TOKEN}}"
       TELEGRAF_INFLUX_ORG: "${TELEGRAF_INFLUX_ORG:-${INFLUX_ORG}}"
       TELEGRAF_INFLUX_BUCKET: "${TELEGRAF_INFLUX_BUCKET:-${INFLUX_BUCKET:-telegraf}}"

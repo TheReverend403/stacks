@@ -16,15 +16,15 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       CFG_BOT_NICK: "${CFG_BOT_NICK:?}"
-      CFG_BOT_REALNAME: "cappuccino"
-      CFG_BOT_USERNAME: "cappuccino"
+      CFG_BOT_REALNAME: "${CFG_BOT_REALNAME:-cappuccino}"
+      CFG_BOT_USERNAME: "${CFG_BOT_USERNAME:-cappuccino}"
       CFG_IRC_HOST: "${CFG_IRC_HOST:?}"
-      CFG_IRC_PORT: 6697
-      CFG_IRC_SSL: true
+      CFG_IRC_PORT: "${CFG_IRC_PORT:-6697}"
+      CFG_IRC_SSL: "${CFG_IRC_SSL:-true}"
       CFG_BOT_ADMIN: "${CFG_BOT_ADMIN:?}"
-      CFG_DB_URI: "postgresql://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}"
+      CFG_DB_URI: "${CFG_DB_URI:-postgresql://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
     volumes:
       - "postgres_17_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/cappuccino:/config"
@@ -51,11 +51,11 @@ services:
       - "config_file=/etc/postgresql/postgresql.conf"
     network_mode: "none"
     environment:
-      TZ: "UTC"
-      POSTGRES_HOST: "/run/postgresql"
-      POSTGRES_DB: "cappuccino"
-      POSTGRES_USER: "cappuccino"
-      POSTGRES_PASSWORD: "cappuccino"
+      TZ: "${TZ:-UTC}"
+      POSTGRES_HOST: "${POSTGRES_HOST:-/run/postgresql}"
+      POSTGRES_DB: "${POSTGRES_DB:-cappuccino}"
+      POSTGRES_USER: "${POSTGRES_USER:-cappuccino}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-cappuccino}"
     volumes:
       - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
       - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"

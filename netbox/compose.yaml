@@ -10,16 +10,20 @@ services:
         condition: "service_healthy"
       redis:
         condition: "service_healthy"
-    env_file: ".env"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       SECRET_KEY: "${SECRET_KEY:?}"
-      MEDIA_ROOT: "/opt/netbox/netbox/media"
+      MEDIA_ROOT: "${MEDIA_ROOT:-/opt/netbox/netbox/media}"
       DB_HOST: "${POSTGRES_HOST:-/run/postgresql}"
       DB_NAME: "${POSTGRES_DB:-netbox}"
       DB_USER: "${POSTGRES_USER:-netbox}"
       DB_PASSWORD: "${POSTGRES_PASSWORD:-netbox}"
-      REDIS_HOST: "redis"
+      REDIS_HOST: "${REDIS_HOST:-redis}"
     volumes:
       - "postgres_17_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/netbox:/etc/netbox/config:ro"
@@ -92,11 +96,11 @@ services:
       - "config_file=/etc/postgresql/postgresql.conf"
     network_mode: "none"
     environment:
-      TZ: "UTC"
-      POSTGRES_HOST: "/run/postgresql"
-      POSTGRES_DB: "netbox"
-      POSTGRES_USER: "netbox"
-      POSTGRES_PASSWORD: "netbox"
+      TZ: "${TZ:-UTC}"
+      POSTGRES_HOST: "${POSTGRES_HOST:-/run/postgresql}"
+      POSTGRES_DB: "${POSTGRES_DB:-netbox}"
+      POSTGRES_USER: "${POSTGRES_USER:-netbox}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-netbox}"
     volumes:
       - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
       - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"
@@ -130,7 +134,7 @@ services:
     networks:
       - "netbox"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
     volumes:
       - "${BASE_DIR:-.}/data/redis:/data"
     healthcheck:

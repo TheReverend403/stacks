@@ -5,8 +5,13 @@ services:
     container_name: "znc"
     restart: "unless-stopped"
     network_mode: "host"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${ZNC_PGID:-${PGID:-1000}}"
       PUID: "${ZNC_PUID:-${PUID:-1000}}"
     volumes:

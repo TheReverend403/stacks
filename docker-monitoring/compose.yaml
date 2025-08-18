@@ -6,21 +6,16 @@ services:
     command: "serve"
     restart: "unless-stopped"
     init: true
-    env_file:
-      - path: ".env"
-        required: false
-      - path: "stack.env"
-        required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       DIUN_NOTIF_TELEGRAM_CHATIDS: "${TELEGRAM_CHAT_ID:?}"
       DIUN_NOTIF_TELEGRAM_TOKEN: "${TELEGRAM_API_KEY:?}"
-      DIUN_PROVIDERS_DOCKER: "true"
-      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
-      DIUN_WATCH_SCHEDULE: "0 */6 * * *"
-      DIUN_WATCH_WORKERS: 4
-      LOG_JSON: "false"
-      LOG_LEVEL: "info"
+      DIUN_PROVIDERS_DOCKER: "${DIUN_PROVIDERS_DOCKER:-true}"
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "${DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT:-true}"
+      DIUN_WATCH_SCHEDULE: "${DIUN_WATCH_SCHEDULE:-0 */6 * * *}"
+      DIUN_WATCH_WORKERS: "${DIUN_WATCH_WORKERS:-4}"
+      LOG_JSON: "${LOG_JSON:-false}"
+      LOG_LEVEL: "${LOG_LEVEL:-info}"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "${BASE_DIR:-.}/data/diun:/data"
@@ -38,13 +33,8 @@ services:
     container_name: "docker-telegram-notifier"
     restart: "unless-stopped"
     init: true
-    env_file:
-      - path: ".env"
-        required: false
-      - path: "stack.env"
-        required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       TELEGRAM_NOTIFIER_BOT_TOKEN: "${TELEGRAM_API_KEY:?}"
       TELEGRAM_NOTIFIER_CHAT_ID: "${TELEGRAM_CHAT_ID:?}"
     volumes:

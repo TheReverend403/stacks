@@ -5,7 +5,7 @@ services:
     container_name: "deluge"
     restart: "unless-stopped"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${DELUGE_PGID:-${PGID:-1000}}"
       PUID: "${DELUGE_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -33,7 +33,7 @@ services:
       - "radarr"
       - "sonarr"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${OVERSEERR_PGID:-${PGID:-1000}}"
       PUID: "${OVERSEERR_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -53,7 +53,7 @@ services:
     container_name: "plex"
     restart: "unless-stopped"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${PLEX_PGID:-${PGID:-1000}}"
       PUID: "${PLEX_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -78,7 +78,7 @@ services:
     container_name: "prowlarr"
     restart: "unless-stopped"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${PROWLARR_PGID:-${PGID:-1000}}"
       PUID: "${PROWLARR_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -101,7 +101,7 @@ services:
       - "deluge"
       - "prowlarr"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${RADARR_PGID:-${PGID:-1000}}"
       PUID: "${RADARR_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -125,7 +125,7 @@ services:
       - "deluge"
       - "prowlarr"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${SONARR_PGID:-${PGID:-1000}}"
       PUID: "${SONARR_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"
@@ -148,7 +148,7 @@ services:
     depends_on:
       - "plex"
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       PGID: "${TAUTULLI_PGID:-${PGID:-1000}}"
       PUID: "${TAUTULLI_PUID:-${PUID:-1000}}"
       UMASK: "${UMASK:-007}"

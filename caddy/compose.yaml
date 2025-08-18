@@ -15,7 +15,7 @@ services:
       - path: "stack.env"
         required: false
     environment:
-      TZ: "UTC"
+      TZ: "${TZ:-UTC}"
       CF_API_TOKEN: "${CF_API_TOKEN:-}"
     volumes:
       - "${BASE_DIR:-.}/data:/data"
