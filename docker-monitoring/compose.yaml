@@ -6,6 +6,11 @@ services:
     command: "serve"
     restart: "unless-stopped"
     init: true
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       DIUN_NOTIF_TELEGRAM_CHATIDS: "${TELEGRAM_CHAT_ID:?}"
