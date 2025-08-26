@@ -30,7 +30,6 @@ services:
       - "/tmp"
     networks:
       - "pste"
-      - "caddy"
     labels:
       - "diun.regopt=ghcr"
     deploy:
@@ -112,5 +111,3 @@ volumes:
 networks:
   pste:
     name: "pste"
-  caddy:
-    external: true

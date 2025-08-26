@@ -39,7 +39,6 @@ services:
       - "/tmp"
     networks:
       - "gitea"
-      - "caddy"
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -127,5 +126,3 @@ volumes:
 networks:
   gitea:
     name: "gitea"
-  caddy:
-    external: true

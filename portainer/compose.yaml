@@ -17,7 +17,6 @@ services:
       - "${BASE_DIR:-.}/data:/data"
     networks:
       - "portainer"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -27,5 +26,3 @@ services:
 networks:
   portainer:
     name: "portainer"
-  caddy:
-    external: true

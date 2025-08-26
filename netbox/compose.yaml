@@ -33,7 +33,6 @@ services:
       - "${BASE_DIR:-.}/data/unit:/opt/unit"
     networks:
       - "netbox"
-      - "caddy"
     healthcheck:
       test:
         - "CMD-SHELL"
@@ -157,5 +156,3 @@ volumes:
 networks:
   netbox:
     name: "netbox"
-  caddy:
-    external: true

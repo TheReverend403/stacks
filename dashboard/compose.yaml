@@ -23,7 +23,6 @@ services:
       - "${BASE_DIR:-.}/config/grafana:/etc/grafana"
     networks:
       - "dashboard"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -48,7 +47,6 @@ services:
       - "${BASE_DIR:-.}/config/influxdb:/etc/influxdb2"
     networks:
       - "dashboard"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -87,5 +85,3 @@ services:
 networks:
   dashboard:
     name: "dashboard"
-  caddy:
-    external: true

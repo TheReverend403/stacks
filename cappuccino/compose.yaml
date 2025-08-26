@@ -32,7 +32,6 @@ services:
       - "/tmp"
     networks:
       - "cappuccino"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -83,5 +82,3 @@ volumes:
 networks:
   cappuccino:
     name: "cappuccino"
-  caddy:
-    external: true

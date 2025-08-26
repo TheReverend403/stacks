@@ -21,7 +21,6 @@ services:
       - "${BASE_DIR:-.}/config:/config"
     networks:
       - "gentoogram-bot"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -31,5 +30,3 @@ services:
 networks:
   gentoogram-bot:
     name: "gentoogram-bot"
-  caddy:
-    external: true

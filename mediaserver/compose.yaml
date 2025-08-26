@@ -14,7 +14,6 @@ services:
       - "${BASE_DIR:-.}/data/torrents:/data/torrents"
     networks:
       - "mediaserver"
-      - "caddy"
     ports:
       - "6882:6882"
       - "6882:6882/udp"
@@ -41,7 +40,6 @@ services:
       - "${BASE_DIR:-.}/config/overseerr:/config"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -66,7 +64,6 @@ services:
       - "/transcode:uid=${PLEX_PUID:-${PUID:-1000}},gid=${PLEX_PGID:-${PGID:-1000}},size=${PLEX_TRANSCODE_TMPFS_SIZE:-2G}"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -86,7 +83,6 @@ services:
       - "${BASE_DIR:-.}/config/prowlarr:/config"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -110,7 +106,6 @@ services:
       - "${BASE_DIR:-.}/data:/data"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -134,7 +129,6 @@ services:
       - "${BASE_DIR:-.}/data:/data"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -157,7 +151,6 @@ services:
       - "${BASE_DIR:-.}/config/plex/Library/Application Support/Plex Media Server/Logs:/plex_logs:ro"
     networks:
       - "mediaserver"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -167,5 +160,3 @@ services:
 networks:
   mediaserver:
     name: "mediaserver"
-  caddy:
-    external: true

@@ -17,7 +17,6 @@ services:
       - "${BASE_DIR:-.}/data:/app/data"
     networks:
       - "uptime-kuma"
-      - "caddy"
     deploy:
       resources:
         limits:
@@ -27,5 +26,3 @@ services:
 networks:
   uptime-kuma:
     name: "uptime-kuma"
-  caddy:
-    external: true
