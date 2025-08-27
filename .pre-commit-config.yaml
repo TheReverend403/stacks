@@ -26,6 +26,8 @@ repos:
       - id: "yamllint"
         name: "yamllint"
         entry: "uv run yamllint"
+        args:
+          - "--strict"
         language: "system"
         types:
           - "yaml"
