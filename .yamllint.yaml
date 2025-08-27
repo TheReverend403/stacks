@@ -2,7 +2,10 @@
 extends: "default"
 rules:
   line-length: "disable"
-  quoted-strings: "enable"
+  quoted-strings:
+    quote-type: "double"
+  comments:
+    min-spaces-from-content: 1
 
 ignore:
   - ".venv/"
