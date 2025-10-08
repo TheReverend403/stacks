@@ -24,7 +24,7 @@ services:
       CFG_IRC_PORT: "${CFG_IRC_PORT:-6697}"
       CFG_IRC_SSL: "${CFG_IRC_SSL:-true}"
       CFG_BOT_ADMIN: "${CFG_BOT_ADMIN:?}"
-      CFG_DB_URI: "${CFG_DB_URI:-postgresql://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
+      CFG_DB_URI: "${CFG_DB_URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
     volumes:
       - "postgres_17_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/cappuccino:/config"
