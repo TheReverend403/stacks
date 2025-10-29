@@ -1,0 +1,35 @@
+---
+services:
+  zigbee2mqtt:
+    image: "ghcr.io/koenkk/zigbee2mqtt:latest"
+    container_name: "zigbee2mqtt"
+    restart: "unless-stopped"
+    read_only: true
+    user: "${Z2M_PUID:-${PUID:-1000}}:${Z2M_PGID:-${PGID:-1000}}"
+    group_add:
+      - "dialout"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    environment:
+      TZ: "${TZ:-UTC}"
+    volumes:
+      - "/run/udev:/run/udev:ro"
+      - "${BASE_DIR:-.}/data:/app/data"
+    networks:
+      - "zigbee2mqtt"
+    ports:
+      - "8080:8080"
+    labels:
+      - "diun.regopt=ghcr"
+    deploy:
+      resources:
+        limits:
+          cpus: "${Z2M_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${Z2M_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+networks:
+  zigbee2mqtt:
+    name: "zigbee2mqtt"
