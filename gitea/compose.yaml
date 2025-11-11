@@ -6,7 +6,7 @@ services:
     restart: "unless-stopped"
     user: "${GITEA_PUID:-${PUID:-1000}}:${GITEA_PGID:-${PGID:-1000}}"
     depends_on:
-      db-17:
+      db-18:
         condition: "service_healthy"
       redis:
         condition: "service_healthy"
