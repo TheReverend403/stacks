@@ -8,7 +8,7 @@ services:
     read_only: true
     user: "${CAPPUCCINO_PUID:-${PUID:-1000}}:${CAPPUCCINO_PGID:-${PGID:-1000}}"
     depends_on:
-      db-17:
+      db-18:
         condition: "service_healthy"
     env_file:
       - path: ".env"
@@ -26,7 +26,7 @@ services:
       CFG_BOT_ADMIN: "${CFG_BOT_ADMIN:?}"
       CFG_DB_URI: "${CFG_DB_URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
     volumes:
-      - "postgres_17_socket:/run/postgresql"
+      - "postgres_18_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/cappuccino:/config"
     tmpfs:
       - "/tmp"
@@ -38,9 +38,9 @@ services:
           cpus: "${CAPPUCCINO_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${CAPPUCCINO_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  db-17:
-    image: "postgres:17-alpine"
-    container_name: "cappuccino_db_17"
+  db-18:
+    image: "postgres:18-alpine"
+    container_name: "cappuccino_db_18"
     restart: "unless-stopped"
     init: true
     user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
@@ -56,9 +56,9 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-cappuccino}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-cappuccino}"
     volumes:
-      - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
-      - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"
-      - "postgres_17_socket:/run/postgresql"
+      - "${BASE_DIR:-.}/data/db/18:/var/lib/postgresql/18/docker"
+      - "${BASE_DIR:-.}/config/db/18:/etc/postgresql"
+      - "postgres_18_socket:/run/postgresql"
     tmpfs:
       - "/run"
     healthcheck:
@@ -77,7 +77,7 @@ services:
           memory: "${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 volumes:
-  postgres_17_socket:
+  postgres_18_socket:
 
 networks:
   cappuccino:
