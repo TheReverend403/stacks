@@ -32,7 +32,7 @@ services:
       GITEA__session__PROVIDER_CONFIG: "${REDIS_URL:-redis://redis:6379}"
       GITEA__indexer__ISSUE_INDEXER_TYPE: "${GITEA__indexer__ISSUE_INDEXER_TYPE:-db}"
     volumes:
-      - "postgres_17_socket:/run/postgresql"
+      - "postgres_18_socket:/run/postgresql"
       - "${BASE_DIR:-.}/data/gitea:/var/lib/gitea"
       - "${BASE_DIR:-.}/config/gitea:/etc/gitea"
     tmpfs:
@@ -54,9 +54,9 @@ services:
           cpus: "${GITEA_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${GITEA_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  db-17:
-    image: "postgres:17-alpine"
-    container_name: "gitea_db_17"
+  db-18:
+    image: "postgres:18-alpine"
+    container_name: "gitea_db_18"
     restart: "unless-stopped"
     init: true
     user: "${POSTGRES_PUID:-${PUID:-1000}}:${POSTGRES_PGID:-${PGID:-1000}}"
@@ -72,9 +72,9 @@ services:
       POSTGRES_USER: "${POSTGRES_USER:-gitea}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-gitea}"
     volumes:
-      - "${BASE_DIR:-.}/data/db/17:/var/lib/postgresql/data"
-      - "${BASE_DIR:-.}/config/db/17:/etc/postgresql"
-      - "postgres_17_socket:/run/postgresql"
+      - "${BASE_DIR:-.}/data/db/18:/var/lib/postgresql/18/docker"
+      - "${BASE_DIR:-.}/config/db/18:/etc/postgresql"
+      - "postgres_18_socket:/run/postgresql"
     tmpfs:
       - "/run"
     healthcheck:
@@ -121,7 +121,7 @@ services:
           memory: "${REDIS_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 volumes:
-  postgres_17_socket:
+  postgres_18_socket:
 
 networks:
   gitea:
