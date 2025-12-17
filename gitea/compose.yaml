@@ -63,7 +63,6 @@ services:
       - "postgres"
       - "-c"
       - "config_file=/etc/postgresql/postgresql.conf"
-    network_mode: "none"
     environment:
       TZ: "${TZ:-UTC}"
       POSTGRES_HOST: "${POSTGRES_HOST:-db-18}"
@@ -73,6 +72,8 @@ services:
     volumes:
       - "${BASE_DIR:-.}/data/db/18:/var/lib/postgresql/18/docker"
       - "${BASE_DIR:-.}/config/db/18:/etc/postgresql"
+    networks:
+      - "gitea"
     healthcheck:
       test:
         - "CMD-SHELL"
