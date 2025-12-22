@@ -1,7 +1,7 @@
 ---
 services:
   cappuccino:
-    image: "ghcr.io/thereverend403/cappuccino:main"
+    image: "ghcr.io/lwatsondev/cappuccino:main"
     container_name: "cappuccino"
     restart: "unless-stopped"
     init: true

@@ -1,7 +1,7 @@
 ---
 services:
   gentoogram-bot:
-    image: "ghcr.io/thereverend403/gentoogram-bot:main"
+    image: "ghcr.io/lwatsondev/gentoogram-bot:main"
     container_name: "gentoogram-bot"
     restart: "unless-stopped"
     init: true

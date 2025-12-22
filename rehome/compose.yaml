@@ -1,7 +1,7 @@
 ---
 services:
   rehome:
-    image: "ghcr.io/thereverend403/rehome:main"
+    image: "ghcr.io/lwatsondev/rehome:main"
     container_name: "rehome"
     restart: "unless-stopped"
     init: true
