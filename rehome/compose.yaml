@@ -14,7 +14,7 @@ services:
         required: false
     environment:
       TZ: "${TZ:-UTC}"
-      CFG_SECRET_KEY: "${CFG_SECRET_KEY:?}"
+      REHOME_SECRET_KEY: "${REHOME_SECRET_KEY:?}"
     volumes:
       - "${BASE_DIR:-.}/config/rehome:/config"
       - "${BASE_DIR:-.}/data/rehome:/data"
