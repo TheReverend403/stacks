@@ -27,7 +27,6 @@ services:
     image: "ghcr.io/seerr-team/seerr:latest"
     container_name: "seerr"
     restart: "unless-stopped"
-    user: "${SEERR_PGID:-${PGID:-1000}}:${SEERR_PUID:-${PUID:-1000}}"
     depends_on:
       - "plex"
       - "radarr"
