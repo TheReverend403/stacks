@@ -1,0 +1,32 @@
+---
+services:
+  gatus:
+    image: "ghcr.io/twin/gatus:stable"
+    container_name: "gatus"
+    restart: "unless-stopped"
+    user: "${GATUS_PUID:-${PUID:-1000}}:${GATUS_PGID:-${PGID:-1000}}"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    environment:
+      TZ: "${TZ:-UTC}"
+      PUID: "${GATUS_PUID:-${PUID:-1000}}"
+      PGID: "${GATUS_PGID:-${PGID:-1000}}"
+    volumes:
+      - "${BASE_DIR:-.}/config:/config"
+      - "${BASE_DIR:-.}/data:/data"
+    networks:
+      - "gatus"
+    ports:
+      - "8080:8080"
+    deploy:
+      resources:
+        limits:
+          cpus: "${GATUS_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${GATUS_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+networks:
+  gatus:
+    name: "gatus"
