@@ -12,20 +12,18 @@ jobs:
   lint:
     runs-on: "ubuntu-latest"
     steps:
-      - uses: "actions/checkout@v4"
+      - uses: "actions/checkout@v6"
 
       - name: "Install uv"
-        uses: "astral-sh/setup-uv@v6"
+        uses: "astral-sh/setup-uv@v7"
         with:
           enable-cache: true
-
-      - name: "Set up Python"
-        uses: "actions/setup-python@v5"
-        with:
-          python-version-file: ".python-version"
+          cache-python: true
 
       - name: "Install Python dependencies"
         run: "uv sync --group dev"
 
       - name: "Lint"
-        uses: "pre-commit/action@v3.0.1"
+        uses: "j178/prek-action@v2"
+        with:
+          extra-args: "--all-files"
