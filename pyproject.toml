@@ -8,5 +8,5 @@ dependencies = []
 [dependency-groups]
 dev = [
     "prek>=0.4.5",
-    "yamllint>=1.37.1",
+    "yamllint>=1.38.0",
 ]
