@@ -38,7 +38,7 @@ services:
           memory: "${CAPPUCCINO_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   db-18:
-    image: "postgres:18-alpine"
+    image: "postgres:18"
     container_name: "cappuccino_db_18"
     restart: "unless-stopped"
     init: true

@@ -39,7 +39,7 @@ services:
           memory: "${PSTE_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
   db-17:
-    image: "postgres:17-alpine"
+    image: "postgres:17"
     container_name: "pste_db_17"
     restart: "unless-stopped"
     init: true
