@@ -1,0 +1,35 @@
+---
+services:
+  gitea-runner:
+    image: "gitea/act_runner:latest"
+    container_name: "gitea_runner"
+    restart: "unless-stopped"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
+    environment:
+      TZ: "${TZ:-UTC}"
+      GITEA_INSTANCE_URL: "${GITEA_INSTANCE_URL:?}"
+      GITEA_RUNNER_REGISTRATION_TOKEN: "${GITEA_RUNNER_REGISTRATION_TOKEN:?}"
+      GITEA_RUNNER_NAME: "${GITEA_RUNNER_NAME:-}"
+      GITEA_RUNNER_LABELS: "${GITEA_RUNNER_LABELS:-}"
+      CONFIG_FILE: "${CONFIG_FILE:-/config/config.yaml}"
+    volumes:
+      - "${BASE_DIR:-.}/data/runner:/data"
+      - "${BASE_DIR:-.}/data/cache:/root/.cache/actcache"
+      - "${BASE_DIR:-.}/data/act:/root/.cache/act"
+      - "${BASE_DIR:-.}/config:/config"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - "gitea-runner"
+    deploy:
+      resources:
+        limits:
+          cpus: "${GITEA_RUNNER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
+          memory: "${GITEA_RUNNER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
+
+networks:
+  gitea-runner:
+    name: "gitea-runner"
