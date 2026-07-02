@@ -31,25 +31,6 @@ services:
           cpus: "${DIUN_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${DIUN_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
-  telegram-notifier:
-    image: "lorcas/docker-telegram-notifier:latest"
-    container_name: "docker-telegram-notifier"
-    restart: "unless-stopped"
-    init: true
-    environment:
-      TZ: "${TZ:-UTC}"
-      TELEGRAM_NOTIFIER_BOT_TOKEN: "${TELEGRAM_API_KEY:?}"
-      TELEGRAM_NOTIFIER_CHAT_ID: "${TELEGRAM_CHAT_ID:?}"
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    networks:
-      - "docker-monitoring"
-    deploy:
-      resources:
-        limits:
-          cpus: "${TGNOTIFIER_CPU_LIMIT:-${CPU_LIMIT:-0}}"
-          memory: "${TGNOTIFIER_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
 networks:
   docker-monitoring:
     name: "docker-monitoring"
