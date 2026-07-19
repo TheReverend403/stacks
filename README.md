@@ -5,6 +5,7 @@ Docker Compose stacks for self-hosted services. One directory per service, each 
 ## Usage
 
 ```sh
-cp <stack>/.env.example <stack>/.env
+cd <stack>
+cp .env.example .env
 docker compose up -d --pull=always --remove-orphans
 ```
