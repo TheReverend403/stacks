@@ -1,0 +1,2 @@
+# Runner caches contain embedded git checkouts that evade the root rules
+data/*/**
