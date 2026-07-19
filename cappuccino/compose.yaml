@@ -23,9 +23,8 @@ services:
       CAPPUCCINO_HOST: "${CAPPUCCINO_HOST:?}"
       CAPPUCCINO_PORT: "${CAPPUCCINO_PORT:-6697}"
       CAPPUCCINO_SSL: "${CAPPUCCINO_SSL:-true}"
-      CAPPUCCINO_DATABASE__URI: "${CAPPUCCINO_DATABASE__URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@/${POSTGRES_DB:-cappuccino}?host=${POSTGRES_HOST:-/run/postgresql}}"
+      CAPPUCCINO_DATABASE__URI: "${CAPPUCCINO_DATABASE__URI:-postgresql+psycopg://${POSTGRES_USER:-cappuccino}:${POSTGRES_PASSWORD:-cappuccino}@${POSTGRES_HOST:-db-18}:${POSTGRES_PORT:-5432}/${POSTGRES_DB:-cappuccino}}"
     volumes:
-      - "postgres_18_socket:/run/postgresql"
       - "${BASE_DIR:-.}/config/cappuccino:/config"
     tmpfs:
       - "/tmp"
@@ -47,36 +46,30 @@ services:
       - "postgres"
       - "-c"
       - "config_file=/etc/postgresql/postgresql.conf"
-    network_mode: "none"
+    networks:
+      - "cappuccino"
     environment:
       TZ: "${TZ:-UTC}"
-      POSTGRES_HOST: "${POSTGRES_HOST:-/run/postgresql}"
       POSTGRES_DB: "${POSTGRES_DB:-cappuccino}"
       POSTGRES_USER: "${POSTGRES_USER:-cappuccino}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-cappuccino}"
     volumes:
       - "${BASE_DIR:-.}/data/db:/var/lib/postgresql"
       - "${BASE_DIR:-.}/config/db:/etc/postgresql"
-      - "postgres_18_socket:/run/postgresql"
-    tmpfs:
-      - "/run"
     healthcheck:
       test:
         - "CMD-SHELL"
-        - "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=$$POSTGRES_HOST"
+        - "pg_isready -q --dbname=$$POSTGRES_DB --username=$$POSTGRES_USER --host=127.0.0.1"
       start_period: "10s"
       start_interval: "1s"
       interval: "10s"
       timeout: "5s"
-    shm_size: "${SHM_SIZE:-512M}"
+    shm_size: "${SHM_SIZE:-128M}"
     deploy:
       resources:
         limits:
           cpus: "${POSTGRES_CPU_LIMIT:-${CPU_LIMIT:-0}}"
           memory: "${POSTGRES_MEM_LIMIT:-${MEM_LIMIT:-0}}"
-
-volumes:
-  postgres_18_socket:
 
 networks:
   cappuccino:
