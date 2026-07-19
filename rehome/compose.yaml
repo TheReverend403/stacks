@@ -22,8 +22,6 @@ services:
       - "/tmp"
     networks:
       - "rehome"
-    labels:
-      - "diun.regopt=ghcr"
     deploy:
       resources:
         limits:
