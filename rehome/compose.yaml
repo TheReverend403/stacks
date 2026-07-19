@@ -16,8 +16,8 @@ services:
       TZ: "${TZ:-UTC}"
       REHOME_SECRET_KEY: "${REHOME_SECRET_KEY:?}"
     volumes:
-      - "${BASE_DIR:-.}/config/rehome:/config"
-      - "${BASE_DIR:-.}/data/rehome:/data"
+      - "${BASE_DIR:-.}/config:/config"
+      - "${BASE_DIR:-.}/data:/data"
     tmpfs:
       - "/tmp"
     networks:

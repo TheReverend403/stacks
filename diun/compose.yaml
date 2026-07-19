@@ -21,10 +21,10 @@ services:
       LOG_LEVEL: "${LOG_LEVEL:-info}"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
-      - "${BASE_DIR:-.}/data/diun:/data"
-      - "${BASE_DIR:-.}/config/diun:/etc/diun"
+      - "${BASE_DIR:-.}/data:/data"
+      - "${BASE_DIR:-.}/config:/etc/diun"
     networks:
-      - "docker-monitoring"
+      - "diun"
     deploy:
       resources:
         limits:
@@ -32,5 +32,5 @@ services:
           memory: "${DIUN_MEM_LIMIT:-${MEM_LIMIT:-0}}"
 
 networks:
-  docker-monitoring:
-    name: "docker-monitoring"
+  diun:
+    name: "diun"
