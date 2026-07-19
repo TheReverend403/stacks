@@ -4,11 +4,15 @@ services:
     image: "ghcr.io/linuxserver/deluge:latest"
     container_name: "deluge"
     restart: "unless-stopped"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${DELUGE_PGID:-${PGID:-1000}}"
       PUID: "${DELUGE_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/deluge:/config"
       - "${BASE_DIR:-.}/data/torrents:/data/torrents"
@@ -31,11 +35,15 @@ services:
       - "plex"
       - "radarr"
       - "sonarr"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${SEERR_PGID:-${PGID:-1000}}"
       PUID: "${SEERR_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/seerr:/app/config"
     networks:
@@ -50,13 +58,16 @@ services:
     image: "ghcr.io/linuxserver/plex:latest"
     container_name: "plex"
     restart: "unless-stopped"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${PLEX_PGID:-${PGID:-1000}}"
       PUID: "${PLEX_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
       VERSION: "docker"
-    env_file: ".env"
     volumes:
       - "${BASE_DIR:-.}/config/plex:/config"
       - "${BASE_DIR:-.}/data/media:/media:ro"
@@ -74,11 +85,15 @@ services:
     image: "ghcr.io/linuxserver/prowlarr:latest"
     container_name: "prowlarr"
     restart: "unless-stopped"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${PROWLARR_PGID:-${PGID:-1000}}"
       PUID: "${PROWLARR_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/prowlarr:/config"
     networks:
@@ -96,11 +111,15 @@ services:
     depends_on:
       - "deluge"
       - "prowlarr"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${RADARR_PGID:-${PGID:-1000}}"
       PUID: "${RADARR_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/radarr:/config"
       - "${BASE_DIR:-.}/data:/data"
@@ -119,11 +138,15 @@ services:
     depends_on:
       - "deluge"
       - "prowlarr"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${SONARR_PGID:-${PGID:-1000}}"
       PUID: "${SONARR_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/sonarr:/config"
       - "${BASE_DIR:-.}/data:/data"
@@ -142,11 +165,15 @@ services:
     depends_on:
       - "sonarr"
       - "radarr"
+    env_file:
+      - path: ".env"
+        required: false
+      - path: "stack.env"
+        required: false
     environment:
       TZ: "${TZ:-UTC}"
       PGID: "${BAZARR_PGID:-${PGID:-1000}}"
       PUID: "${BAZARR_PUID:-${PUID:-1000}}"
-      UMASK: "${UMASK:-007}"
     volumes:
       - "${BASE_DIR:-.}/config/bazarr:/config"
       - "${BASE_DIR:-.}/data:/data"
