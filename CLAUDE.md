@@ -36,7 +36,7 @@ directory.
 - Keep a stack's directory name and its compose network/container names in
   sync with what it actually runs, don't let them drift.
 - Bring a stack up from its directory:
-  `docker compose up -d --pull=always --build --remove-orphans`
+  `docker compose up -d --pull=always --remove-orphans`
 - Lint: `uv run yamllint --strict .` or `uv run prek run --all-files`
   (yamllint plus end-of-file/trailing-whitespace/shebang checks, configured
   in `prek.toml`). uv is dev tooling only. There is no Python code here.
