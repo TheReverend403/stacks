@@ -1,13 +1,11 @@
 ---
 services:
   caddy:
-    image: "caddy-cloudflare:latest"
+    image: "ghcr.io/caddybuilds/caddy-cloudflare:latest"
     container_name: "caddy"
     restart: "unless-stopped"
     init: true
     user: "${CADDY_PUID:-${PUID:-1000}}:${CADDY_PGID:-${PGID:-1000}}"
-    build: "."
-    pull_policy: "build"
     read_only: true
     env_file:
       - path: ".env"
